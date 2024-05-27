@@ -1,24 +1,13 @@
-import queryString from 'query-string';
-import { SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI } from './config/globals';
+import { Routes, Route } from 'react-router-dom';
+import CallbackPage from './pages/callback/callback';
+import HomePage from './pages/home/home';
 
 function App() {
-  const state = "hdickalporhfsjcy";
-  const scope = "user-top-read user-read-email";
-
-  const startLoginFlow = () => {
-    window.open("https://accounts.spotify.com/authorize?" +
-    queryString.stringify({
-      response_type: "code",
-      client_id: SPOTIFY_CLIENT_ID,
-      scope: scope,
-      redirect_uri: SPOTIFY_REDIRECT_URI,
-      state: state,
-    }),"_blank")
-  }
   return (
-    <div className="App">
-      <button onClick={() => {startLoginFlow()}}>login to spotify</button>
-    </div>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/%2Flogin%2Fcallback" element={<CallbackPage />} />
+      </Routes>
   );
 }
 

@@ -5,6 +5,8 @@ function CallbackPage() {
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [searchParams] = useSearchParams()
+  console.log(searchParams);
+  
   const loginCode = searchParams.get('code')
   
   if (loginCode === null) {
