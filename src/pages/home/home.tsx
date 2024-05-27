@@ -1,12 +1,15 @@
 import queryString from 'query-string';
 import { SERVER_ENDPOINT, SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI } from '../../config/globals';
 import { useState } from 'react';
+import ArtistsTable from '../../components/artistsTable.component';
 
 function HomePage() {
   const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
+  const [formEmail, setFormEmail] = useState("")
+  const [userEmail, setUserEmail] = useState(window.sessionStorage.getItem("userEmail"))
   const state = "hdickalporhfsjcy";
   const scope = "user-top-read user-read-email";
+  console.log(userEmail);
 
   const startLoginFlow = () => {
     window.location.href = "https://accounts.spotify.com/authorize?" +
@@ -35,39 +38,46 @@ function HomePage() {
   }
 
   function handleEmail(field: string) {
-    setEmail(field)
+    setFormEmail(field)
   }
 
   const handleSubmit = async () => {
-    console.log(username);
-    
-    await fetch(SERVER_ENDPOINT+'/user/' + email, {
+    const response = await fetch(SERVER_ENDPOINT+'/user/' + formEmail, {
       method: "POST",
       headers: {
       "Content-Type": "application/json",
       },
       body: JSON.stringify({"loginCode": loginCode, "username": username})
     })
+    if (response.status === 200) {
+      window.sessionStorage.setItem("userEmail", formEmail)
+      setUserEmail(window.sessionStorage.getItem("userEmail"))      
+    }
   }
 
   return (
     <div className="h-full flex flex-col justify-center items-center">
-    {(loginCode === null) 
+      {(userEmail === null) 
       ?
-        <button onClick={() => {startLoginFlow()}}>login to spotify</button>
-      : 
-      <div className='h-full flex  justify-center items-center'>
-        <label>
-          username:
-          <input type="text" onChange={(change) => {handleUsername(change.target.value)}}/>
-        </label>
-        <label>
-          email:
-          <input type="text" onChange={(change) => {handleEmail(change.target.value)}}/>
-        </label>
-        <button type="submit" onClick={() => handleSubmit()}>submit</button>
-      </div>
-    }
+        (loginCode === null) 
+          ?
+            <button onClick={() => {startLoginFlow()}}>login to spotify</button>
+          : 
+          <div className='h-full flex  justify-center items-center'>
+            <label>
+              username:
+              <input type="text" onChange={(change) => {handleUsername(change.target.value)}}/>
+            </label>
+            <label>
+              email:
+              <input type="text" onChange={(change) => {handleEmail(change.target.value)}}/>
+            </label>
+            <button type="submit" onClick={() => handleSubmit()}>submit</button>
+          </div>
+        : 
+        <ArtistsTable/>
+      }
+      <button onClick={() => window.sessionStorage.clear()}>clear session</button>
     </div>
   );
 }
