@@ -50,9 +50,13 @@ function HomePage() {
     })
   }
 
-  if (loginCode !== null) { 
-    return (
-        <div className="flex justify-center items-center">
+  return (
+    <div className="h-full flex flex-col justify-center items-center">
+    {(loginCode === null) 
+      ?
+        <button onClick={() => {startLoginFlow()}}>login to spotify</button>
+      : 
+      <div className='h-full flex  justify-center items-center'>
         <label>
           username:
           <input type="text" onChange={(change) => {handleUsername(change.target.value)}}/>
@@ -63,12 +67,7 @@ function HomePage() {
         </label>
         <button type="submit" onClick={() => handleSubmit()}>submit</button>
       </div>
-    );
-  }
-
-  return (
-    <div className="flex">
-      <button onClick={() => {startLoginFlow()}}>login to spotify</button>
+    }
     </div>
   );
 }
