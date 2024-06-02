@@ -4,10 +4,9 @@ import { useState } from 'react';
 import ArtistsTable from '../../components/artistsTable.component';
 
 function HomePage() {
-  const [username, setUsername] = useState("")
   const [formEmail, setFormEmail] = useState("")
+  const [initialTeam, setInitialTeam] = useState("")
   const [userEmail, setUserEmail] = useState(window.sessionStorage.getItem("userEmail"))
-  const state = "hdickalporhfsjcy";
   const scope = "user-top-read user-read-email";
   console.log(userEmail);
 
@@ -18,9 +17,10 @@ function HomePage() {
       client_id: SPOTIFY_CLIENT_ID,
       scope: scope,
       redirect_uri: SPOTIFY_REDIRECT_URI,
-      state: state,
+      state: "hdickalporhfsjcy",
     })
   }
+
   const url = new URL(window.location.href);
 
   const params = new URLSearchParams(url.search);
@@ -33,23 +33,34 @@ function HomePage() {
     return <div>login error</div>
   }
 
-  function handleUsername(field: string) {
-    setUsername(field)
-  }
-
-  function handleEmail(field: string) {
+  const handleEmail = (field: string) => {
     setFormEmail(field)
   }
 
+  const handleInitialTeam = (field: string) => {
+    setInitialTeam(field)
+  }
+
   const handleSubmit = async () => {
-    const response = await fetch(SERVER_ENDPOINT+'/user/' + formEmail, {
+    let teamId = ''
+    const newTeamResponse = await fetch(SERVER_ENDPOINT+'/team/' +  initialTeam, {
+      method: "POST",
+      headers: {
+      "Content-Type": "application/json",
+      }
+    })
+    if (newTeamResponse.status === 200) {
+      teamId = await newTeamResponse.json();
+    }
+
+    const userResponse = await fetch(SERVER_ENDPOINT+'/user/' + formEmail, {
       method: "POST",
       headers: {
       "Content-Type": "application/json",
       },
-      body: JSON.stringify({"loginCode": loginCode, "username": username})
+      body: JSON.stringify({"loginCode": loginCode, "team": teamId})
     })
-    if (response.status === 200) {
+    if (userResponse.status === 200) {
       window.sessionStorage.setItem("userEmail", formEmail)
       setUserEmail(window.sessionStorage.getItem("userEmail"))      
     }
@@ -60,17 +71,19 @@ function HomePage() {
       {(userEmail === null) 
       ?
         (loginCode === null) 
-          ?
+          ? 
+          <>
             <button onClick={() => {startLoginFlow()}}>login to spotify</button>
+          </>
           : 
           <div className='h-full flex  justify-center items-center'>
+          <label>
+            email:
+            <input type="text" onChange={(change) => {handleEmail(change.target.value)}}/>
+          </label>
             <label>
-              username:
-              <input type="text" onChange={(change) => {handleUsername(change.target.value)}}/>
-            </label>
-            <label>
-              email:
-              <input type="text" onChange={(change) => {handleEmail(change.target.value)}}/>
+              new team name:
+              <input type="text" onChange={(change) => {handleInitialTeam(change.target.value)}}/>
             </label>
             <button type="submit" onClick={() => handleSubmit()}>submit</button>
           </div>
