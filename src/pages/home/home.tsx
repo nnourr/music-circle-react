@@ -1,96 +1,170 @@
-import queryString from 'query-string';
-import { SERVER_ENDPOINT, SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI } from '../../config/globals';
-import { useState } from 'react';
-import ArtistsTable from '../../components/artistsTable.component';
+import queryString from "query-string";
+import {
+  SERVER_ENDPOINT,
+  SPOTIFY_CLIENT_ID,
+  SPOTIFY_REDIRECT_URI,
+} from "../../config/globals";
+import React, { useEffect, useState } from "react";
+import ArtistsTable from "../../components/artistsTable.component";
 
-function HomePage() {
-  const [formEmail, setFormEmail] = useState("")
-  const [initialTeam, setInitialTeam] = useState("")
-  const [userEmail, setUserEmail] = useState(window.sessionStorage.getItem("userEmail"))
+export const HomePage = () => {
+  const [initialCircle, setInitialCircle] = useState("");
+  const [userCircles, setUserCircles] = useState([] as string[]);
+  const [userEmail, setUserEmail] = useState("");
   const scope = "user-top-read user-read-email";
-  console.log(userEmail);
 
   const startLoginFlow = () => {
-    window.location.href = "https://accounts.spotify.com/authorize?" +
-    queryString.stringify({
-      response_type: "code",
-      client_id: SPOTIFY_CLIENT_ID,
-      scope: scope,
-      redirect_uri: SPOTIFY_REDIRECT_URI,
-      state: "hdickalporhfsjcy",
-    })
-  }
+    window.location.href =
+      "https://accounts.spotify.com/authorize?" +
+      queryString.stringify({
+        response_type: "code",
+        client_id: SPOTIFY_CLIENT_ID,
+        scope: scope,
+        redirect_uri: SPOTIFY_REDIRECT_URI,
+        state: "hdickalporhfsjcy",
+      });
+  };
 
   const url = new URL(window.location.href);
 
   const params = new URLSearchParams(url.search);
 
-  const loginCode = params.get('code');
-  const error = params.get('error')
-  
-  if (error !== null) {
-    console.log(error);
-    return <div>login error</div>
-  }
+  const handleInitialCircle = (field: string) => {
+    setInitialCircle(field);
+  };
 
-  const handleEmail = (field: string) => {
-    setFormEmail(field)
-  }
-
-  const handleInitialTeam = (field: string) => {
-    setInitialTeam(field)
-  }
-
-  const handleSubmit = async () => {
-    let teamId = ''
-    const newTeamResponse = await fetch(SERVER_ENDPOINT+'/team/' +  initialTeam, {
+  const handleUserLogin = async (loginCode: string) => {
+    const setUserResponse = await fetch(SERVER_ENDPOINT + "/user/", {
       method: "POST",
       headers: {
-      "Content-Type": "application/json",
-      }
-    })
-    if (newTeamResponse.status === 200) {
-      teamId = await newTeamResponse.json();
-    }
-
-    const userResponse = await fetch(SERVER_ENDPOINT+'/user/' + formEmail, {
-      method: "POST",
-      headers: {
-      "Content-Type": "application/json",
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({"loginCode": loginCode, "team": teamId})
-    })
-    if (userResponse.status === 200) {
-      window.sessionStorage.setItem("userEmail", formEmail)
-      setUserEmail(window.sessionStorage.getItem("userEmail"))      
+      body: JSON.stringify({ loginCode: loginCode }),
+    });
+    if (setUserResponse.status === 200) {
+      const userObj = await setUserResponse.json();
+      const email = userObj.email;
+      if (email === undefined) {
+        console.error("email not found");
+        return;
+      }
+      window.sessionStorage.setItem("userEmail", email);
+      const sessionEmail = window.sessionStorage.getItem("userEmail")
+      if (sessionEmail === null) {
+        console.error("error setting email session storage");
+        return
+      }
+      setUserEmail(sessionEmail);
     }
-  }
+  };
+
+  const handleCreateNewCircle = async (circleName: string) => {
+    try {
+      const newCircleResponse = await fetch(
+        SERVER_ENDPOINT + "/circle/" + circleName,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (newCircleResponse.status === 200) {
+        const newCircleCode: string = await newCircleResponse.json();
+        await handleAddUserToCircle(newCircleCode);
+        setUserCircles([...userCircles, newCircleCode]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleAddUserToCircle = async (circleCode: string) => {
+    if (circleCode === "") {
+      return;
+    }
+    try {
+      console.log("userEmail: " + userEmail);
+      await fetch(SERVER_ENDPOINT + `/user/${userEmail}/circle/${circleCode}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    const loginCode = params.get("code");
+    const error = params.get("error");
+
+    if (error !== null) {
+      console.error(error);
+      return;
+    }
+    if (loginCode === null || userEmail !== "") {
+      return;
+    }
+
+    handleUserLogin(loginCode);
+    params.delete("code");
+  });
+
+  useEffect(() => { 
+    const callback = async () => {
+      console.log(userEmail);
+      const getUserResponse = await fetch(`${SERVER_ENDPOINT}/user/${userEmail}`);
+      const user = await getUserResponse.json();
+      console.log(user);
+  
+      setUserCircles(user.artists);
+    }
+    if (userEmail === "") {
+      return
+    }
+    callback()
+  }, [userEmail])
 
   return (
     <div className="h-full flex flex-col justify-center items-center">
-      {(userEmail === null) 
-      ?
-        (loginCode === null) 
-          ? 
+      {userCircles.length === 0 ? (
+        userEmail === "" ? (
           <>
-            <button onClick={() => {startLoginFlow()}}>login to spotify</button>
+            <button
+              onClick={() => {
+                startLoginFlow();
+              }}
+            >
+              login to spotify
+            </button>
           </>
-          : 
-          <div className='h-full flex  justify-center items-center'>
-          <label>
-            email:
-            <input type="text" onChange={(change) => {handleEmail(change.target.value)}}/>
-          </label>
+        ) : (
+          <div className="h-full flex  justify-center items-center">
             <label>
-              new team name:
-              <input type="text" onChange={(change) => {handleInitialTeam(change.target.value)}}/>
+              new circle name:
+              <input
+                type="text"
+                onChange={(change) => {
+                  handleInitialCircle(change.target.value);
+                }}
+              />
             </label>
-            <button type="submit" onClick={() => handleSubmit()}>submit</button>
+            <button
+              type="submit"
+              onClick={() => handleCreateNewCircle(initialCircle)}
+            >
+              submit
+            </button>
           </div>
-        : 
-        <ArtistsTable/>
-      }
-      <button onClick={() => window.sessionStorage.clear()}>clear session</button>
+        )
+      ) : (
+        <ArtistsTable />
+      )}
+      <button onClick={() => window.sessionStorage.clear()}>
+        clear session
+      </button>
     </div>
   );
 }
