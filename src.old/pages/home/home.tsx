@@ -4,13 +4,14 @@ import {
   SPOTIFY_CLIENT_ID,
   SPOTIFY_REDIRECT_URI,
 } from "../../config/globals";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ArtistsTable from "../../components/artistsTable.component";
 
 export const HomePage = () => {
-  const [initialCircle, setInitialCircle] = useState("");
-  const [userCircles, setUserCircles] = useState([] as string[]);
-  const [userEmail, setUserEmail] = useState("");
+  const [initialCircle, setInitialCircle] = useState<string>("");
+  const [userCircles, setUserCircles] = useState<string[]>([]);
+  const [currentCircleInfo, setCurrentCircleInfo] = useState<any>({});
+  const [userEmail, setUserEmail] = useState<string>("");
   const scope = "user-top-read user-read-email";
 
   const startLoginFlow = () => {
@@ -26,7 +27,6 @@ export const HomePage = () => {
   };
 
   const url = new URL(window.location.href);
-
   const params = new URLSearchParams(url.search);
 
   const handleInitialCircle = (field: string) => {
@@ -84,7 +84,6 @@ export const HomePage = () => {
       return;
     }
     try {
-      console.log("userEmail: " + userEmail);
       await fetch(SERVER_ENDPOINT + `/user/${userEmail}/circle/${circleCode}`, {
         method: "POST",
         headers: {
@@ -114,18 +113,29 @@ export const HomePage = () => {
 
   useEffect(() => { 
     const callback = async () => {
-      console.log(userEmail);
       const getUserResponse = await fetch(`${SERVER_ENDPOINT}/user/${userEmail}`);
       const user = await getUserResponse.json();
-      console.log(user);
   
-      setUserCircles(user.artists);
+      setUserCircles(user.circles);
     }
     if (userEmail === "") {
       return
     }
     callback()
   }, [userEmail])
+
+  useEffect(() => {
+    if (userCircles.length === 0) {
+      return
+    }
+    const callback = async () => {
+      const getCircleInfoResponse = await fetch(`${SERVER_ENDPOINT}/circle/${userCircles[0]}`)
+      const circleInfo = await getCircleInfoResponse.json()
+
+      setCurrentCircleInfo(circleInfo)
+    }
+    callback()
+  }, [userCircles])
 
   return (
     <div className="h-full flex flex-col justify-center items-center">
@@ -159,8 +169,9 @@ export const HomePage = () => {
             </button>
           </div>
         )
-      ) : (
-        <ArtistsTable />
+      ) : (<pre className="overflow-y-auto">
+        {JSON.stringify(currentCircleInfo, null, 2)}
+        </pre>
       )}
       <button onClick={() => window.sessionStorage.clear()}>
         clear session

@@ -1,8 +1,11 @@
-import HomePage from './pages/home/home';
+import { LandingPage } from "./pages/landing/landing.page";
+import { EmailProvider } from "./providers/email.provider";
 
 function App() {
-  return (
-  <HomePage />
+  return ( 
+    <EmailProvider>
+      <LandingPage/>
+    </EmailProvider>
   );
 }
 

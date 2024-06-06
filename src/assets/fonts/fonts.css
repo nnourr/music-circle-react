@@ -1,0 +1,14 @@
+@font-face {
+  font-family: "Fancy";
+  font-style: normal;
+  font-weight: 400;
+  /* font-display: swap; */
+  src: url("Chiralla.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "LeagueSpartan";
+  font-style: normal;
+  font-weight: 500;
+  src: url("LeagueSpartan.woff2") format("woff2");
+}
