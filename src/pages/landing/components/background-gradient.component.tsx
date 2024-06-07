@@ -14,7 +14,7 @@ export const BackgroundGradient: React.FC<BackgroundGradientProps> = ({
     <motion.div
       animate={{
         backgroundImage: error
-          ? "radial-gradient(50% 50% at 50% 50%, rgb(41 235 38) 0%, rgb(63 177 171) 95%, rgb(200 50 50) 100%)"
+          ? "radial-gradient(50% 50% at 50% 50%, rgb(41 235 38) 0%, rgb(63 177 171) 20%, rgb(41 195 159) 100%)"
           : alt
           ? "radial-gradient(50% 50% at 50% 50%, rgb(41 235 38) 0%, rgb(41 195 159) 70%, rgb(63 177 171) 100%)"
           : "radial-gradient(50% 50% at 50% 50%, rgb(41 235 38) 0%, rgb(63 177 171) 70%, rgb(41 195 159) 100%)",
