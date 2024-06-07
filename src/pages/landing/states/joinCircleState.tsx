@@ -26,7 +26,7 @@ const JoinCircleState = React.forwardRef<
       setCircleCodeError("code cannot contain spaces.");
       return;
     }
-    const invalidCodePattern = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    const invalidCodePattern = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
     if (invalidCodePattern.test(circleCode)) {
       setCircleCodeError("code cannot contain special characters.");
       return;
