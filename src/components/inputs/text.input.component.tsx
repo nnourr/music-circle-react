@@ -28,10 +28,6 @@ export const Input: React.FC<InputProps> = ({ onChange, children, error }) => {
             }
           : { translateY: 0, opacity: 1 }
       }
-      initial={{
-        translateY: "100%",
-        opacity: 0,
-      }}
       transition={{ duration: 0.4 }}
       whileTap={{ scale: 0.95 }}
       whileHover={
@@ -41,10 +37,6 @@ export const Input: React.FC<InputProps> = ({ onChange, children, error }) => {
             }
           : { borderColor: "rgba(0 0 0 0.5)" }
       }
-      exit={{
-        translateY: "-100%",
-        opacity: 0,
-      }}
     >
       {children}
       <input

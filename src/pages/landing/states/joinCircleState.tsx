@@ -2,23 +2,20 @@ import React, { useState, useEffect } from "react";
 import Input from "../../../components/inputs/text.input.component";
 import { useUser } from "../../../providers/user.provider";
 import Button from "../../../components/inputs/button.input.component";
+import { motion } from "framer-motion";
 
 interface JoinCircleStateInterface {
   nextState: () => void;
   goToCreateCircle: () => void;
 }
 
-export const JoinCircleState: React.FC<JoinCircleStateInterface> = ({
-  goToCreateCircle,
-}) => {
+const JoinCircleState = React.forwardRef<
+  HTMLDivElement,
+  JoinCircleStateInterface
+>(({ goToCreateCircle }, ref) => {
   const [circleCode, setCircleCode] = useState<string>("");
   const [circleCodeError, setCircleCodeError] = useState<string | undefined>();
   const { email, username } = useUser();
-
-  useEffect(() => {
-    console.log("JoinCircleState - email:", email);
-    console.log("JoinCircleState - username:", username);
-  }, [email, username]);
 
   useEffect(() => {
     setCircleCodeError(undefined);
@@ -29,18 +26,21 @@ export const JoinCircleState: React.FC<JoinCircleStateInterface> = ({
       setCircleCodeError("code cannot contain spaces.");
       return;
     }
-    const invalidCodePattern = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    const invalidCodePattern = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
     if (invalidCodePattern.test(circleCode)) {
       setCircleCodeError("code cannot contain special characters.");
       return;
     }
     if (circleCode.length === 16 && !!!circleCodeError) {
-      console.log("add user to circle");
+      console.log(`add ${email} to circle`);
     }
-  }, [circleCode, circleCodeError]);
+  }, [circleCode, circleCodeError, email]);
 
   return (
-    <div className="h-full w-full flex justify-center items-center flex-col gap-24">
+    <div
+      ref={ref}
+      className="h-full w-full flex justify-center items-center flex-col gap-24"
+    >
       <div className="flex flex-col">
         <h2 className="text-xl font-fancy self-start -mb-20 text-black/80">
           hey {username},
@@ -67,4 +67,10 @@ export const JoinCircleState: React.FC<JoinCircleStateInterface> = ({
       </div>
     </div>
   );
-};
+});
+
+const MotionJoinCircleState = motion(JoinCircleState, {
+  forwardMotionProps: true,
+});
+
+export default MotionJoinCircleState;
