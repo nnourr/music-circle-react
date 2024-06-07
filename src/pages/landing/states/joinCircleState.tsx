@@ -12,6 +12,7 @@ export const JoinCircleState: React.FC<JoinCircleStateInterface> = ({
   goToCreateCircle,
 }) => {
   const [circleCode, setCircleCode] = useState<string>("");
+  const [circleCodeError, setCircleCodeError] = useState<string | undefined>();
   const { email, username } = useUser();
 
   useEffect(() => {
@@ -19,7 +20,24 @@ export const JoinCircleState: React.FC<JoinCircleStateInterface> = ({
     console.log("JoinCircleState - username:", username);
   }, [email, username]);
 
-  console.log(circleCode);
+  useEffect(() => {
+    setCircleCodeError(undefined);
+    if (circleCode === "") {
+      return;
+    }
+    if (circleCode.includes(" ")) {
+      setCircleCodeError("code cannot contain spaces.");
+      return;
+    }
+    const invalidCodePattern = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    if (invalidCodePattern.test(circleCode)) {
+      setCircleCodeError("code cannot contain special characters.");
+      return;
+    }
+    if (circleCode.length === 16 && !!!circleCodeError) {
+      console.log("add user to circle");
+    }
+  }, [circleCode, circleCodeError]);
 
   return (
     <div className="h-full w-full flex justify-center items-center flex-col gap-24">
@@ -31,7 +49,17 @@ export const JoinCircleState: React.FC<JoinCircleStateInterface> = ({
       </div>
 
       <div className="flex flex-col items-center">
-        <Input onChange={(change: any) => setCircleCode(change.target.value)}>
+        {!!circleCodeError ? (
+          <p className="text-base -mt-12 self-start text-red-600/80">
+            {circleCodeError}
+          </p>
+        ) : (
+          ""
+        )}
+        <Input
+          onChange={(change: any) => setCircleCode(change.target.value)}
+          error={!!circleCodeError}
+        >
           Circle Code:{" "}
         </Input>
         <p className="text-base text-black/80">or,</p>
