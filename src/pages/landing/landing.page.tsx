@@ -121,7 +121,7 @@ export const LandingPage: React.FC = () => {
 
   return (
     <div className="h-full w-full overflow-hidden">
-      <SquirlComponent
+      {/* <SquirlComponent
         yOffset={currentState.squirlYOffset}
         className={`relative left-[4%] transition-opacity duration-700 delay-500 ${
           !!pageError ? "opacity-0" : "opacity-100"
@@ -133,7 +133,7 @@ export const LandingPage: React.FC = () => {
           !!pageError ? "opacity-0" : "opacity-100"
         }`}
         flip={true}
-      />
+      /> */}
       {!!pageError ? (
         <div className=" w-3/5 h-full flex items-center justify-center text-xl text-red-600/90 m-auto flex-col">
           <div>
