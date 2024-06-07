@@ -3,19 +3,23 @@ import { motion } from "framer-motion";
 
 interface BackgroundGradientProps extends React.HTMLAttributes<HTMLDivElement> {
   alt: boolean;
+  error: boolean;
 }
 
-export const BackgroundGradient: React.FC<BackgroundGradientProps> = (
-  props
-) => {
+export const BackgroundGradient: React.FC<BackgroundGradientProps> = ({
+  alt,
+  error,
+}) => {
   return (
     <motion.div
       animate={{
-        backgroundImage: props.alt
+        backgroundImage: error
+          ? "radial-gradient(50% 50% at 50% 50%, rgb(41 235 38) 0%, rgb(63 177 171) 95%, rgb(200 50 50) 100%)"
+          : alt
           ? "radial-gradient(50% 50% at 50% 50%, rgb(41 235 38) 0%, rgb(41 195 159) 70%, rgb(63 177 171) 100%)"
           : "radial-gradient(50% 50% at 50% 50%, rgb(41 235 38) 0%, rgb(63 177 171) 70%, rgb(41 195 159) 100%)",
       }}
-      transition={{ duration: 1 }}
+      transition={{ duration: 1.5, ease: "easeOut" }}
       className="h-full w-full absolute top-0 left-0 -z-10 flex justify-center items-center overflow-hidden"
       initial={false}
     >

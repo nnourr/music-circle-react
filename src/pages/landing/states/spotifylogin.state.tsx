@@ -15,7 +15,7 @@ const SpotifyLoginState = React.forwardRef<
 >(({ nextState }, ref) => (
   <div
     ref={ref}
-    className="h-full w-full flex justify-center items-center flex-col gap-24"
+    className="h-full w-full flex justify-center items-center flex-col gap-24 opacity-100"
   >
     <h1 className="text-2xl font-fancy text-black/80">Music Circle.</h1>
 
@@ -26,7 +26,6 @@ const SpotifyLoginState = React.forwardRef<
   </div>
 ));
 
-// Create a motion component by wrapping the SpotifyLoginState with the motion() function
 const MotionSpotifyLoginState = motion(SpotifyLoginState, {
   forwardMotionProps: true,
 });
