@@ -4,11 +4,17 @@ import React from "react";
 interface InputProps {
   onChange: (change: any) => void;
   children: React.ReactNode;
+  placeholder: string | undefined;
   className?: string;
   error?: boolean;
 }
 
-export const Input: React.FC<InputProps> = ({ onChange, children, error }) => {
+export const Input: React.FC<InputProps> = ({
+  onChange,
+  children,
+  error,
+  placeholder,
+}) => {
   const size = {
     xl: "min-w-[24rem] text-lg",
   };
@@ -42,7 +48,7 @@ export const Input: React.FC<InputProps> = ({ onChange, children, error }) => {
       <input
         type="text"
         onChange={onChange}
-        placeholder="jknsutlaneyfligk"
+        placeholder={placeholder}
         className="bg-transparent placeholder:text-black/50 focus:outline-none w-[7em]"
       ></input>
     </motion.div>

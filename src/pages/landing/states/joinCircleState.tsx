@@ -59,6 +59,7 @@ const JoinCircleState = React.forwardRef<
         <Input
           onChange={(change: any) => setCircleCode(change.target.value)}
           error={!!circleCodeError}
+          placeholder="examplecode"
         >
           Circle Code:{" "}
         </Input>
