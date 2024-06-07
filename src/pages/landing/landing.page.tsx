@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { BackgroundGradient } from "./components/background-gradient.component";
 import React from "react";
-import { SquirlComponent } from "./components/squirl.component";
 import queryString from "query-string";
 import {
   SERVER_ENDPOINT,
@@ -121,19 +120,6 @@ export const LandingPage: React.FC = () => {
 
   return (
     <div className="h-full w-full overflow-hidden">
-      {/* <SquirlComponent
-        yOffset={currentState.squirlYOffset}
-        className={`relative left-[4%] transition-opacity duration-700 delay-500 ${
-          !!pageError ? "opacity-0" : "opacity-100"
-        }`}
-      />
-      <SquirlComponent
-        yOffset={currentState.squirlYOffset}
-        className={`relative right-[4%] transition-opacity duration-700 delay-500 ${
-          !!pageError ? "opacity-0" : "opacity-100"
-        }`}
-        flip={true}
-      /> */}
       {!!pageError ? (
         <div className=" w-3/5 h-full flex items-center justify-center text-xl text-red-600/90 m-auto flex-col">
           <div>
