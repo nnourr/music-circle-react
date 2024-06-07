@@ -1,8 +1,7 @@
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BackgroundGradient } from "./components/background-gradient.component";
 import React from "react";
 import { SquirlComponent } from "./components/squirl.component";
-import { AnotherLoginState } from "./states/anotherLoginState";
 import queryString from "query-string";
 import {
   SERVER_ENDPOINT,

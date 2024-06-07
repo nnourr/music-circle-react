@@ -19,6 +19,8 @@ export const JoinCircleState: React.FC<JoinCircleStateInterface> = ({
     console.log("JoinCircleState - username:", username);
   }, [email, username]);
 
+  console.log(circleCode);
+
   return (
     <div className="h-full w-full flex justify-center items-center flex-col gap-24">
       <div className="flex flex-col">
