@@ -1,10 +1,3 @@
-import queryString from "query-string";
-import { useEffect } from "react";
-import {
-  SPOTIFY_CLIENT_ID,
-  SPOTIFY_REDIRECT_URI,
-} from "../../../config/globals";
-import Button from "../../../components/inputs/button.input.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
 

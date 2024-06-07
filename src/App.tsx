@@ -1,11 +1,11 @@
 import { LandingPage } from "./pages/landing/landing.page";
-import { EmailProvider } from "./providers/email.provider";
+import { UserProvider } from "./providers/user.provider";
 
 function App() {
-  return ( 
-    <EmailProvider>
-      <LandingPage/>
-    </EmailProvider>
+  return (
+    <UserProvider>
+      <LandingPage />
+    </UserProvider>
   );
 }
 
