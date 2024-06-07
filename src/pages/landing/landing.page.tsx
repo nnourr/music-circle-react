@@ -93,11 +93,7 @@ export const LandingPage: React.FC = () => {
       return;
     }
 
-    if (
-      loginCode === null ||
-      currentState !== states.spotifyLoginState ||
-      !email
-    ) {
+    if (loginCode === null || currentState !== states.spotifyLoginState) {
       return;
     }
 
