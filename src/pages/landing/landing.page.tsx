@@ -31,6 +31,7 @@ interface statesInterface {
 export const LandingPage: React.FC = () => {
   const { email, setEmail, setUsername } = useUser();
   const [pageError, setPageError] = useState<string | undefined>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const scope = "user-top-read user-read-email";
   const startLoginFlow = () => {
@@ -68,6 +69,7 @@ export const LandingPage: React.FC = () => {
 
   useEffect(() => {
     const handleUserLogin = async (loginCode: string) => {
+      setIsLoading(true);
       try {
         const setUserResponse = await fetch(SERVER_ENDPOINT + "/user/", {
           method: "POST",
@@ -91,9 +93,10 @@ export const LandingPage: React.FC = () => {
           throw new Error("setUser response not 200");
         }
       } catch (error) {
-        setPageError("problem signing in.");
+        setPageError("Problem Signing In.");
         console.error("Problem signing user into service " + error);
       }
+      setIsLoading(false);
     };
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);
@@ -123,12 +126,12 @@ export const LandingPage: React.FC = () => {
       {!!pageError ? (
         <div className=" w-3/5 h-full flex items-center justify-center text-xl text-red-600/90 m-auto flex-col">
           <div>
-            <FontAwesomeIcon icon={faWarning} className="mr-8" /> {pageError}
+            <FontAwesomeIcon icon={faWarning} className="mr-4" /> {pageError}
           </div>
           <Button
             onClick={() => (window.location.href = window.location.pathname)}
           >
-            try again
+            Try Again
           </Button>
         </div>
       ) : (
@@ -143,6 +146,7 @@ export const LandingPage: React.FC = () => {
                 opacity: 0,
                 translateY: "-10%",
               }}
+              isLoading={isLoading}
               transition={{ duration: 0.4, ease: "easeInOut" }}
             />
           ) : currentState.id === states.joinCircleState.id ? (
