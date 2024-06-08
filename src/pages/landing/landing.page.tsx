@@ -127,9 +127,9 @@ export const LandingPage: React.FC = () => {
   return (
     <div className="h-full w-full overflow-hidden">
       {!!pageError ? (
-        <div className=" w-3/5 h-full flex items-center justify-center text-xl text-error m-auto flex-col">
+        <div className=" w-4/5 h-full flex items-center justify-center text-lg lg:text-lg-xl text-error m-auto flex-col">
           <div>
-            <FontAwesomeIcon icon={faWarning} className="mr-4" /> {pageError}
+            <FontAwesomeIcon icon={faWarning} className="lg:mr-4" /> {pageError}
           </div>
           <Button
             onClick={() => (window.location.href = window.location.pathname)}

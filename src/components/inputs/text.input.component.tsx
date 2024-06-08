@@ -1,7 +1,8 @@
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useState } from "react";
+import { useIsMobile } from "../../providers/isMobile.provider";
 
 interface InputProps {
   onChange: (change: any) => void;
@@ -22,14 +23,16 @@ export const Input: React.FC<InputProps> = ({
   isLoading,
 }) => {
   const size = {
-    xl: "min-w-[24rem] text-lg",
+    xl: "w-[20rem] lg:w-auto",
   };
 
   const inputSize = size.xl;
+  const [onFocus, setOnFocus] = useState<boolean>(false);
+  const isMobile = useIsMobile();
 
   return (
     <motion.div
-      className={`${inputSize} px-14 relative text-center py-1 pb-0 text-base text-black/80 border-black/50 border-2 rounded-3xl`}
+      className={`${inputSize} px-14 flex justify-center items-center relative text-center py-1 pb-0 text-lg lg:text-lg-lg text-black/80 border-black/50 border-b-2 lg:border-2 lg:rounded-3xl`}
       animate={
         error
           ? {
@@ -41,7 +44,7 @@ export const Input: React.FC<InputProps> = ({
           : {
               translateY: 0,
               opacity: 1,
-              borderColor: "rgba(0 0 0 0.1)",
+              borderColor: onFocus ? "rgba(0 0 0 0.5)" : "rgba(0 0 0 0.1)",
             }
       }
       transition={{ duration: 0.4 }}
@@ -56,18 +59,20 @@ export const Input: React.FC<InputProps> = ({
     >
       {isLoading ? (
         <FontAwesomeIcon
-          className={`animate-spin w-[12.3em]`}
+          className={`animate-spin my-2 w-[12.3em]`}
           icon={faSpinner}
         />
       ) : (
         <>
-          {children}
+          {!isMobile ? children : ""}
           <input
             type="text"
             onChange={onChange}
             placeholder={placeholder}
             maxLength={maxLength}
-            className="bg-transparent placeholder:text-black/30 focus:outline-none w-[7em]"
+            onFocus={() => setOnFocus(true)}
+            onBlur={() => setOnFocus(false)}
+            className="bg-transparent placeholder:text-black/30 text-center w-full lg:text-left focus:outline-none lg:w-[7em]"
           ></input>
         </>
       )}

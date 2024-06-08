@@ -17,9 +17,11 @@ const SpotifyLoginState = React.forwardRef<
 >(({ nextState, isLoading }, ref) => (
   <div
     ref={ref}
-    className="h-full w-full flex justify-center items-center flex-col gap-24 opacity-100"
+    className="h-full w-full flex justify-center items-center flex-col gap-12 lg:gap-24 opacity-100"
   >
-    <h1 className="text-2xl font-fancy text-black/80">Music Circle.</h1>
+    <h1 className="text-2xl px-7 lg:text-lg-2xl font-fancy text-black/80">
+      Music Circle.
+    </h1>
 
     <Button onClick={() => (isLoading ? () => {} : nextState())}>
       {!isLoading ? (
