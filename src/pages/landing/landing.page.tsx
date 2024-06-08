@@ -110,6 +110,7 @@ export const LandingPage: React.FC = () => {
 
     if (error !== null) {
       console.error(error);
+      setPageError("sorry, you need to allow us access to continue");
       return;
     }
 
