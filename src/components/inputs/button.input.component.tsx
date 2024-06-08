@@ -14,7 +14,7 @@ export const Button: React.FC<ButtonProps> = ({
   isDisabled,
 }) => {
   const btnSizes = {
-    xl: "min-w-[24rem] text-lg",
+    xl: "min-w-[20rem] lg:min-w-[24rem]",
   };
 
   const btnSize = btnSizes.xl;
@@ -22,8 +22,8 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <motion.button
       className={`${btnSize} ${
-        isDisabled ? "text-black/20" : ""
-      } relative text-center py-1 pb-0 text-base text-black/80 border-black/10 border-2 rounded-3xl w-fit transition-all`}
+        isDisabled ? "text-black/20" : "text-black/80"
+      } relative text-center py-1 pb-0  text-lg lg:text-lg-lg border-black/10 border-2 rounded-3xl w-fit transition-all`}
       onClick={onClick}
       transition={{ duration: 0.4 }}
       whileTap={{ scale: 0.95 }}

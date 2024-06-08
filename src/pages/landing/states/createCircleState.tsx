@@ -76,12 +76,12 @@ const CreateCircleState = React.forwardRef<
       return;
     }
     if (newCircleName.includes(" ")) {
-      setCircleNameError("name cannot contain spaces.");
+      setCircleNameError("sorry, no spaces.");
       return;
     }
     const invalidCodePattern = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
     if (invalidCodePattern.test(newCircleName)) {
-      setCircleNameError("name cannot contain special characters.");
+      setCircleNameError("sorry, no special characters.");
       return;
     }
   }, [newCircleName]);
@@ -89,18 +89,20 @@ const CreateCircleState = React.forwardRef<
   return (
     <div
       ref={ref}
-      className="h-full w-full flex justify-center items-center flex-col gap-24"
+      className="h-full w-full flex justify-center items-center flex-col gap-12 lg:gap-24"
     >
       <div className="flex flex-col">
-        <h2 className="text-xl font-fancy self-start -mb-20 text-black/80">
+        <h2 className="text-lg lg:text-lg-xl px-7 font-fancy self-start -mb-2 lg:-mb-8 text-black/80">
           hey {username},
         </h2>
-        <h1 className="text-2xl font-fancy text-black/80">Create Circle.</h1>
+        <h1 className="text-2xl lg:text-lg-2xl px-7 font-fancy text-black/80">
+          Create Circle.
+        </h1>
       </div>
 
-      <div className="flex flex-col gap-8 items-center">
+      <div className="flex flex-col gap-4 items-center">
         {!!circleNameError ? (
-          <p className="text-base -mt-12 -mb-8 self-start text-error">
+          <p className="text-base lg:text-lg-base -mt-[1.7rem] lg:-mt-10 -mb-6 self-start text-error">
             {circleNameError}
           </p>
         ) : (
@@ -113,7 +115,7 @@ const CreateCircleState = React.forwardRef<
           isLoading={isLoading}
           maxLength={16}
         >
-          Circle Name:{" "}
+          Circle Name:&nbsp;
         </Input>
         <Button
           isDisabled={isLoading || !!circleNameError}
@@ -123,7 +125,7 @@ const CreateCircleState = React.forwardRef<
         </Button>
         <button
           onClick={prevState}
-          className="absolute bottom-[10%] text-black/90 text-base"
+          className="absolute bottom-[10%] text-black/90 text-base lg:text-lg-base"
         >
           go back
         </button>
