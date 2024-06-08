@@ -49,12 +49,12 @@ const JoinCircleState = React.forwardRef<
       return;
     }
     if (circleCode.includes(" ")) {
-      setCircleCodeError("code cannot contain spaces.");
+      setCircleCodeError("sorry, no spaces.");
       return;
     }
     const invalidCodePattern = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
     if (invalidCodePattern.test(circleCode)) {
-      setCircleCodeError("code cannot contain special characters.");
+      setCircleCodeError("sorry, no special characters.");
       return;
     }
   }, [circleCode]);
@@ -75,7 +75,7 @@ const JoinCircleState = React.forwardRef<
 
       <div className="flex flex-col items-center">
         {!!circleCodeError ? (
-          <p className="text-base lg:text-lg-base -mt-12 self-start text-error">
+          <p className="text-base lg:text-lg-base -mt-[1.7rem] lg:-mt-10 -mb-2 self-start text-error">
             {circleCodeError}
           </p>
         ) : (

@@ -76,12 +76,12 @@ const CreateCircleState = React.forwardRef<
       return;
     }
     if (newCircleName.includes(" ")) {
-      setCircleNameError("name cannot contain spaces.");
+      setCircleNameError("sorry, no spaces.");
       return;
     }
     const invalidCodePattern = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
     if (invalidCodePattern.test(newCircleName)) {
-      setCircleNameError("name cannot contain special characters.");
+      setCircleNameError("sorry, no special characters.");
       return;
     }
   }, [newCircleName]);
@@ -100,9 +100,9 @@ const CreateCircleState = React.forwardRef<
         </h1>
       </div>
 
-      <div className="flex flex-col gap-8 items-center">
+      <div className="flex flex-col gap-4 items-center">
         {!!circleNameError ? (
-          <p className="text-base lg:text-lg-base -mt-12 -mb-8 self-start text-error">
+          <p className="text-base lg:text-lg-base -mt-[1.7rem] lg:-mt-10 -mb-6 self-start text-error">
             {circleNameError}
           </p>
         ) : (
