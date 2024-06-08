@@ -17,6 +17,7 @@ import Button from "../../components/inputs/button.input.component";
 import MotionJoinCircleState from "./states/joinCircleState";
 import { AnotherLoginState } from "./states/anotherLoginState";
 import MotionCreateCircleState from "./states/createCircleState";
+import { useNavigate } from "react-router-dom";
 
 interface stateInterface {
   id: string;
@@ -34,6 +35,7 @@ export const LandingPage: React.FC = () => {
   const { email, setEmail, setUsername } = useUser();
   const [pageError, setPageError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const scope = "user-top-read user-read-email";
   const startLoginFlow = () => {
@@ -114,6 +116,7 @@ export const LandingPage: React.FC = () => {
     if (loginCode === null || currentState !== states.spotifyLoginState) {
       return;
     }
+    window.history.replaceState({}, document.title, "/");
     handleUserLogin(loginCode);
   }, [
     currentState,
@@ -156,7 +159,7 @@ export const LandingPage: React.FC = () => {
             <MotionJoinCircleState
               key={states.joinCircleState.id}
               nextState={() => {
-                setCurrentState(states.anotherLoginState);
+                navigate("/home", { replace: true });
               }}
               goToCreateCircle={() => {
                 setCurrentState(states.createCircleState);
@@ -176,7 +179,7 @@ export const LandingPage: React.FC = () => {
             <MotionCreateCircleState
               key={states.createCircleState.id}
               nextState={() => {
-                setCurrentState(states.anotherLoginState);
+                navigate("/home");
               }}
               prevState={() => {
                 setCurrentState(states.joinCircleState);

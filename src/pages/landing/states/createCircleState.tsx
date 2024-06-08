@@ -6,8 +6,8 @@ import { useUser } from "../../../providers/user.provider";
 import { SERVER_ENDPOINT } from "../../../config/globals";
 
 interface CreateCircleStateProps {
-  nextState: () => void;
-  prevState: () => void;
+  nextState: () => any;
+  prevState: () => any;
 }
 
 // Forward ref to the DOM element you want to animate
