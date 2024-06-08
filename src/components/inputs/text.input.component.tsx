@@ -1,19 +1,25 @@
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useState } from "react";
 
 interface InputProps {
   onChange: (change: any) => void;
   children: React.ReactNode;
-  placeholder: string | undefined;
+  placeholder: string;
   className?: string;
   error?: boolean;
+  isLoading?: boolean;
+  maxLength?: number;
 }
 
 export const Input: React.FC<InputProps> = ({
   onChange,
   children,
   error,
-  placeholder,
+  placeholder = "this is a placeholder!",
+  maxLength = 20,
+  isLoading,
 }) => {
   const size = {
     xl: "min-w-[24rem] text-lg",
@@ -23,7 +29,7 @@ export const Input: React.FC<InputProps> = ({
 
   return (
     <motion.div
-      className={`${inputSize} px-14 relative text-center py-1 pb-0 text-base text-black/80 border-black/10 border-2 rounded-3xl`}
+      className={`${inputSize} px-14 relative text-center py-1 pb-0 text-base text-black/80 border-black/50 border-2 rounded-3xl`}
       animate={
         error
           ? {
@@ -32,7 +38,11 @@ export const Input: React.FC<InputProps> = ({
               color: "rgba(200 0 0 0.8)",
               borderColor: "rgba(200 0 0 0.8)",
             }
-          : { translateY: 0, opacity: 1 }
+          : {
+              translateY: 0,
+              opacity: 1,
+              borderColor: "rgba(0 0 0 0.5)",
+            }
       }
       transition={{ duration: 0.4 }}
       whileTap={{ scale: 0.95 }}
@@ -44,13 +54,23 @@ export const Input: React.FC<InputProps> = ({
           : { borderColor: "rgba(0 0 0 0.5)" }
       }
     >
-      {children}
-      <input
-        type="text"
-        onChange={onChange}
-        placeholder={placeholder}
-        className="bg-transparent placeholder:text-black/50 focus:outline-none w-[7em]"
-      ></input>
+      {isLoading ? (
+        <FontAwesomeIcon
+          className={`animate-spin w-[12.3em]`}
+          icon={faSpinner}
+        />
+      ) : (
+        <>
+          {children}
+          <input
+            type="text"
+            onChange={onChange}
+            placeholder={placeholder}
+            maxLength={maxLength}
+            className="bg-transparent placeholder:text-black/50 focus:outline-none w-[7em]"
+          ></input>
+        </>
+      )}
     </motion.div>
   );
 };

@@ -3,6 +3,7 @@ import Input from "../../../components/inputs/text.input.component";
 import { useUser } from "../../../providers/user.provider";
 import Button from "../../../components/inputs/button.input.component";
 import { motion } from "framer-motion";
+import { SERVER_ENDPOINT } from "../../../config/globals";
 
 interface JoinCircleStateInterface {
   nextState: () => void;
@@ -12,10 +13,35 @@ interface JoinCircleStateInterface {
 const JoinCircleState = React.forwardRef<
   HTMLDivElement,
   JoinCircleStateInterface
->(({ goToCreateCircle }, ref) => {
+>(({ nextState, goToCreateCircle }, ref) => {
   const [circleCode, setCircleCode] = useState<string>("");
   const [circleCodeError, setCircleCodeError] = useState<string | undefined>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { email, username } = useUser();
+
+  useEffect(() => {
+    const addUserToCircle = async () => {
+      setIsLoading(true);
+      const addUserToCircleResponse = await fetch(
+        `${SERVER_ENDPOINT}/user/${email}/circle/${circleCode}`,
+        { method: "post" }
+      );
+      if (addUserToCircleResponse.status === 404) {
+        setCircleCodeError("circle not found");
+        setIsLoading(false);
+        return;
+      } else if (addUserToCircleResponse.status !== 200) {
+        setCircleCodeError("problem joining circle. try again");
+        setIsLoading(false);
+        return;
+      }
+      nextState();
+    };
+    if (circleCode.length === 20 && !!!circleCodeError) {
+      addUserToCircle();
+      console.log(`add ${email} to circle ${circleCode}`);
+    }
+  }, [circleCode, circleCodeError, email, nextState]);
 
   useEffect(() => {
     setCircleCodeError(undefined);
@@ -31,10 +57,7 @@ const JoinCircleState = React.forwardRef<
       setCircleCodeError("code cannot contain special characters.");
       return;
     }
-    if (circleCode.length === 16 && !!!circleCodeError) {
-      console.log(`add ${email} to circle`);
-    }
-  }, [circleCode, circleCodeError, email]);
+  }, [circleCode]);
 
   return (
     <div
@@ -60,11 +83,14 @@ const JoinCircleState = React.forwardRef<
           onChange={(change: any) => setCircleCode(change.target.value)}
           error={!!circleCodeError}
           placeholder="examplecode"
+          isLoading={isLoading}
         >
           Circle Code:{" "}
         </Input>
-        <p className="text-base text-black/80">or,</p>
-        <Button onClick={() => goToCreateCircle()}>Create New Circle</Button>
+        <p className="text-base text-black/80 text-center">or,</p>
+        <Button isDisabled={isLoading} onClick={() => goToCreateCircle()}>
+          Create New Circle
+        </Button>
       </div>
     </div>
   );

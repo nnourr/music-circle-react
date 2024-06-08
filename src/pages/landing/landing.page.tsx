@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWarning } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/inputs/button.input.component";
 import MotionJoinCircleState from "./states/joinCircleState";
+import { AnotherLoginState } from "./states/anotherLoginState";
 
 interface stateInterface {
   id: string;
@@ -152,7 +153,9 @@ export const LandingPage: React.FC = () => {
           ) : currentState.id === states.joinCircleState.id ? (
             <MotionJoinCircleState
               key={states.joinCircleState.id}
-              nextState={() => {}}
+              nextState={() => {
+                setCurrentState(states.anotherLoginState);
+              }}
               goToCreateCircle={() => {
                 setCurrentState(states.anotherLoginState);
               }}
@@ -166,6 +169,8 @@ export const LandingPage: React.FC = () => {
               }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
             />
+          ) : currentState.id === states.joinCircleState.id ? (
+            <AnotherLoginState />
           ) : (
             "hey there, you're not meant to see this!"
           )}
