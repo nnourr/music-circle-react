@@ -63,8 +63,6 @@ const CreateCircleState = React.forwardRef<
       setCircleNameError("problem creating circle. try again later.");
     }
     addUserToCircle(newCircleCode);
-
-    console.log(`creating new circle ${newCircleName} for user ${email}`);
   };
 
   useEffect(() => {
