@@ -127,7 +127,7 @@ export const LandingPage: React.FC = () => {
   return (
     <div className="h-full w-full overflow-hidden">
       {!!pageError ? (
-        <div className=" w-3/5 h-full flex items-center justify-center text-xl text-red-600/90 m-auto flex-col">
+        <div className=" w-3/5 h-full flex items-center justify-center text-xl text-error m-auto flex-col">
           <div>
             <FontAwesomeIcon icon={faWarning} className="mr-4" /> {pageError}
           </div>

@@ -16,7 +16,7 @@ module.exports = {
         "2xl": "11rem"
       },
       colors: {
-        blackTrans: 'rgba(#000000, 0.8)'
+        error: 'rgba(227,0,73,0.9)',
       }
     },
   },

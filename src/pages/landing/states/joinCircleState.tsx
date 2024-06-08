@@ -73,7 +73,7 @@ const JoinCircleState = React.forwardRef<
 
       <div className="flex flex-col items-center">
         {!!circleCodeError ? (
-          <p className="text-base -mt-12 self-start text-red-600/90">
+          <p className="text-base -mt-12 self-start text-error">
             {circleCodeError}
           </p>
         ) : (

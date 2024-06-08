@@ -35,8 +35,8 @@ export const Input: React.FC<InputProps> = ({
           ? {
               translateY: 0,
               opacity: 1,
-              color: "rgba(200 0 0 0.8)",
-              borderColor: "rgba(200 0 0 0.8)",
+              color: "rgba(227 0 73 0.9)",
+              borderColor: "rgba(227 0 73 0.9)",
             }
           : {
               translateY: 0,
@@ -49,7 +49,7 @@ export const Input: React.FC<InputProps> = ({
       whileHover={
         error
           ? {
-              borderColor: "rgba(200 0 0 0.8)",
+              borderColor: "rgba(227 0 73 0.9)",
             }
           : { borderColor: "rgba(0 0 0 0.5)" }
       }

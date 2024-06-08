@@ -100,7 +100,7 @@ const CreateCircleState = React.forwardRef<
 
       <div className="flex flex-col gap-8 items-center">
         {!!circleNameError ? (
-          <p className="text-base -mt-12 -mb-8 self-start text-red-600/90">
+          <p className="text-base -mt-12 -mb-8 self-start text-error">
             {circleNameError}
           </p>
         ) : (
