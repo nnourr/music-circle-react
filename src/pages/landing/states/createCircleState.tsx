@@ -28,17 +28,19 @@ const CreateCircleState = React.forwardRef<
       );
       if (addUserToCircleResponse.status === 404) {
         setCircleNameError("circle not found");
+        setIsLoading(false);
         return;
       } else if (addUserToCircleResponse.status !== 200) {
         setCircleNameError("problem joining circle. try again");
+        setIsLoading(false);
         return;
       }
-      setIsLoading(false);
       nextState();
     };
 
     if (newCircleName.length === 0) {
       setCircleNameError("circle name cannot be empty");
+      setIsLoading(false);
       return;
     }
 
