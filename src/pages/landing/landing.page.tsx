@@ -8,7 +8,7 @@ import {
   SPOTIFY_REDIRECT_URI,
 } from "../../config/globals";
 import { useUser } from "../../providers/user.provider";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import MotionSpotifyLoginState from "./states/spotifylogin.state";
 import { userLoginInterface } from "./models/userLogin.model";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -31,7 +31,7 @@ interface statesInterface {
   anotherLoginState: stateInterface;
 }
 
-export const LandingPage: React.FC = () => {
+const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const { email, setEmail, setUsername } = useUser();
   const [pageError, setPageError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -129,7 +129,7 @@ export const LandingPage: React.FC = () => {
   ]);
 
   return (
-    <div className="h-full w-full overflow-hidden">
+    <div ref={ref} className="h-full w-full overflow-hidden">
       {!!pageError ? (
         <div className=" w-4/5 h-full flex items-center justify-center text-lg lg:text-lg-xl text-error m-auto flex-col">
           <div>
@@ -142,16 +142,16 @@ export const LandingPage: React.FC = () => {
           </Button>
         </div>
       ) : (
-        <AnimatePresence>
+        <AnimatePresence mode="popLayout">
           {currentState.id === states.spotifyLoginState.id ? (
             <MotionSpotifyLoginState
               key={states.spotifyLoginState.id}
               nextState={startLoginFlow}
               animate={{ opacity: 1 }}
-              style={{ opacity: 0 }}
+              initial={{ opacity: 0 }}
               exit={{
                 opacity: 0,
-                translateY: "-10%",
+                translateY: "-30%",
               }}
               isLoading={isLoading}
               transition={{ duration: 0.4, ease: "easeInOut" }}
@@ -168,13 +168,13 @@ export const LandingPage: React.FC = () => {
               animate={{ translateY: 0, opacity: 1 }}
               initial={{
                 translateY: "30%",
+                opacity: 0,
               }}
               exit={{
                 opacity: 0,
-                translateY: "-10%",
-                transition: { duration: 0.4 },
+                translateY: "-30%",
               }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
             />
           ) : currentState.id === states.createCircleState.id ? (
             <MotionCreateCircleState
@@ -188,12 +188,13 @@ export const LandingPage: React.FC = () => {
               animate={{ translateY: 0, opacity: 1 }}
               initial={{
                 translateY: "30%",
+                opacity: 0,
               }}
               exit={{
                 opacity: 0,
-                translateY: "-10%",
+                translateY: "-30%",
               }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
             />
           ) : currentState.id === states.anotherLoginState.id ? (
             <AnotherLoginState />
@@ -208,4 +209,10 @@ export const LandingPage: React.FC = () => {
       />
     </div>
   );
-};
+});
+
+export const MotionLandingPage = motion(LandingPage, {
+  forwardMotionProps: true,
+});
+
+export default MotionLandingPage;

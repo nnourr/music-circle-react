@@ -10,7 +10,6 @@ interface CreateCircleStateProps {
   prevState: () => any;
 }
 
-// Forward ref to the DOM element you want to animate
 const CreateCircleState = React.forwardRef<
   HTMLDivElement,
   CreateCircleStateProps

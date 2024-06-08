@@ -1,39 +1,20 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import {
-  HashRouter,
-  Route,
-  RouterProvider,
-  createBrowserRouter,
-  createHashRouter,
-} from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { IsMobileProvider } from "./providers/isMobile.provider";
 import { UserProvider } from "./providers/user.provider";
-import { LandingPage } from "./pages/landing/landing.page";
-import { AnotherLoginState } from "./pages/landing/states/anotherLoginState";
-import { NotFoundPage } from "./pages/notfound/notfound.page";
+import { AnimatedRoutes } from "./animatedRoutes";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-const router = createHashRouter([
-  {
-    path: "/",
-    element: <LandingPage />,
-    errorElement: <NotFoundPage />,
-  },
-  {
-    path: "/home",
-    element: <AnotherLoginState />,
-  },
-]);
-
 root.render(
   <UserProvider>
     <IsMobileProvider>
-      <RouterProvider router={router} />
+      <HashRouter>
+        <AnimatedRoutes />
+      </HashRouter>
     </IsMobileProvider>
   </UserProvider>
 );
