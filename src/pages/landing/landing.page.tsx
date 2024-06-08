@@ -17,7 +17,7 @@ import Button from "../../components/inputs/button.input.component";
 import MotionJoinCircleState from "./states/joinCircleState";
 import { AnotherLoginState } from "./states/anotherLoginState";
 import MotionCreateCircleState from "./states/createCircleState";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 interface stateInterface {
   id: string;
@@ -128,8 +128,23 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
     email,
   ]);
 
+  if (currentState.id === states.spotifyLoginState.id && !!email) {
+    return <Navigate to="/home" />;
+  }
+
   return (
-    <div ref={ref} className="h-full w-full overflow-hidden">
+    <motion.div
+      exit={
+        currentState === states.spotifyLoginState && !!email
+          ? {}
+          : {
+              opacity: 0,
+              transition: { duration: 1 },
+            }
+      }
+      ref={ref}
+      className="h-full w-full overflow-hidden"
+    >
       {!!pageError ? (
         <div className=" w-4/5 h-full flex items-center justify-center text-lg lg:text-lg-xl text-error m-auto flex-col">
           <div>
@@ -207,7 +222,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
         alt={currentState.backgroundAlt}
         error={!!pageError}
       />
-    </div>
+    </motion.div>
   );
 });
 
