@@ -16,16 +16,17 @@ import { faWarning } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/inputs/button.input.component";
 import MotionJoinCircleState from "./states/joinCircleState";
 import { AnotherLoginState } from "./states/anotherLoginState";
+import MotionCreateCircleState from "./states/createCircleState";
 
 interface stateInterface {
   id: string;
-  squirlYOffset: string | undefined;
   backgroundAlt: boolean;
 }
 
 interface statesInterface {
   spotifyLoginState: stateInterface;
   joinCircleState: stateInterface;
+  createCircleState: stateInterface;
   anotherLoginState: stateInterface;
 }
 
@@ -48,19 +49,20 @@ export const LandingPage: React.FC = () => {
   };
   const states: statesInterface = {
     spotifyLoginState: {
-      id: "SpotifyLoginState",
-      squirlYOffset: "-1vh",
+      id: "spotifyLoginState",
       backgroundAlt: true,
     },
     joinCircleState: {
-      id: "JoinCircleState",
-      squirlYOffset: "-40vh",
+      id: "joinCircleState",
       backgroundAlt: false,
+    },
+    createCircleState: {
+      id: "createCircleState",
+      backgroundAlt: true,
     },
     anotherLoginState: {
       id: "AnotherLoginState",
-      squirlYOffset: "-40vh",
-      backgroundAlt: false,
+      backgroundAlt: true,
     },
   };
 
@@ -157,7 +159,27 @@ export const LandingPage: React.FC = () => {
                 setCurrentState(states.anotherLoginState);
               }}
               goToCreateCircle={() => {
+                setCurrentState(states.createCircleState);
+              }}
+              animate={{ translateY: 0, opacity: 1 }}
+              initial={{
+                translateY: "30%",
+              }}
+              exit={{
+                opacity: 0,
+                translateY: "-10%",
+                transition: { duration: 0.4 },
+              }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+            />
+          ) : currentState.id === states.createCircleState.id ? (
+            <MotionCreateCircleState
+              key={states.createCircleState.id}
+              nextState={() => {
                 setCurrentState(states.anotherLoginState);
+              }}
+              prevState={() => {
+                setCurrentState(states.joinCircleState);
               }}
               animate={{ translateY: 0, opacity: 1 }}
               initial={{
@@ -169,7 +191,7 @@ export const LandingPage: React.FC = () => {
               }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
             />
-          ) : currentState.id === states.joinCircleState.id ? (
+          ) : currentState.id === states.anotherLoginState.id ? (
             <AnotherLoginState />
           ) : (
             "hey there, you're not meant to see this!"

@@ -41,7 +41,7 @@ export const Input: React.FC<InputProps> = ({
           : {
               translateY: 0,
               opacity: 1,
-              borderColor: "rgba(0 0 0 0.5)",
+              borderColor: "rgba(0 0 0 0.1)",
             }
       }
       transition={{ duration: 0.4 }}
@@ -67,7 +67,7 @@ export const Input: React.FC<InputProps> = ({
             onChange={onChange}
             placeholder={placeholder}
             maxLength={maxLength}
-            className="bg-transparent placeholder:text-black/50 focus:outline-none w-[7em]"
+            className="bg-transparent placeholder:text-black/30 focus:outline-none w-[7em]"
           ></input>
         </>
       )}

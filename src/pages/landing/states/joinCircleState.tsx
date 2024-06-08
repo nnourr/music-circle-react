@@ -31,7 +31,7 @@ const JoinCircleState = React.forwardRef<
         setIsLoading(false);
         return;
       } else if (addUserToCircleResponse.status !== 200) {
-        setCircleCodeError("problem joining circle. try again");
+        setCircleCodeError("problem joining circle. try again later");
         setIsLoading(false);
         return;
       }
@@ -73,7 +73,7 @@ const JoinCircleState = React.forwardRef<
 
       <div className="flex flex-col items-center">
         {!!circleCodeError ? (
-          <p className="text-base -mt-12 self-start text-red-600/80">
+          <p className="text-base -mt-12 self-start text-red-600/90">
             {circleCodeError}
           </p>
         ) : (

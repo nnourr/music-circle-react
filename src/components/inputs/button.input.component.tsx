@@ -23,10 +23,11 @@ export const Button: React.FC<ButtonProps> = ({
     <motion.button
       className={`${btnSize} ${
         isDisabled ? "text-black/20" : ""
-      } relative text-center py-1 pb-0 text-base text-black/80 border-black/10 border-2 rounded-3xl w-fit`}
+      } relative text-center py-1 pb-0 text-base text-black/80 border-black/10 border-2 rounded-3xl w-fit transition-all`}
       onClick={onClick}
       transition={{ duration: 0.4 }}
       whileTap={{ scale: 0.95 }}
+      disabled={isDisabled}
       whileHover={
         isDisabled
           ? {}
