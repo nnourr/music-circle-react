@@ -87,7 +87,7 @@ const JoinCircleState = React.forwardRef<
           placeholder="examplecode"
           isLoading={isLoading}
         >
-          Circle Code:{" "}
+          Circle Code:&nbsp;
         </Input>
         <p className="text-base lg:text-lg-base text-black/80 text-center">
           or,

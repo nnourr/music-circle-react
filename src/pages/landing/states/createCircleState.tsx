@@ -115,7 +115,7 @@ const CreateCircleState = React.forwardRef<
           isLoading={isLoading}
           maxLength={16}
         >
-          Circle Name:{" "}
+          Circle Name:&nbsp;
         </Input>
         <Button
           isDisabled={isLoading || !!circleNameError}
