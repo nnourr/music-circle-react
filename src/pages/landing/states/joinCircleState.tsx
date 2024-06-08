@@ -73,14 +73,12 @@ const JoinCircleState = React.forwardRef<
         </h1>
       </div>
 
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center relative">
         {!!circleCodeError ? (
-          <p className="text-base lg:text-lg-base -mt-[1.7rem] lg:-mt-10 -mb-2 self-start text-error">
+          <p className="text-base -translate-y-[70%] left-0 absolute lg:text-lg-base text-error">
             {circleCodeError}
           </p>
-        ) : (
-          ""
-        )}
+        ) : undefined}
         <Input
           onChange={(change: any) => setCircleCode(change.target.value)}
           error={!!circleCodeError}

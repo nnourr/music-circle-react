@@ -100,14 +100,12 @@ const CreateCircleState = React.forwardRef<
         </h1>
       </div>
 
-      <div className="flex flex-col gap-4 items-center">
+      <div className="flex flex-col gap-4 items-center relative">
         {!!circleNameError ? (
-          <p className="text-base lg:text-lg-base -mt-[1.7rem] lg:-mt-10 -mb-6 self-start text-error">
+          <p className="text-base -translate-y-[70%] left-0 absolute lg:text-lg-base text-error">
             {circleNameError}
           </p>
-        ) : (
-          ""
-        )}
+        ) : undefined}
         <Input
           onChange={(change: any) => setNewCircleName(change.target.value)}
           error={!!circleNameError}
@@ -123,13 +121,13 @@ const CreateCircleState = React.forwardRef<
         >
           Continue
         </Button>
-        <button
-          onClick={prevState}
-          className="absolute bottom-[10%] text-black/90 text-base lg:text-lg-base"
-        >
-          go back
-        </button>
       </div>
+      <button
+        onClick={prevState}
+        className="absolute bottom-[10%] text-black/90 text-base lg:text-lg-base"
+      >
+        go back
+      </button>
     </div>
   );
 });

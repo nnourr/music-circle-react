@@ -64,7 +64,7 @@ export const Input: React.FC<InputProps> = ({
         />
       ) : (
         <>
-          {!isMobile ? children : ""}
+          {!isMobile ? children : undefined}
           <input
             type="text"
             onChange={onChange}
