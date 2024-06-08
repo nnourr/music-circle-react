@@ -44,7 +44,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
             duration: 1,
             ease: "easeIn",
           }}
-          className="text-white text-2xl font-fancy"
+          className="text-transparent text-2xl font-fancy bg-linear bg-clip-text"
         >
           Music Circle
         </motion.h1>
