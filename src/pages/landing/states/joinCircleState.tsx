@@ -62,18 +62,20 @@ const JoinCircleState = React.forwardRef<
   return (
     <div
       ref={ref}
-      className="h-full w-full flex justify-center items-center flex-col gap-24"
+      className="h-full w-full flex justify-center items-center flex-col gap-12 lg:gap-24"
     >
       <div className="flex flex-col">
-        <h2 className="text-xl font-fancy self-start -mb-20 text-black/80">
+        <h2 className="text-lg lg:text-lg-xl px-7 font-fancy self-start -mb-2 lg:-mb-8 text-black/80">
           hey {username},
         </h2>
-        <h1 className="text-2xl font-fancy text-black/80">Join Circle.</h1>
+        <h1 className="text-2xl lg:text-lg-2xl px-7 font-fancy text-black/80">
+          Join Circle.
+        </h1>
       </div>
 
       <div className="flex flex-col items-center">
         {!!circleCodeError ? (
-          <p className="text-base -mt-12 self-start text-error">
+          <p className="text-base lg:text-lg-base -mt-12 self-start text-error">
             {circleCodeError}
           </p>
         ) : (
@@ -87,7 +89,9 @@ const JoinCircleState = React.forwardRef<
         >
           Circle Code:{" "}
         </Input>
-        <p className="text-base text-black/80 text-center">or,</p>
+        <p className="text-base lg:text-lg-base text-black/80 text-center">
+          or,
+        </p>
         <Button isDisabled={isLoading} onClick={() => goToCreateCircle()}>
           Create New Circle
         </Button>
