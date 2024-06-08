@@ -32,7 +32,7 @@ interface statesInterface {
 }
 
 const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
-  const { email, setEmail, setUsername } = useUser();
+  const { email, username, setEmail, setUsername } = useUser();
   const [pageError, setPageError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -128,7 +128,11 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
     email,
   ]);
 
-  if (currentState.id === states.spotifyLoginState.id && !!email) {
+  if (
+    currentState.id === states.spotifyLoginState.id &&
+    !!email &&
+    !!username
+  ) {
     return <Navigate to="/home" />;
   }
 
