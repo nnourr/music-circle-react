@@ -54,6 +54,7 @@ const CreateCircleState = React.forwardRef<
       { method: "post" }
     );
     if (createNewCircleResponse.status !== 200) {
+      setIsLoading(false);
       setCircleNameError("problem creating circle. try again later.");
       return;
     }
@@ -62,7 +63,9 @@ const CreateCircleState = React.forwardRef<
     try {
       newCircleCode = await createNewCircleResponse.json();
     } catch (error) {
+      setIsLoading(false);
       setCircleNameError("problem creating circle. try again later.");
+      return;
     }
     addUserToCircle(newCircleCode);
   };
