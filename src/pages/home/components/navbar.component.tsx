@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useUser } from "../../../providers/user.provider";
-import { useIsMobile } from "../../../providers/isMobile.provider";
 
 interface NavbarComponentInterface {
   menuClicked: () => any;
@@ -14,7 +13,6 @@ export const NavbarComponent: React.FC<NavbarComponentInterface> = ({
 }) => {
   const [showUsername, setShowUsername] = useState<boolean>(false);
   const { username } = useUser();
-  const isMobile = useIsMobile();
 
   return (
     <motion.div

@@ -1,5 +1,5 @@
 import { AnimatePresence } from "framer-motion";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import MotionLandingPage from "./pages/landing/landing.page";
 import MotionHomePage from "./pages/home/home.page";
 import { NotFoundPage } from "./pages/notfound/notfound.page";
