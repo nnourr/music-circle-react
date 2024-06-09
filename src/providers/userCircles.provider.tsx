@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import { UserCircle } from "../models/userCircle.model";
 
 interface UserCirclesContextType {
-  userCircles: string[];
-  setUserCircles: React.Dispatch<React.SetStateAction<string[]>>;
+  userCircles: UserCircle[];
+  setUserCircles: React.Dispatch<React.SetStateAction<UserCircle[]>>;
 }
 
 const UserCirclesContext = createContext<UserCirclesContextType | undefined>(
@@ -24,7 +25,7 @@ interface UserCirclesProviderProps {
 export const UserCirclesProvider: React.FC<UserCirclesProviderProps> = ({
   children,
 }) => {
-  const [userCircles, setUserCircles] = useState<string[]>([]);
+  const [userCircles, setUserCircles] = useState<UserCircle[]>([]);
 
   return (
     <UserCirclesContext.Provider value={{ userCircles, setUserCircles }}>

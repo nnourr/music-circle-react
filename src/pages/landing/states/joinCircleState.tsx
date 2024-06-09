@@ -35,6 +35,7 @@ const JoinCircleState = React.forwardRef<
         setIsLoading(false);
         return;
       }
+
       nextState();
     };
     if (circleCode.length === 20 && !!!circleCodeError) {

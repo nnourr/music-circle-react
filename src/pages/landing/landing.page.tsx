@@ -19,6 +19,7 @@ import { AnotherLoginState } from "./states/anotherLoginState";
 import MotionCreateCircleState from "./states/createCircleState";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useUserCircles } from "../../providers/userCircles.provider";
+import { UserCircle } from "../../models/userCircle.model";
 
 interface stateInterface {
   id: string;
@@ -81,7 +82,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
           `${SERVER_ENDPOINT}/user/${email}/circles`
         );
         if (getUserCirclesResponse.status === 200) {
-          const circles = (await getUserCirclesResponse.json()) as string[];
+          const circles = (await getUserCirclesResponse.json()) as UserCircle[];
 
           if (circles.length > 0) {
             console.log(circles);

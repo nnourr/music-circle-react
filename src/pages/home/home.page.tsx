@@ -3,9 +3,12 @@ import React, { useState } from "react";
 import MotionEnterAnimation from "./states/enterAnimation.state";
 import { NavbarComponent } from "./components/navbar.component";
 import { CircleShowcaseComponent } from "./components/circleShowcase.component";
+import { useUserCircles } from "../../providers/userCircles.provider";
 
 const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const [isEntering, setIsEntering] = useState<boolean>(true);
+  const { userCircles } = useUserCircles();
+  console.log(userCircles);
 
   setTimeout(() => {
     setIsEntering(false);
