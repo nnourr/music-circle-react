@@ -41,6 +41,7 @@ const JoinCircleState = React.forwardRef<
     if (circleCode.length === 20 && !!!circleCodeError) {
       // this runs a trillion times
       addUserToCircle();
+      setCircleCode("");
     }
   }, [circleCode, circleCodeError, email, nextState]);
 
