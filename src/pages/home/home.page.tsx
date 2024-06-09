@@ -25,7 +25,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="h-full w-full"
+          className="h-full w-full overflow-hidden"
         >
           <NavbarComponent menuClicked={() => console.log("menu clicked")} />
           <CircleShowcaseComponent circleInfo={fakeCircle} />
