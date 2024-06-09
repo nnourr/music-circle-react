@@ -18,6 +18,7 @@ import MotionJoinCircleState from "./states/joinCircleState";
 import { AnotherLoginState } from "./states/anotherLoginState";
 import MotionCreateCircleState from "./states/createCircleState";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useUserCircles } from "../../providers/userCircles.provider";
 
 interface stateInterface {
   id: string;
@@ -33,6 +34,7 @@ interface statesInterface {
 
 const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const { email, username, setEmail, setUsername } = useUser();
+  const { userCircles, setUserCircles } = useUserCircles();
   const [pageError, setPageError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -80,7 +82,10 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
         );
         if (getUserCirclesResponse.status === 200) {
           const circles = (await getUserCirclesResponse.json()) as string[];
+
           if (circles.length > 0) {
+            console.log(circles);
+            setUserCircles(circles);
             navigate("/home");
           }
         } else {
@@ -95,7 +100,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
     } else {
       getUserCircles(email);
     }
-  });
+  }, [email, navigate, setUserCircles]);
 
   useEffect(() => {
     const handleUserLogin = async (loginCode: string) => {
@@ -156,8 +161,11 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
   if (
     currentState.id === states.spotifyLoginState.id &&
     !!email &&
-    !!username
+    !!username &&
+    !!userCircles.length
   ) {
+    console.log("sending to HOME");
+
     return <Navigate to="/home" />;
   }
 

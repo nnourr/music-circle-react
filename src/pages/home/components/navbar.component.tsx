@@ -14,19 +14,11 @@ export const NavbarComponent: React.FC<NavbarComponentInterface> = ({
   const [showUsername, setShowUsername] = useState<boolean>(false);
   const { username } = useUser();
 
-  console.log(showUsername);
-
   return (
     <motion.div
       className="text-lg lg:text-lg-lg font-fancy top-0 left-0 px-5 py-2 lg:py-0 w-full bg-linear-gradient"
-      onHoverStart={() => {
-        setShowUsername(true);
-        console.log("hello");
-      }}
-      onHoverEnd={() => {
-        setShowUsername(false);
-        console.log("bye");
-      }}
+      onHoverStart={() => setShowUsername(true)}
+      onHoverEnd={() => setShowUsername(false)}
     >
       <button onClick={menuClicked}>
         <FontAwesomeIcon icon={faBars} className="mr-4" />
@@ -36,7 +28,7 @@ export const NavbarComponent: React.FC<NavbarComponentInterface> = ({
           key={`${showUsername}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.4 }}
         >
           {showUsername ? `hey, ${username}` : "Music Circle"}
         </motion.span>

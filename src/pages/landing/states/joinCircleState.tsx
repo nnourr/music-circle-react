@@ -38,8 +38,8 @@ const JoinCircleState = React.forwardRef<
       nextState();
     };
     if (circleCode.length === 20 && !!!circleCodeError) {
+      // this runs a trillion times
       addUserToCircle();
-      console.log(`add ${email} to circle ${circleCode}`);
     }
   }, [circleCode, circleCodeError, email, nextState]);
 
