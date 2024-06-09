@@ -18,8 +18,12 @@ const EnterAnimation = React.forwardRef<HTMLDivElement>((_, ref) => {
           initial={{
             opacity: 0,
           }}
-          animate={{ opacity: [0, 1, 1, 0] }}
-          transition={{ duration: 2, times: [0, 0.2, 0.8, 1], ease: "linear" }}
+          animate={{ opacity: [null, 1, 1, 0] }}
+          transition={{
+            duration: 1.5,
+            times: [0, 0.2, 0.8, 1],
+            ease: "linear",
+          }}
           className="absolute text-white leading-none text-xl font-fancy lg:text-lg-xl"
         >
           hey {username},
@@ -28,11 +32,12 @@ const EnterAnimation = React.forwardRef<HTMLDivElement>((_, ref) => {
           initial={{
             opacity: 0,
           }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: [null, 1, 1, 0] }}
           transition={{
-            delay: 2,
-            duration: 1,
+            delay: 1.5,
+            duration: 2.5,
             ease: "linear",
+            times: [0, 0.2, 0.8, 1],
           }}
           className="text-white text-xl leading-none font-fancy lg:text-lg-xl"
         >
@@ -41,14 +46,15 @@ const EnterAnimation = React.forwardRef<HTMLDivElement>((_, ref) => {
         <motion.div
           className="bg-clip-text w-fit"
           animate={{
-            opacity: 1,
+            opacity: [null, 1, 1, 0],
           }}
           initial={{
             opacity: 0,
           }}
           transition={{
-            delay: 2.5,
-            duration: 1,
+            delay: 2.25,
+            duration: 2.5,
+            times: [0, 0.2, 0.9, 1],
           }}
         >
           <motion.h1
@@ -64,7 +70,7 @@ const EnterAnimation = React.forwardRef<HTMLDivElement>((_, ref) => {
               repeat: Infinity,
               repeatType: "reverse",
             }}
-            className="text-transparent text-2xl lg:text-lg-2xl font-fancy bg-clip-text"
+            className="text-transparent text-3xl lg:text-lg-3xl font-fancy bg-clip-text"
           >
             Music Circle
           </motion.h1>
