@@ -73,6 +73,31 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
   );
 
   useEffect(() => {
+    const getUserCircles = async (email: string) => {
+      try {
+        const getUserCirclesResponse = await fetch(
+          `${SERVER_ENDPOINT}/user/${email}/circles`
+        );
+        if (getUserCirclesResponse.status === 200) {
+          const circles = (await getUserCirclesResponse.json()) as string[];
+          if (circles.length > 0) {
+            navigate("/home");
+          }
+        } else {
+          throw new Error("get user circles response not 200");
+        }
+      } catch (error) {
+        console.error("Error getting circles " + error);
+      }
+    };
+    if (!!!email) {
+      return;
+    } else {
+      getUserCircles(email);
+    }
+  });
+
+  useEffect(() => {
     const handleUserLogin = async (loginCode: string) => {
       setIsLoading(true);
       try {
