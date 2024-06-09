@@ -4,6 +4,7 @@ import { HashRouter } from "react-router-dom";
 import { IsMobileProvider } from "./providers/isMobile.provider";
 import { UserProvider } from "./providers/user.provider";
 import { AnimatedRoutes } from "./animatedRoutes";
+import { UserCirclesProvider } from "./providers/userCircles.provider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -11,11 +12,13 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <UserProvider>
-    <IsMobileProvider>
-      <HashRouter>
-        <AnimatedRoutes />
-      </HashRouter>
-    </IsMobileProvider>
+    <UserCirclesProvider>
+      <IsMobileProvider>
+        <HashRouter>
+          <AnimatedRoutes />
+        </HashRouter>
+      </IsMobileProvider>
+    </UserCirclesProvider>
   </UserProvider>
 );
 

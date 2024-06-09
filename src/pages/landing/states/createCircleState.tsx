@@ -4,6 +4,7 @@ import Input from "../../../components/inputs/text.input.component";
 import Button from "../../../components/inputs/button.input.component";
 import { useUser } from "../../../providers/user.provider";
 import { SERVER_ENDPOINT } from "../../../config/globals";
+import { useUserCircles } from "../../../providers/userCircles.provider";
 
 interface CreateCircleStateProps {
   nextState: () => any;
@@ -18,6 +19,7 @@ const CreateCircleState = React.forwardRef<
   const [circleNameError, setCircleNameError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { email, username } = useUser();
+  const { userCircles, setUserCircles } = useUserCircles();
 
   const createNewCircle = async () => {
     const addUserToCircle = async (circleCode: string) => {
@@ -34,6 +36,10 @@ const CreateCircleState = React.forwardRef<
         setIsLoading(false);
         return;
       }
+      setUserCircles([
+        ...userCircles,
+        { circleName: newCircleName, circleCode: newCircleCode },
+      ]);
       nextState();
     };
 
@@ -58,7 +64,7 @@ const CreateCircleState = React.forwardRef<
       return;
     }
 
-    let newCircleCode;
+    let newCircleCode: string;
     try {
       newCircleCode = await createNewCircleResponse.json();
     } catch (error) {
