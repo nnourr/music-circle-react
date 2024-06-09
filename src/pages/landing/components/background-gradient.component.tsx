@@ -2,13 +2,13 @@ import React from "react";
 import { motion } from "framer-motion";
 
 interface BackgroundGradientProps extends React.HTMLAttributes<HTMLDivElement> {
-  alt: boolean;
-  error: boolean;
+  alt?: boolean;
+  error?: boolean;
 }
 
 export const BackgroundGradient: React.FC<BackgroundGradientProps> = ({
-  alt,
-  error,
+  alt = false,
+  error = false,
 }) => {
   return (
     <motion.div

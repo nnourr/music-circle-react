@@ -6,11 +6,10 @@ import { useUser } from "../../../providers/user.provider";
 import { SERVER_ENDPOINT } from "../../../config/globals";
 
 interface CreateCircleStateProps {
-  nextState: () => void;
-  prevState: () => void;
+  nextState: () => any;
+  prevState: () => any;
 }
 
-// Forward ref to the DOM element you want to animate
 const CreateCircleState = React.forwardRef<
   HTMLDivElement,
   CreateCircleStateProps
@@ -95,7 +94,7 @@ const CreateCircleState = React.forwardRef<
         <h2 className="text-lg lg:text-lg-xl px-7 font-fancy self-start -mb-2 lg:-mb-8 text-black/80">
           hey {username},
         </h2>
-        <h1 className="text-2xl lg:text-lg-2xl px-7 font-fancy text-black/80">
+        <h1 className="text-3xl lg:text-lg-3xl px-7 font-fancy text-black/80">
           Create Circle.
         </h1>
       </div>
