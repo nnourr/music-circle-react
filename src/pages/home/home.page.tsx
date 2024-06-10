@@ -57,13 +57,13 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="h-full w-full overflow-hidden"
+          className="h-dvh w-full overflow-auto"
         >
           <NavbarComponent menuClicked={() => console.log("menu clicked")} />
           {!!currentCircle || !!!pageError ? (
             <CircleShowcaseComponent circleInfo={currentCircle} />
           ) : (
-            <div className=" w-4/5 h-full flex items-center justify-center text-lg lg:text-lg-xl text-error m-auto flex-col">
+            <div className="w-4/5 flex items-center justify-center text-lg lg:text-lg-xl text-error m-auto flex-col">
               <div>
                 <FontAwesomeIcon icon={faWarning} className="lg:mr-4" />{" "}
                 {pageError}
