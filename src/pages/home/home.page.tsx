@@ -57,7 +57,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="h-dvh w-full overflow-auto"
+          className="h-full w-full overflow-auto"
         >
           <NavbarComponent menuClicked={() => console.log("menu clicked")} />
           {!!currentCircle || !!!pageError ? (
