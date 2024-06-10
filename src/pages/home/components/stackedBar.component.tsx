@@ -26,15 +26,15 @@ export const StackedBar: React.FC<StackedBarProps> = ({
           className="bg-linear-gradient w-1/2 h-full flex-shrink-0"
           style={{
             opacity: `${100 - (i / length) * 100}%`,
-            borderTopLeftRadius: `${i === 0 ? "24px" : ""}`,
-            borderTopRightRadius: `${i === 0 ? "24px" : ""}`,
-            borderBottomRightRadius: `${i === length - 1 ? "24px" : ""}`,
-            borderBottomLeftRadius: `${i === length - 1 ? "24px" : ""}`,
+            borderTopLeftRadius: `${i === 0 ? "20px" : ""}`,
+            borderTopRightRadius: `${i === 0 ? "20px" : ""}`,
+            borderBottomRightRadius: `${i === length - 1 ? "20px" : ""}`,
+            borderBottomLeftRadius: `${i === length - 1 ? "20px" : ""}`,
             maxWidth: isMobile ? "unset" : "12rem",
           }}
         />
         <div
-          className="text-white/90 ml-4 text-nowrap"
+          className="text-white/90 ml-4 text-nowrap overflow-auto"
           style={{
             fontSize: !isMobile
               ? `${Math.max(artist.weightedPoints * 2.5, 24)}px`
