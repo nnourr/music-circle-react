@@ -16,18 +16,18 @@ export const NavbarComponent: React.FC<NavbarComponentInterface> = ({
 
   return (
     <motion.div
-      className="text-lg lg:text-lg-lg font-fancy top-0 left-0 px-5 py-2 lg:py-0 w-full bg-linear-gradient"
+      className="text-lg lg:text-lg-lg sticky font-fancy top-0 left-0 px-5 z-50 py-2 lg:py-0 w-full bg-linear-gradient"
       onHoverStart={() => setShowUsername(true)}
       onHoverEnd={() => setShowUsername(false)}
     >
       <button onClick={menuClicked}>
-        <FontAwesomeIcon icon={faBars} className="mr-4" />
+        <FontAwesomeIcon icon={faBars} className="mr-4 text-black/80" />
       </button>
       <AnimatePresence mode="wait">
         <motion.span
           key={`${showUsername}`}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: 0.8 }}
           transition={{ duration: 0.4 }}
         >
           {showUsername ? `hey, ${username}` : "Music Circle"}
