@@ -9,8 +9,6 @@ interface BackgroundGradientProps extends React.HTMLAttributes<HTMLDivElement> {
 export const BackgroundGradient: React.FC<BackgroundGradientProps> = ({
   error = false,
 }) => {
-  console.log(error);
-
   return (
     <motion.div
       animate={{

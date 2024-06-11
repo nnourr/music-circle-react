@@ -2,17 +2,19 @@ import { motion } from "framer-motion";
 import { CircleInfo } from "../models/circleInfo.model";
 import { consolidateTopArtistsWithPoints } from "../helpers/consolidateTopArtistsWithPoints.helper";
 import { StackedBar } from "./stackedBar.component";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface CircleShowcaseComponentProps {
-  circleInfo: CircleInfo | undefined;
+  circleInfo: CircleInfo;
 }
 export const CircleShowcaseComponent: React.FC<
   CircleShowcaseComponentProps
 > = ({ circleInfo }) => {
-  const [copyCircleCodeText, setCopyCircleCodeText] = useState<string>(
-    `#${circleInfo?.circleCode}`
-  );
+  const [copyCircleCodeText, setCopyCircleCodeText] = useState<string>();
+  useEffect(() => {
+    setCopyCircleCodeText(`#${circleInfo.circleCode}`);
+  }, [circleInfo.circleCode]);
+
   if (!!!circleInfo) {
     return <></>;
   }
@@ -20,13 +22,13 @@ export const CircleShowcaseComponent: React.FC<
     navigator.clipboard.writeText(circleInfo.circleCode);
     setCopyCircleCodeText("Code Copied!");
     setTimeout(() => {
-      setCopyCircleCodeText(`#${circleInfo?.circleCode}`);
+      setCopyCircleCodeText(`#${circleInfo.circleCode}`);
     }, 1000);
   };
   return (
     <motion.div className="mt-1 h-full box-border w-full px-6 py-2 overflow-auto">
-      <div className="mt-3 lg:right-0 lg:mr-[7%] max-w-[30%] xl:mr-[7%] flex flex-col lg:fixed">
-        <h1 className="font-fancy text-xl lg:text-lg-2xl text-transparent bg-linear-gradient bg-clip-text w-fit leading-[1]">
+      <div className="mt-3 lg:right-0 lg:mr-[7%] lg:max-w-[30%] xl:max-w-[40%] xl:mr-[10%] flex flex-col lg:fixed">
+        <h1 className="font-fancy text-xl lg:text-lg-2xl text-transparent bg-linear-gradient bg-clip-text w-min leading-[1]">
           {circleInfo.circleName}
         </h1>
         <motion.span

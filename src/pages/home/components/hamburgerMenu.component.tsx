@@ -3,6 +3,7 @@ import { UserCircle } from "../../../models/userCircle.model";
 import { useIsMobile } from "../../../providers/isMobile.provider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faClose } from "@fortawesome/free-solid-svg-icons";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 interface HamburgerMenuProps {
   circles: UserCircle[];
@@ -17,6 +18,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
   close,
 }) => {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   const circleList = circles.map((circle) => {
     const isCurrentCircle = circle.circleCode === currentCircleCode;
@@ -70,7 +72,10 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
           <motion.button
             className="text-base lg:text-lg-base relative text-center px-5 pt-1 w-full rounded-2xl border-2 text-white border-white/70 hover:border-white transition-all overflow-hidden"
             onClick={() => {
-              console.log("add a circle!");
+              navigate({
+                pathname: "/joinCircle",
+                search: createSearchParams({ noRedirect: "true" }).toString(),
+              });
             }}
           >
             <FontAwesomeIcon icon={faAdd} />
