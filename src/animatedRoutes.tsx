@@ -9,7 +9,7 @@ export const AnimatedRoutes = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<MotionLandingPage key="landingPage" />} />
+        <Route path="/*" element={<MotionLandingPage key="landingPage" />} />
         <Route path="home" element={<MotionHomePage key="homePage" />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

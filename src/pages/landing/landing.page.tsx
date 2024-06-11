@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Component, useCallback, useEffect, useState } from "react";
 import { BackgroundGradient } from "./components/background-gradient.component";
 import React from "react";
 import queryString from "query-string";
@@ -17,27 +17,33 @@ import Button from "../../components/inputs/button.input.component";
 import MotionJoinCircleState from "./states/joinCircleState";
 import { AnotherLoginState } from "./states/anotherLoginState";
 import MotionCreateCircleState from "./states/createCircleState";
-import { Navigate, useNavigate } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { useUserCircles } from "../../providers/userCircles.provider";
 import { UserCircle } from "../../models/userCircle.model";
 
-interface stateInterface {
-  id: string;
-  backgroundAlt: boolean;
-}
+const landingPageVariants = {
+  hidden: { opacity: 0, translateY: "10%" },
+  visible: { opacity: 1, translateY: 0 },
+  exit: { opacity: 0, transition: { duration: 0.1 } },
+};
 
-interface statesInterface {
-  spotifyLoginState: stateInterface;
-  joinCircleState: stateInterface;
-  createCircleState: stateInterface;
-  anotherLoginState: stateInterface;
-}
+const errorVariants = {
+  exit: { scale: 0 },
+};
 
 const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const { email, username, setEmail, setUsername } = useUser();
   const { userCircles, setUserCircles } = useUserCircles();
   const [pageError, setPageError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const location = useLocation();
+  const [isBackgroundAlt, setIsBackgroundAlt] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const scope = "user-top-read user-read-email";
@@ -52,28 +58,6 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
         state: "hdickalporhfsjcy",
       });
   };
-  const states: statesInterface = {
-    spotifyLoginState: {
-      id: "spotifyLoginState",
-      backgroundAlt: true,
-    },
-    joinCircleState: {
-      id: "joinCircleState",
-      backgroundAlt: false,
-    },
-    createCircleState: {
-      id: "createCircleState",
-      backgroundAlt: true,
-    },
-    anotherLoginState: {
-      id: "AnotherLoginState",
-      backgroundAlt: true,
-    },
-  };
-
-  const [currentState, setCurrentState] = useState<stateInterface>(
-    () => states.spotifyLoginState
-  );
 
   useEffect(() => {
     const getUserCircles = async (email: string) => {
@@ -123,7 +107,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
           }
           setEmail(email);
           setUsername(userObj.username);
-          setCurrentState(states.joinCircleState);
+          navigate("/joinCircle");
         } else {
           throw new Error("setUser response not 200");
         }
@@ -144,26 +128,22 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
       return;
     }
 
-    if (loginCode === null || currentState !== states.spotifyLoginState) {
+    if (loginCode === null) {
       return;
     }
     window.history.replaceState({}, document.title, "/");
     handleUserLogin(loginCode);
-  }, [
-    currentState,
-    states.spotifyLoginState,
-    states.joinCircleState,
-    setEmail,
-    setUsername,
-    email,
-  ]);
+  }, [setEmail, setUsername, email, navigate]);
 
-  if (
-    currentState.id === states.spotifyLoginState.id &&
-    !!email &&
-    !!username &&
-    !!userCircles.length
-  ) {
+  useEffect(() => {
+    if (location.pathname.includes("Circle")) {
+      setIsBackgroundAlt(true);
+    } else {
+      setIsBackgroundAlt(false);
+    }
+  }, [location.pathname]);
+
+  if (!!email && !!username && !!userCircles.length) {
     console.log("sending to HOME");
 
     return <Navigate to="/home" />;
@@ -171,16 +151,9 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
 
   return (
     <motion.div
-      exit={
-        currentState === states.spotifyLoginState && !!email
-          ? {}
-          : {
-              opacity: 0,
-              transition: { duration: 1 },
-            }
-      }
       ref={ref}
       className="h-full w-full overflow-hidden"
+      variants={errorVariants}
     >
       {!!pageError ? (
         <div className=" w-4/5 h-full flex items-center justify-center text-lg lg:text-lg-xl text-error m-auto flex-col">
@@ -194,71 +167,60 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
           </Button>
         </div>
       ) : (
-        <AnimatePresence mode="popLayout">
-          {currentState.id === states.spotifyLoginState.id ? (
-            <MotionSpotifyLoginState
-              key={states.spotifyLoginState.id}
-              nextState={startLoginFlow}
-              animate={{ opacity: 1 }}
-              initial={{ opacity: 0 }}
-              exit={{
-                opacity: 0,
-                translateY: "-30%",
-              }}
-              isLoading={isLoading}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-            />
-          ) : currentState.id === states.joinCircleState.id ? (
-            <MotionJoinCircleState
-              key={states.joinCircleState.id}
-              nextState={() => {
-                navigate("/home", { replace: true });
-              }}
-              goToCreateCircle={() => {
-                setCurrentState(states.createCircleState);
-              }}
-              animate={{ translateY: 0, opacity: 1 }}
-              initial={{
-                translateY: "30%",
-                opacity: 0,
-              }}
-              exit={{
-                opacity: 0,
-                translateY: "-30%",
-              }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-            />
-          ) : currentState.id === states.createCircleState.id ? (
-            <MotionCreateCircleState
-              key={states.createCircleState.id}
-              nextState={() => {
-                navigate("/home");
-              }}
-              prevState={() => {
-                setCurrentState(states.joinCircleState);
-              }}
-              animate={{ translateY: 0, opacity: 1 }}
-              initial={{
-                translateY: "30%",
-                opacity: 0,
-              }}
-              exit={{
-                opacity: 0,
-                translateY: "-30%",
-              }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-            />
-          ) : currentState.id === states.anotherLoginState.id ? (
-            <AnotherLoginState />
-          ) : (
-            "hey there, you're not meant to see this!"
-          )}
-        </AnimatePresence>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <MotionSpotifyLoginState
+                key={"MotionSpotifyLoginState"}
+                nextState={startLoginFlow}
+                variants={landingPageVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                isLoading={isLoading}
+              />
+            }
+          />
+          <Route
+            path="/joinCircle"
+            element={
+              <MotionJoinCircleState
+                key={"MotionJoinCircleState"}
+                nextState={() => {
+                  navigate("/home");
+                }}
+                goToCreateCircle={() => {
+                  navigate("/createCircle");
+                }}
+                variants={landingPageVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              />
+            }
+          />
+          <Route
+            path="/createCircle"
+            element={
+              <MotionCreateCircleState
+                key={"MotionCreateCircleState"}
+                nextState={() => {
+                  navigate("/home");
+                }}
+                prevState={() => {
+                  navigate("/joinCircle");
+                }}
+                variants={landingPageVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              />
+            }
+          />
+        </Routes>
       )}
-      <BackgroundGradient
-        alt={currentState.backgroundAlt}
-        error={!!pageError}
-      />
+      <BackgroundGradient error={!!pageError} />
     </motion.div>
   );
 });
