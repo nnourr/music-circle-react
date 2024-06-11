@@ -19,7 +19,6 @@ import Button, {
 import MotionJoinCircleState from "./states/joinCircleState";
 import MotionCreateCircleState from "./states/createCircleState";
 import {
-  Navigate,
   Route,
   Routes,
   createSearchParams,
