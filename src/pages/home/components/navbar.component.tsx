@@ -16,7 +16,7 @@ export const NavbarComponent: React.FC<NavbarComponentInterface> = ({
 
   return (
     <motion.div
-      className="text-lg lg:text-lg-lg sticky font-fancy top-0 left-0 px-5 z-50 py-2 lg:py-0 w-full bg-linear-gradient"
+      className="text-lg lg:text-lg-lg sticky font-fancy top-0 left-0 px-5 z-50 pt-2 lg:py-0 w-full bg-linear-gradient"
       onHoverStart={() => setShowUsername(true)}
       onHoverEnd={() => setShowUsername(false)}
     >
