@@ -25,12 +25,12 @@ export const CircleShowcaseComponent: React.FC<
   };
   return (
     <motion.div className="mt-1 h-full box-border w-full px-6 py-2 overflow-auto">
-      <div className="mt-3 lg:right-0 lg:mr-[7%] max-w-[30%] xl:mr-[7%] flex flex-col lg:fixed pb-10 ">
+      <div className="mt-3 lg:right-0 lg:mr-[7%] max-w-[30%] xl:mr-[7%] flex flex-col lg:fixed">
         <h1 className="font-fancy text-xl lg:text-lg-2xl text-transparent bg-linear-gradient bg-clip-text w-fit leading-[1]">
           {circleInfo.circleName}
         </h1>
         <motion.span
-          className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer w-fit"
+          className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer w-fit text-nowrap"
           onClick={onCopyCodeClick}
           title="Copy Circle Code"
           whileTap={{ scale: 0.9 }}
