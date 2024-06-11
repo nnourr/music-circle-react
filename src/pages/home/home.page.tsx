@@ -9,13 +9,17 @@ import { SERVER_ENDPOINT } from "../../config/globals";
 import Button from "../../components/inputs/button.input.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWarning } from "@fortawesome/free-solid-svg-icons";
+import { useUser } from "../../providers/user.provider";
+import { UserCircle } from "../../models/userCircle.model";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const [isEntering, setIsEntering] = useState<boolean>(true);
   const [currentCircle, setCurrentCircle] = useState<CircleInfo | undefined>();
-  const { userCircles } = useUserCircles();
+  const { userCircles, setUserCircles } = useUserCircles();
   const [pageError, setPageError] = useState<string | undefined>();
-  console.log(userCircles);
+  const { email } = useUser();
+  const navigate = useNavigate();
 
   setTimeout(() => {
     setIsEntering(false);
@@ -39,13 +43,32 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
         console.error("Error getting circle " + currentCircle);
       }
     };
-    if (userCircles.length === 0) {
-      setPageError("Sorry, we couldn't get your circles");
+
+    const getUserCircles = async (email: string) => {
+      try {
+        const getUserCirclesResponse = await fetch(
+          `${SERVER_ENDPOINT}/user/${email}/circles`
+        );
+        if (getUserCirclesResponse.status === 200) {
+          const circles = (await getUserCirclesResponse.json()) as UserCircle[];
+          setUserCircles(circles);
+        } else {
+          throw new Error("get user circles response not 200");
+        }
+      } catch (error) {
+        console.error("Error getting circles " + error);
+      }
+    };
+    if (!!!email) {
+      navigate("/");
       return;
     }
-    getFirstCircle();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userCircles]);
+    if (userCircles.length === 0) {
+      getUserCircles(email);
+    } else if (!!!currentCircle) {
+      getFirstCircle();
+    }
+  }, [currentCircle, email, navigate, setUserCircles, userCircles]);
 
   return (
     <div ref={ref} className="h-full w-full">
