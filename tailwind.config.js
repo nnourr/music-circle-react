@@ -4,12 +4,19 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
+    screens: {
+      sm: "640px",
+      md: "768px",
+      lg: "1224px",
+      xl: "1580px",
+    },
     extend: {
       fontFamily: {
         fancy: ['Fancy', 'sans'],
         sans: ['LeagueSpartan', 'sans-serif']
       },
       fontSize: {
+        "sm": "1.3rem",
         "base": "1.5rem",
         "lg": "2rem",
         "xl": "3.5rem",

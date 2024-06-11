@@ -46,7 +46,7 @@ export function consolidateTopArtistsWithPoints(
   );
 
   // Slice the top 10 artists
-  const topArtists = sortedArtists.slice(0, 11);
+  const topArtists = sortedArtists.slice(0, 10);
   // Calculate the total points
   const totalPoints = Object.values(topArtists).reduce(
     (acc, artist) => acc + artist.points,
