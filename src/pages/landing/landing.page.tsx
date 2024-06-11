@@ -59,6 +59,19 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
       });
   };
 
+  const navigateToHome = () => {
+    const navigateObject = {
+      pathname: "/home",
+      search: "",
+    };
+    if (params.get("noRedirect") === "true") {
+      navigateObject.search = createSearchParams({
+        noAnimation: "true",
+      }).toString();
+    }
+    navigate(navigateObject);
+  };
+
   useEffect(() => {
     const getUserCircles = async (email: string) => {
       try {
@@ -187,9 +200,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
             element={
               <MotionJoinCircleState
                 key={"MotionJoinCircleState"}
-                nextState={() => {
-                  navigate("/home");
-                }}
+                nextState={navigateToHome}
                 goToCreateCircle={() => {
                   navigate({
                     pathname: "/createCircle",
@@ -208,18 +219,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
             element={
               <MotionCreateCircleState
                 key={"MotionCreateCircleState"}
-                nextState={() => {
-                  const navigateObject = {
-                    pathname: "/home",
-                    search: "",
-                  };
-                  if (params.get("noRedirect") === "true") {
-                    navigateObject.search = createSearchParams({
-                      noAnimation: "true",
-                    }).toString();
-                  }
-                  navigate(navigateObject);
-                }}
+                nextState={navigateToHome}
                 prevState={() => {
                   navigate({
                     pathname: "/joinCircle",
@@ -238,7 +238,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
       {params.get("noRedirect") === "true" ? (
         <Button
           onClick={() => navigate("/home")}
-          className="!absolute top-8 left-16 z-20"
+          className="!absolute top-20 left-6 lg:top-8 lg:left-16 z-20"
           btnSize={btnSizes.md}
         >
           go home
