@@ -238,7 +238,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
       {params.get("noRedirect") === "true" ? (
         <Button
           onClick={navigateToHome}
-          className="!absolute top-20 left-6 lg:top-8 lg:left-16 z-20"
+          className="!absolute top-[5%] left-6 lg:top-8 lg:left-16 z-20"
           btnSize={btnSizes.md}
         >
           go home
