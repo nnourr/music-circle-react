@@ -1,4 +1,4 @@
-import { Component, useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BackgroundGradient } from "./components/background-gradient.component";
 import React from "react";
 import queryString from "query-string";
@@ -8,22 +8,15 @@ import {
   SPOTIFY_REDIRECT_URI,
 } from "../../config/globals";
 import { useUser } from "../../providers/user.provider";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import MotionSpotifyLoginState from "./states/spotifylogin.state";
 import { userLoginInterface } from "./models/userLogin.model";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWarning } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/inputs/button.input.component";
 import MotionJoinCircleState from "./states/joinCircleState";
-import { AnotherLoginState } from "./states/anotherLoginState";
 import MotionCreateCircleState from "./states/createCircleState";
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useUserCircles } from "../../providers/userCircles.provider";
 import { UserCircle } from "../../models/userCircle.model";
 
@@ -42,8 +35,6 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const { userCircles, setUserCircles } = useUserCircles();
   const [pageError, setPageError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const location = useLocation();
-  const [isBackgroundAlt, setIsBackgroundAlt] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const scope = "user-top-read user-read-email";
@@ -134,14 +125,6 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
     window.history.replaceState({}, document.title, "/");
     handleUserLogin(loginCode);
   }, [setEmail, setUsername, email, navigate]);
-
-  useEffect(() => {
-    if (location.pathname.includes("Circle")) {
-      setIsBackgroundAlt(true);
-    } else {
-      setIsBackgroundAlt(false);
-    }
-  }, [location.pathname]);
 
   if (!!email && !!username && !!userCircles.length) {
     console.log("sending to HOME");
