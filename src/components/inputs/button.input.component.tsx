@@ -7,19 +7,22 @@ interface ButtonProps {
   className?: string;
   white?: boolean | undefined;
   isDisabled?: boolean | undefined;
+  btnSize?: string;
 }
+
+export const btnSizes = {
+  xl: "min-w-[20rem] lg:min-w-[24rem] text-lg lg:text-lg-lg",
+  md: "min-w-[10rem] lg:min-w-[16rem] text-base lg:text-lg-base",
+};
 
 export const Button: React.FC<ButtonProps> = ({
   onClick,
   children,
   isDisabled,
   white,
+  className,
+  btnSize = btnSizes.xl,
 }) => {
-  const btnSizes = {
-    xl: "min-w-[20rem] lg:min-w-[24rem]",
-  };
-
-  const btnSize = btnSizes.xl;
   const tailwindColour = {
     text: white
       ? { disabled: "text-white/20", active: "text-white/80" }
@@ -29,11 +32,11 @@ export const Button: React.FC<ButtonProps> = ({
   const motionColour = white ? "255, 255, 255" : "0,0,0";
   return (
     <motion.button
-      className={`${btnSize} ${
+      className={`${btnSize} ${className} ${
         isDisabled
           ? `${tailwindColour.text.disabled}`
           : `${tailwindColour.text.active}`
-      } relative text-center py-1 pb-0  text-lg lg:text-lg-lg border-2 rounded-3xl w-fit transition-all`}
+      } relative text-center py-1 pb-0 border-2 rounded-3xl w-fit transition-all`}
       onClick={onClick}
       transition={{ duration: 0.1 }}
       whileTap={{ scale: 0.95 }}

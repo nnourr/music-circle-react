@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWarning } from "@fortawesome/free-solid-svg-icons";
 import { useUser } from "../../providers/user.provider";
 import { UserCircle } from "../../models/userCircle.model";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { HamburgerMenu } from "./components/hamburgerMenu.component";
 
 const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
@@ -24,6 +24,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const { email } = useUser();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
 
   setTimeout(() => {
     setIsEntering(false);
@@ -54,7 +55,14 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
     const getFirstCircle = async () => {
       await setCurrentCircle(userCircles[0].circleCode);
     };
+    if (userCircles.length === 0) {
+      navigate("/joinCircle");
+    } else if (!!!currentCircleInfo) {
+      getFirstCircle();
+    }
+  }, [currentCircleInfo, navigate, setCurrentCircle, userCircles]);
 
+  useEffect(() => {
     const getUserCircles = async (email: string) => {
       try {
         const getUserCirclesResponse = await fetch(
@@ -74,23 +82,12 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
       navigate("/");
       return;
     }
-    if (userCircles.length === 0) {
-      getUserCircles(email);
-    } else if (!!!currentCircleInfo) {
-      getFirstCircle();
-    }
-  }, [
-    currentCircleInfo,
-    email,
-    navigate,
-    setCurrentCircle,
-    setUserCircles,
-    userCircles,
-  ]);
+    getUserCircles(email);
+  }, [email, navigate, setUserCircles]);
 
   return (
     <div ref={ref} className="h-full w-full">
-      {isEntering ? (
+      {isEntering && params.get("noAnimation") !== "true" ? (
         <div className="h-full w-full flex items-center justify-center">
           <MotionEnterAnimation />
         </div>
@@ -101,7 +98,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
           className="h-full w-full flex flex-col"
         >
           <NavbarComponent menuClicked={() => setShowMenu(true)} />
-          {!!currentCircleInfo || !!!pageError ? (
+          {!!currentCircleInfo && !!!pageError ? (
             <CircleShowcaseComponent circleInfo={currentCircleInfo} />
           ) : (
             <div className="w-4/5 flex items-center justify-center text-lg lg:text-lg-xl text-error m-auto flex-col">

@@ -13,10 +13,18 @@ import MotionSpotifyLoginState from "./states/spotifylogin.state";
 import { userLoginInterface } from "./models/userLogin.model";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWarning } from "@fortawesome/free-solid-svg-icons";
-import Button from "../../components/inputs/button.input.component";
+import Button, {
+  btnSizes,
+} from "../../components/inputs/button.input.component";
 import MotionJoinCircleState from "./states/joinCircleState";
 import MotionCreateCircleState from "./states/createCircleState";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  createSearchParams,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useUserCircles } from "../../providers/userCircles.provider";
 import { UserCircle } from "../../models/userCircle.model";
 
@@ -35,6 +43,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const { userCircles, setUserCircles } = useUserCircles();
   const [pageError, setPageError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [params] = useSearchParams();
   const navigate = useNavigate();
 
   const scope = "user-top-read user-read-email";
@@ -61,7 +70,10 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
 
           if (circles.length > 0) {
             setUserCircles(circles);
-            navigate("/home");
+
+            if (params.get("noRedirect") !== "true") {
+              navigate("/home");
+            }
           }
         } else {
           throw new Error("get user circles response not 200");
@@ -75,7 +87,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
     } else {
       getUserCircles(email);
     }
-  }, [email, navigate, setUserCircles]);
+  }, [email, navigate, params, setUserCircles]);
 
   useEffect(() => {
     const handleUserLogin = async (loginCode: string) => {
@@ -108,10 +120,10 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
       }
       setIsLoading(false);
     };
-    const url = new URL(window.location.href);
-    const params = new URLSearchParams(url.search);
-    const loginCode = params.get("code");
-    const error = params.get("error");
+    const queryParams = new URLSearchParams(window.location.search);
+
+    const loginCode = queryParams.get("code");
+    const error = queryParams.get("error");
 
     if (error !== null) {
       console.error(error);
@@ -124,13 +136,18 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
     }
     window.history.replaceState({}, document.title, "/");
     handleUserLogin(loginCode);
-  }, [setEmail, setUsername, email, navigate]);
+  }, [setEmail, setUsername, email, navigate, params]);
 
-  if (!!email && !!username && !!userCircles.length) {
-    console.log("sending to HOME");
-
-    return <Navigate to="/home" />;
-  }
+  useEffect(() => {
+    if (
+      !!email &&
+      !!username &&
+      !!userCircles.length &&
+      params.get("noRedirect") !== "true"
+    ) {
+      navigate("/home");
+    }
+  }, [email, navigate, params, userCircles.length, username]);
 
   return (
     <motion.div
@@ -174,7 +191,10 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
                   navigate("/home");
                 }}
                 goToCreateCircle={() => {
-                  navigate("/createCircle");
+                  navigate({
+                    pathname: "/createCircle",
+                    search: createSearchParams(params).toString(),
+                  });
                 }}
                 variants={landingPageVariants}
                 initial="hidden"
@@ -189,10 +209,22 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
               <MotionCreateCircleState
                 key={"MotionCreateCircleState"}
                 nextState={() => {
-                  navigate("/home");
+                  const navigateObject = {
+                    pathname: "/home",
+                    search: "",
+                  };
+                  if (params.get("noRedirect") === "true") {
+                    navigateObject.search = createSearchParams({
+                      noAnimation: "true",
+                    }).toString();
+                  }
+                  navigate(navigateObject);
                 }}
                 prevState={() => {
-                  navigate("/joinCircle");
+                  navigate({
+                    pathname: "/joinCircle",
+                    search: createSearchParams(params).toString(),
+                  });
                 }}
                 variants={landingPageVariants}
                 initial="hidden"
@@ -202,6 +234,17 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
             }
           />
         </Routes>
+      )}
+      {params.get("noRedirect") === "true" ? (
+        <Button
+          onClick={() => navigate("/home")}
+          className="!absolute top-8 left-16 z-20"
+          btnSize={btnSizes.md}
+        >
+          go home
+        </Button>
+      ) : (
+        ""
       )}
       <BackgroundGradient error={!!pageError} />
     </motion.div>
