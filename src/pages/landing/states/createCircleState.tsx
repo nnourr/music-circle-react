@@ -80,11 +80,7 @@ const CreateCircleState = React.forwardRef<
     if (newCircleName === "") {
       return;
     }
-    if (newCircleName.includes(" ")) {
-      setCircleNameError("sorry, no spaces.");
-      return;
-    }
-    const invalidCodePattern = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
+    const invalidCodePattern = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
     if (invalidCodePattern.test(newCircleName)) {
       setCircleNameError("sorry, no special characters.");
       return;
