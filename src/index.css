@@ -3,3 +3,29 @@
 @tailwind utilities;
 
 @import url(./assets/fonts/fonts.css);
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    275deg,
+    #29eb267e 0%,
+    #29c39f7e 51.5%,
+    #3fb1ab7e 100%
+  );
+  opacity: 0.1 !important;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+::-webkit-scrollbar {
+  background-color: #3fb1ab28;
+  width: 10px;
+  height: 5px;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}

@@ -85,7 +85,6 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
           const circles = (await getUserCirclesResponse.json()) as UserCircle[];
 
           if (circles.length > 0) {
-            console.log(circles);
             setUserCircles(circles);
             navigate("/home");
           }
