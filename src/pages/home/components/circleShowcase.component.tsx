@@ -33,6 +33,7 @@ export const CircleShowcaseComponent: React.FC<
       ) {
         return true;
       }
+      return false;
     })
   ) {
     localStorage.removeItem("user");
