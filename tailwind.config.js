@@ -7,7 +7,7 @@ module.exports = {
     screens: {
       sm: "640px",
       md: "768px",
-      lg: "1224px",
+      lg: "1024px",
       xl: "1580px",
     },
     extend: {
@@ -30,6 +30,7 @@ module.exports = {
       },
       colors: {
         error: 'rgba(227,0,73,0.9)',
+        spotify: 'rgb(30,215,96)',
       }, backgroundImage: {
         "radial-gradient": "radial-gradient(50% 50% at 50% 50% rgb(41 235 38) 0% rgb(63 177 171) 70% rgb(41 195 159) 100%)",
         "radial-gradient-alt": "radial-gradient(50% 50% at 50% 50% rgb(41 235 38) 0% rgb(41 195 159) 70% rgb(63 177 171) 100%)",
