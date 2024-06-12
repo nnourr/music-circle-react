@@ -1,15 +1,12 @@
+import { ArtistInterface } from "../models/artist.model";
 import { CircleInfo } from "../models/circleInfo.model";
 
-export interface ConsolidatedArtist {
-  artistName: string;
+export interface ConsolidatedArtist extends ArtistInterface {
   points: number;
   percentagePoints: number;
   weightedPoints: number;
-
   contributors: string[];
   url: string;
-  popularity: number;
-  genres: string[];
 }
 
 export function consolidateTopArtistsWithPoints(
@@ -27,7 +24,7 @@ export function consolidateTopArtistsWithPoints(
         points[artist.name].contributors.push(user.username);
       } else {
         points[artist.name] = {
-          artistName: artist.name,
+          name: artist.name,
           points: point,
           percentagePoints: 0, // Placeholder for percentage points
           weightedPoints: 0, // Placeholder for weighted points
@@ -35,6 +32,7 @@ export function consolidateTopArtistsWithPoints(
           url: artist.url,
           popularity: artist.popularity,
           genres: artist.genres,
+          images: artist.images,
         };
       }
     });
