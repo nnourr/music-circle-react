@@ -135,7 +135,10 @@ export const StackedBar: React.FC<StackedBarProps> = ({
               }}
             >
               {i + 1}. {artist.name}{" "}
-              <motion.span variants={spotifyVariants} className="text-spotify">
+              <motion.span
+                variants={spotifyVariants}
+                style={{ color: "rgb(255 255 255)" }}
+              >
                 <FontAwesomeIcon icon={faSpotify} />
               </motion.span>
             </motion.a>
