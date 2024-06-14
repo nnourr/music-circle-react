@@ -1,43 +1,25 @@
-import { motion } from "framer-motion";
+import { Variants, motion } from "framer-motion";
 import { ConsolidatedArtist } from "../helpers/consolidateTopArtistsWithPoints.helper";
 import { useIsMobile } from "../../../providers/isMobile.provider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
-import {
-  LINEAR_GRADIENT_BREATHE_1,
-  LINEAR_GRADIENT_BREATHE_2,
-} from "../../../config/globals";
+import { LINEAR_GRADIENT } from "../../../config/globals";
+import { useState } from "react";
 
 interface StackedBarProps {
   artistsData: ConsolidatedArtist[];
   className: string;
 }
 
-const nameVariants = {
-  hover: {
-    backgroundImage: [LINEAR_GRADIENT_BREATHE_1, LINEAR_GRADIENT_BREATHE_2],
-    color: "rgba(0,0,0,0)",
-  },
-};
-
-const barVariants = {
-  hover: {
-    height: "50%",
-  },
-  inView: {
-    opacity: [0.1, 1],
-  },
-};
-
-const artistDetailVariants = {
+const artistDetailVariants: Variants = {
   hover: {
     opacity: 1,
   },
 };
 
-const noVariants = {};
+const noVariants: Variants = {};
 
-const spotifyVariants = {
+const spotifyVariants: Variants = {
   hover: {
     color: "rgb(30,215,96)",
   },
@@ -48,21 +30,66 @@ export const StackedBar: React.FC<StackedBarProps> = ({
   className,
 }) => {
   const isMobile = useIsMobile();
+  const [clickedIndex, setClickedIndex] = useState<number | null>(null);
+  const [largestTitle, setLargestTitle] = useState<number>(-1);
+
+  const handleBarClick = (index: number) => {
+    if (isMobile) {
+      setClickedIndex(index);
+    }
+  };
+
+  const artistNameVariants: Variants = {
+    hover: {
+      fontSize: isMobile ? "35px" : "48px",
+      backgroundImage: LINEAR_GRADIENT,
+      lineHeight: "50px",
+      textWrap: "balance",
+    },
+  };
+
+  const artistNameContainerVariants: Variants = {
+    hover: {
+      maxWidth: isMobile ? undefined : "70vw",
+    },
+  };
+
+  const barVariants: Variants = {
+    hover: {
+      height: "60%",
+    },
+    inView: {
+      opacity: [0.1, 1],
+    },
+  };
+
+  const gradientBarVariants: Variants = {
+    hover: isMobile
+      ? {
+          width: "5px",
+        }
+      : {},
+  };
 
   const artistBar = artistsData.map((artist, i, { length }) => {
-    // fix this
     const artistImage = artist.images === undefined ? "" : artist.images[0].url;
+    const isClicked = clickedIndex === i;
+    if (artist.weightedPoints * 2.5 > largestTitle) {
+      setLargestTitle(artist.weightedPoints * 2.5);
+    }
     return (
       <motion.div
+        layout
         style={{
           height: `${artist.weightedPoints}%`,
         }}
         variants={barVariants}
         whileHover="hover"
         whileInView="inView"
-        whileTap="hover"
-        className={`flex items-start min-h-12`}
+        animate={isClicked ? "hover" : ""}
+        className={`flex items-start min-h-12 lg:max-w-[50vw]`}
         key={artist.name}
+        onClick={() => handleBarClick(i)}
       >
         <motion.div
           className="bg-linear-gradient w-28 lg:w-48 h-full flex-shrink-0"
@@ -74,38 +101,51 @@ export const StackedBar: React.FC<StackedBarProps> = ({
             borderBottomLeftRadius: `${i === length - 1 ? "20px" : ""}`,
             maxWidth: isMobile ? "unset" : "12rem",
           }}
-          variants={noVariants}
+          variants={gradientBarVariants}
         />
-        <motion.div variants={noVariants} className="flex flex-col items-start">
+        <motion.div
+          variants={noVariants}
+          className="flex flex-col items-start h-full overflow-hidden"
+        >
           <motion.div
-            className="text-white/90 ml-4 text-nowrap w-[30rem] flex-shrink-0 overflow-auto"
-            variants={nameVariants}
+            layout
+            className="ml-4 flex-shrink-0"
             style={{
-              fontSize: !isMobile
-                ? `${Math.max(artist.weightedPoints * 2.5, 24)}px`
-                : "24px",
-              backgroundImage: "rgba(255,255,255,0.8)",
-              backgroundClip: "text",
+              width: "100%",
+              maxWidth: isMobile ? undefined : "50vw",
             }}
+            variants={artistNameContainerVariants}
           >
-            {i + 1}. {artist.name}{" "}
             <motion.a
               href={artist.url}
               target="_blank"
-              variants={spotifyVariants}
+              variants={artistNameVariants}
               rel="noreferrer"
               title="Listen on Spotify"
-              className="opacity-90 text-white"
+              className="inline-block font-bold w-full overflow-ellipsis overflow-hidden"
+              style={{
+                backgroundImage:
+                  "linear-gradient(215deg, #ffffff 0%, #ffffff 55%, #ffffff 100%)",
+                color: "rgba(0,0,0,0)",
+                backgroundClip: "text",
+                textWrap: "nowrap",
+                fontSize: !isMobile
+                  ? `${Math.max(artist.weightedPoints * 2.5, 24)}px`
+                  : "1.5rem",
+              }}
             >
-              <FontAwesomeIcon icon={faSpotify} />
+              {i + 1}. {artist.name}{" "}
+              <motion.span variants={spotifyVariants} className="text-spotify">
+                <FontAwesomeIcon icon={faSpotify} />
+              </motion.span>
             </motion.a>
           </motion.div>
           <motion.div
             variants={artistDetailVariants}
-            className="text-base text-white pl-6"
+            className="text-base text-white pl-6 pointer-events-[scroll] lg:w-[30rem] lg:overflow-y-auto"
             style={{ opacity: 0 }}
           >
-            <motion.div className="w-1/3">
+            <motion.div className="w-1/2 lg:w-1/3">
               <img src={artistImage} alt={`${artist.name}`}></img>
             </motion.div>
             <motion.p variants={artistDetailVariants}>
@@ -120,5 +160,13 @@ export const StackedBar: React.FC<StackedBarProps> = ({
       </motion.div>
     );
   });
-  return <motion.div className={`${className}`}>{artistBar}</motion.div>;
+
+  return (
+    <motion.div
+      onMouseLeave={() => setClickedIndex(null)}
+      className={`${className}`}
+    >
+      {artistBar}
+    </motion.div>
+  );
 };
