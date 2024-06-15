@@ -6,6 +6,7 @@ import {
   RADIAL_GRADIENT,
   RADIAL_GRADIENT_WHITE,
 } from "../../../config/globals";
+import { cloneDeep } from "lodash";
 
 interface MultiSelectorProps {
   itemsData: string[];
@@ -20,7 +21,11 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
   className,
   onClick,
 }) => {
-  const [selectedItems, setSelectedItems] = useState<string[]>(itemsData);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
+  useEffect(() => {
+    setSelectedItems(cloneDeep(itemsData));
+  }, [itemsData]);
 
   useEffect(() => {
     onSelectionChange(selectedItems);

@@ -5,7 +5,7 @@ import {
   consolidateTopArtistsWithPoints,
 } from "../helpers/consolidateTopArtistsWithPoints.helper";
 import { StackedBar } from "./stackedBar.component";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useUser } from "../../../providers/user.provider";
 import MultiSelector from "./multiSelector.component";
 import { cloneDeep } from "lodash";
@@ -49,6 +49,11 @@ export const CircleShowcaseComponent: React.FC<
     setSelectedUsers(selectedUsernames);
   }, []);
 
+  const circleUsernames = useMemo(
+    () => circleInfo.users.map((user) => user.username),
+    [circleInfo]
+  );
+
   if (
     Object.values(consolidatedArtistData).some((value) => {
       return (
@@ -84,7 +89,7 @@ export const CircleShowcaseComponent: React.FC<
         </motion.span>
         {!isMobile ? (
           <MultiSelector
-            itemsData={circleInfo.users.map((user) => user.username)}
+            itemsData={circleUsernames}
             onSelectionChange={onSelectionChange}
           />
         ) : (
@@ -95,7 +100,7 @@ export const CircleShowcaseComponent: React.FC<
         {JSON.stringify(consolidateTopArtistsWithPoints(circleInfo), null, " ")}
       </pre> */}
       <h2 className="bg-linear-gradient font-bold opacity-80 bg-clip-text text-transparent lg:ml-[5%] xl:ml-[15%] mt-2 text-1xl lg:text-lg-xl w-fit">
-        top 10 artists:
+        top ten artists:
       </h2>
 
       {isMobile ? (
@@ -109,7 +114,7 @@ export const CircleShowcaseComponent: React.FC<
             }}
           >
             <MultiSelector
-              itemsData={circleInfo.users.map((user) => user.username)}
+              itemsData={circleUsernames}
               onSelectionChange={onSelectionChange}
               onClick={() => {
                 console.log("hello");
