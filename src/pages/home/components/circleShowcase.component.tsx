@@ -13,13 +13,16 @@ import Button, {
   btnSizes,
 } from "../../../components/inputs/button.input.component";
 import { useIsMobile } from "../../../providers/isMobile.provider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 interface CircleShowcaseComponentProps {
   circleInfo: CircleInfo;
+  isLoading: boolean;
 }
 export const CircleShowcaseComponent: React.FC<
   CircleShowcaseComponentProps
-> = ({ circleInfo }) => {
+> = ({ circleInfo, isLoading }) => {
   const [copyCircleCodeText, setCopyCircleCodeText] = useState<string>();
   useEffect(() => {
     setCopyCircleCodeText(`#${circleInfo.circleCode}`);
@@ -75,10 +78,43 @@ export const CircleShowcaseComponent: React.FC<
   };
   return (
     <motion.div className="mt-1 flex flex-col h-full box-border w-full px-6 py-2 overflow-auto">
-      <div className="mt-3 lg:mt-8 lg:right-0 lg:mr-[5%] lg:max-w-[30%] xl:max-w-[40%] xl:mr-[10%] flex flex-col lg:fixed items-end xl:items-start">
+      <div className="mt-3 lg:mt-8 lg:right-0 lg:mr-[5%] lg:max-w-[30%] xl:max-w-[40%] xl:mr-[10%] flex flex-col lg:fixed items-start lg:items-end xl:items-start">
         <h1 className="font-fancy text-xl lg:text-lg-2xl lg:text-right text-transparent bg-linear-gradient bg-clip-text w-fit leading-[1]">
-          {circleInfo.circleName}
+          {isLoading ? (
+            <>
+              <motion.span
+                animate={{
+                  translateY: ["0px", "-10px", "0"],
+                  transition: { repeat: Infinity },
+                }}
+                className="inline-block text-white"
+              >
+                .
+              </motion.span>
+              <motion.span
+                animate={{
+                  translateY: ["0px", "-10px", "0"],
+                  transition: { repeat: Infinity, delay: 0.1 },
+                }}
+                className="inline-block text-white"
+              >
+                .
+              </motion.span>
+              <motion.span
+                animate={{
+                  translateY: ["0px", "-10px", "0"],
+                  transition: { repeat: Infinity, delay: 0.2 },
+                }}
+                className="inline-block text-white"
+              >
+                .
+              </motion.span>
+            </>
+          ) : (
+            circleInfo.circleName
+          )}
         </h1>
+
         <motion.span
           className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer w-fit text-nowrap"
           onClick={onCopyCodeClick}
@@ -96,9 +132,6 @@ export const CircleShowcaseComponent: React.FC<
           ""
         )}
       </div>
-      {/* <pre className="text-white">
-        {JSON.stringify(consolidateTopArtistsWithPoints(circleInfo), null, " ")}
-      </pre> */}
       <h2 className="bg-linear-gradient font-bold opacity-80 bg-clip-text text-transparent lg:ml-[5%] xl:ml-[15%] mt-2 text-1xl lg:text-lg-xl w-fit">
         top ten artists:
       </h2>

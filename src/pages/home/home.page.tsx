@@ -22,6 +22,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const { userCircles, setUserCircles } = useUserCircles();
   const [pageError, setPageError] = useState<string | undefined>();
   const [showMenu, setShowMenu] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { email } = useUser();
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -31,6 +32,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
   }, 4700);
 
   const setCurrentCircle = useCallback(async (circleCode: string) => {
+    setIsLoading(true);
     try {
       const getFirstCircleResponse = await fetch(
         `${SERVER_ENDPOINT}/circle/${circleCode}`
@@ -45,6 +47,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
       setPageError("Error getting circle ");
       console.error("Error getting circle " + circleCode);
     }
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -79,6 +82,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
 
   useEffect(() => {
     const getUserCircles = async (email: string) => {
+      setIsLoading(true);
       try {
         const getUserCirclesResponse = await fetch(
           `${SERVER_ENDPOINT}/user/${email}/circles`
@@ -92,6 +96,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
       } catch (error) {
         console.error("Error getting circles " + error);
       }
+      setIsLoading(false);
     };
     if (!!!email) {
       navigate("/");
@@ -114,7 +119,10 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
         >
           <NavbarComponent menuClicked={() => setShowMenu(true)} />
           {!!currentCircleInfo && !!!pageError ? (
-            <CircleShowcaseComponent circleInfo={currentCircleInfo} />
+            <CircleShowcaseComponent
+              circleInfo={currentCircleInfo}
+              isLoading={isLoading}
+            />
           ) : (
             <div className="w-4/5 flex items-center justify-center text-lg lg:text-lg-xl text-error m-auto flex-col">
               <div>
