@@ -55,9 +55,9 @@ const Selector: React.FC<SelectorProps> = ({
     }),
     wiggle: (custom) => ({
       backgroundImage: [LINEAR_GRADIENT_WHITE, LINEAR_GRADIENT_WHITE],
-      translateX: [null, "-30px", "30px", "0"],
+      translateX: [null, "-20px", "20px", "0"],
 
-      transition: { repeat: Infinity, repeatDelay: 1, delay: custom / 2 },
+      transition: { repeat: Infinity, repeatDelay: 1, delay: custom / 2 + 0.5 },
     }),
   };
 
