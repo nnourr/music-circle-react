@@ -11,7 +11,8 @@ export interface ConsolidatedArtist extends ArtistInterface {
 
 export function consolidateTopArtistsWithPoints(
   circle: CircleInfo,
-  scaleFactor: number = 1.5
+  scaleFactor: number = 1.5,
+  topX: number = 10
 ): ConsolidatedArtist[] {
   const points: { [artist: string]: ConsolidatedArtist } = {};
   const users = circle.users;
@@ -44,7 +45,7 @@ export function consolidateTopArtistsWithPoints(
   );
 
   // Slice the top 10 artists
-  const topArtists = sortedArtists.slice(0, 10);
+  const topArtists = sortedArtists.slice(0, topX);
   // Calculate the total points
   const totalPoints = Object.values(topArtists).reduce(
     (acc, artist) => acc + artist.points,
