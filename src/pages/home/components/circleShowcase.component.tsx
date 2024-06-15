@@ -13,8 +13,6 @@ import Button, {
   btnSizes,
 } from "../../../components/inputs/button.input.component";
 import { useIsMobile } from "../../../providers/isMobile.provider";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 interface CircleShowcaseComponentProps {
   circleInfo: CircleInfo;
