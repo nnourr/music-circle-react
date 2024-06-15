@@ -30,37 +30,52 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
     setIsEntering(false);
   }, 4700);
 
-  const setCurrentCircle = useCallback(
-    async (circleCode: string) => {
-      try {
-        const getFirstCircleResponse = await fetch(
-          `${SERVER_ENDPOINT}/circle/${circleCode}`
-        );
-        if (getFirstCircleResponse.status === 200) {
-          const firstCircle =
-            (await getFirstCircleResponse.json()) as CircleInfo;
-          setCurrentCircleInfo(firstCircle);
-        } else {
-          throw new Error("get circle info response not 200");
-        }
-      } catch (error) {
-        setPageError("Error getting circle " + currentCircleInfo?.circleName);
-        console.error("Error getting circle " + currentCircleInfo);
+  const setCurrentCircle = useCallback(async (circleCode: string) => {
+    try {
+      const getFirstCircleResponse = await fetch(
+        `${SERVER_ENDPOINT}/circle/${circleCode}`
+      );
+      if (getFirstCircleResponse.status === 200) {
+        const firstCircle = (await getFirstCircleResponse.json()) as CircleInfo;
+        setCurrentCircleInfo(firstCircle);
+      } else {
+        throw new Error("get circle info response not 200");
       }
-    },
-    [currentCircleInfo]
-  );
+    } catch (error) {
+      setPageError("Error getting circle ");
+      console.error("Error getting circle " + circleCode);
+    }
+  }, []);
 
   useEffect(() => {
     const getFirstCircle = async () => {
       await setCurrentCircle(userCircles[0].circleCode);
     };
-    if (userCircles.length === 0) {
-      navigate("/joinCircle");
-    } else if (!!!currentCircleInfo) {
-      getFirstCircle();
+    if (!!currentCircleInfo) {
+      return;
     }
-  }, [currentCircleInfo, navigate, setCurrentCircle, userCircles]);
+    if (!!!email) {
+      navigate("/");
+    }
+
+    if (!!!userCircles || userCircles.length === 0) {
+      return;
+    }
+    getFirstCircle();
+  }, [currentCircleInfo, email, navigate, setCurrentCircle, userCircles]);
+
+  useEffect(() => {
+    const paramCircleCode = params.get("circleCode");
+
+    if (
+      !!paramCircleCode &&
+      userCircles.filter((circle) => circle.circleCode === paramCircleCode)
+        .length !== 0
+    ) {
+      setCurrentCircle(paramCircleCode);
+      return;
+    }
+  }, [params, setCurrentCircle, userCircles]);
 
   useEffect(() => {
     const getUserCircles = async (email: string) => {

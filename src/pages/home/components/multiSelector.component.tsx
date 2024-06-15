@@ -7,16 +7,18 @@ import {
   RADIAL_GRADIENT_WHITE,
 } from "../../../config/globals";
 
-interface SelectorProps {
+interface MultiSelectorProps {
   itemsData: string[];
   onSelectionChange: (selectedItems: string[]) => void;
+  onClick?: () => any;
   className?: string;
 }
 
-const Selector: React.FC<SelectorProps> = ({
+const MultiSelector: React.FC<MultiSelectorProps> = ({
   itemsData,
   onSelectionChange,
   className,
+  onClick,
 }) => {
   const [selectedItems, setSelectedItems] = useState<string[]>(itemsData);
 
@@ -55,9 +57,9 @@ const Selector: React.FC<SelectorProps> = ({
     }),
     wiggle: (custom) => ({
       backgroundImage: [LINEAR_GRADIENT_WHITE, LINEAR_GRADIENT_WHITE],
-      translateX: [null, "-30px", "30px", "0"],
+      translateX: [null, "-10px", "20px", "0"],
 
-      transition: { repeat: Infinity, repeatDelay: 1, delay: custom / 2 },
+      transition: { repeat: Infinity, repeatDelay: 1, delay: custom / 2 + 0.5 },
     }),
   };
 
@@ -69,8 +71,9 @@ const Selector: React.FC<SelectorProps> = ({
 
   return (
     <motion.div
-      key="multiSelector"
+      key="multiMultiSelector"
       className={`${className} flex flex-col items-start py-2 lg:py-4 px-4 text-sm font-bold opacity-90 lg:text-lg-sm w-fit`}
+      onClick={onClick}
     >
       <motion.div
         onClick={handleSelectAll}
@@ -116,4 +119,4 @@ const Selector: React.FC<SelectorProps> = ({
   );
 };
 
-export default Selector;
+export default MultiSelector;

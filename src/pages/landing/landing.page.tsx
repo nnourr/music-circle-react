@@ -59,16 +59,15 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
       });
   };
 
-  const navigateToHome = () => {
+  const navigateToHome = (circleCode?: string) => {
+    const searchParamsObject = {
+      noAnimation: params.get("noRedirect") || "false",
+      circleCode: circleCode || "",
+    };
     const navigateObject = {
       pathname: "/home",
-      search: "",
+      search: createSearchParams(searchParamsObject).toString(),
     };
-    if (params.get("noRedirect") === "true") {
-      navigateObject.search = createSearchParams({
-        noAnimation: "true",
-      }).toString();
-    }
     navigate(navigateObject);
   };
 
@@ -219,7 +218,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
             element={
               <MotionCreateCircleState
                 key={"MotionCreateCircleState"}
-                nextState={navigateToHome}
+                goToHome={navigateToHome}
                 prevState={() => {
                   navigate({
                     pathname: "/joinCircle",
