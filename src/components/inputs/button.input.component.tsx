@@ -11,8 +11,8 @@ interface ButtonProps {
 }
 
 export const btnSizes = {
-  xl: "min-w-[20rem] lg:min-w-[24rem] text-lg lg:text-lg-lg",
-  md: "min-w-[10rem] lg:min-w-[16rem] text-base lg:text-lg-base",
+  xl: "min-w-[20rem] lg:min-w-[24rem] text-lg lg:text-lg-lg rounded-3xl",
+  md: "min-w-[10rem] lg:min-w-[16rem] text-base lg:text-lg-base rounded-2xl",
 };
 
 export const Button: React.FC<ButtonProps> = ({
@@ -25,7 +25,7 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const tailwindColour = {
     text: white
-      ? { disabled: "text-white/20", active: "text-white/80" }
+      ? { disabled: "text-white/20", active: "text-white/90" }
       : { disabled: "text-black/20", active: "text-black/80" },
   };
   const motionColour = white ? "255, 255, 255" : "0,0,0";
@@ -35,7 +35,7 @@ export const Button: React.FC<ButtonProps> = ({
         isDisabled
           ? `${tailwindColour.text.disabled}`
           : `${tailwindColour.text.active}`
-      } relative text-center py-1 pb-0 border-2 rounded-3xl w-fit transition-all`}
+      } relative text-center py-1 pb-0 border-2 w-fit transition-all`}
       onClick={onClick}
       transition={{ duration: 0.1 }}
       whileTap={{ scale: 0.95 }}
@@ -47,7 +47,7 @@ export const Button: React.FC<ButtonProps> = ({
         isDisabled
           ? {}
           : {
-              borderColor: `rgba(${motionColour},0.5)`,
+              borderColor: `rgba(${motionColour},${white ? "0.8" : "0.5"})`,
             }
       }
     >

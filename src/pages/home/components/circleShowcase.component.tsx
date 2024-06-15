@@ -35,7 +35,7 @@ export const CircleShowcaseComponent: React.FC<
 
   const { username } = useUser();
   const isMobile = useIsMobile();
-  const [showFilter, setShowFilter] = useState<boolean>(!isMobile);
+  const [showFilter, setShowFilter] = useState<boolean>(false);
 
   useEffect(() => {
     const circleInfoClone = cloneDeep(circleInfo);
@@ -46,7 +46,6 @@ export const CircleShowcaseComponent: React.FC<
   }, [circleInfo, selectedUsers]);
 
   const onSelectionChange = useCallback((selectedUsernames: string[]) => {
-    setShowFilter(true);
     setSelectedUsers(selectedUsernames);
   }, []);
 
@@ -70,9 +69,9 @@ export const CircleShowcaseComponent: React.FC<
     }, 1000);
   };
   return (
-    <motion.div className="mt-1 h-full box-border w-full px-6 py-2 overflow-auto">
-      <div className="mt-3 lg:mt-8 lg:right-0 lg:mr-[10%] lg:max-w-[40%] xl:max-w-[40%] xl:mr-[10%] flex flex-col lg:fixed">
-        <h1 className="font-fancy text-xl lg:text-lg-2xl text-transparent bg-linear-gradient bg-clip-text w-min leading-[1]">
+    <motion.div className="mt-1 flex flex-col h-full box-border w-full px-6 py-2 overflow-auto">
+      <div className="mt-3 lg:mt-8 lg:right-0 lg:mr-[5%] lg:max-w-[40%] xl:max-w-[40%] xl:mr-[10%] flex flex-col lg:fixed">
+        <h1 className="font-fancy text-xl lg:text-lg-2xl text-right text-transparent bg-linear-gradient bg-clip-text w-min leading-[1]">
           {circleInfo.circleName}
         </h1>
         <motion.span
@@ -86,9 +85,7 @@ export const CircleShowcaseComponent: React.FC<
         {!isMobile ? (
           <MultiSelector
             itemsData={circleInfo.users.map((user) => user.username)}
-            onSelectionChange={(selectedUsernames) =>
-              setSelectedUsers(selectedUsernames)
-            }
+            onSelectionChange={onSelectionChange}
           />
         ) : (
           ""
@@ -97,18 +94,13 @@ export const CircleShowcaseComponent: React.FC<
       {/* <pre className="text-white">
         {JSON.stringify(consolidateTopArtistsWithPoints(circleInfo), null, " ")}
       </pre> */}
-      <h2 className="bg-linear-gradient font-bold opacity-80 bg-clip-text text-transparent lg:ml-[7%] xl:ml-[15%] mt-2 text-lg lg:text-lg-xl w-fit">
-        Top 10 Artists:
+      <h2 className="bg-linear-gradient font-bold opacity-80 bg-clip-text text-transparent lg:ml-[5%] xl:ml-[15%] mt-2 text-1xl lg:text-lg-xl w-fit">
+        top 10 artists:
       </h2>
 
       {isMobile ? (
-        <Button
-          btnSize={btnSizes.md}
-          onClick={() => setShowFilter(!showFilter)}
-          className="mt-6"
-          white={true}
-        >
-          Filter by User
+        <Button btnSize={btnSizes.md} white={true} onClick={() => {}}>
+          <span onClick={() => setShowFilter(!showFilter)}>filter by user</span>
           <motion.div
             animate={{
               height: showFilter ? "fit-content" : "0px",
@@ -119,6 +111,10 @@ export const CircleShowcaseComponent: React.FC<
             <MultiSelector
               itemsData={circleInfo.users.map((user) => user.username)}
               onSelectionChange={onSelectionChange}
+              onClick={() => {
+                console.log("hello");
+                setShowFilter(true);
+              }}
             />
           </motion.div>
         </Button>
@@ -128,7 +124,7 @@ export const CircleShowcaseComponent: React.FC<
 
       <StackedBar
         artistsData={consolidatedArtistData}
-        className="h-full w-full lg:max-w-[55%] xl:max-w-[40%] lg:ml-[7%] xl:ml-[15%] mt-4"
+        className="h-full w-full lg:max-w-[50%] xl:max-w-[40%] lg:ml-[5%] xl:ml-[15%] mt-4"
       ></StackedBar>
     </motion.div>
   );

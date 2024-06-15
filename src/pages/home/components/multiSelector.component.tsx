@@ -7,22 +7,24 @@ import {
   RADIAL_GRADIENT_WHITE,
 } from "../../../config/globals";
 
-interface SelectorProps {
+interface MultiSelectorProps {
   itemsData: string[];
   onSelectionChange: (selectedItems: string[]) => void;
+  onClick?: () => any;
   className?: string;
 }
 
-const Selector: React.FC<SelectorProps> = ({
+const MultiSelector: React.FC<MultiSelectorProps> = ({
   itemsData,
   onSelectionChange,
   className,
+  onClick,
 }) => {
   const [selectedItems, setSelectedItems] = useState<string[]>(itemsData);
 
   useEffect(() => {
     onSelectionChange(selectedItems);
-  }, [onSelectionChange, selectedItems]);
+  }, [selectedItems, onSelectionChange]);
 
   const isSelected = (item: string) => selectedItems.includes(item);
 
@@ -69,8 +71,9 @@ const Selector: React.FC<SelectorProps> = ({
 
   return (
     <motion.div
-      key="multiSelector"
+      key="multiMultiSelector"
       className={`${className} flex flex-col items-start py-2 lg:py-4 px-4 text-sm font-bold opacity-90 lg:text-lg-sm w-fit`}
+      onClick={onClick}
     >
       <motion.div
         onClick={handleSelectAll}
@@ -116,4 +119,4 @@ const Selector: React.FC<SelectorProps> = ({
   );
 };
 
-export default Selector;
+export default MultiSelector;

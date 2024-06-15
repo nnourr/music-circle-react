@@ -16,9 +16,10 @@ module.exports = {
         sans: ['LeagueSpartan', 'sans-serif']
       },
       fontSize: {
-        "sm": "1.3rem",
+        "sm": "1.2rem",
         "base": "1.5rem",
         "lg": "2rem",
+        "1xl": "2.5rem",
         "xl": "3.5rem",
         "2xl": ["4rem"],
         "3xl": ["7rem", "1em"],
