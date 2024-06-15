@@ -70,8 +70,8 @@ export const CircleShowcaseComponent: React.FC<
   };
   return (
     <motion.div className="mt-1 flex flex-col h-full box-border w-full px-6 py-2 overflow-auto">
-      <div className="mt-3 lg:mt-8 lg:right-0 lg:mr-[5%] lg:max-w-[40%] xl:max-w-[40%] xl:mr-[10%] flex flex-col lg:fixed">
-        <h1 className="font-fancy text-xl lg:text-lg-2xl text-right text-transparent bg-linear-gradient bg-clip-text w-min leading-[1]">
+      <div className="mt-3 lg:mt-8 lg:right-0 lg:mr-[5%] lg:max-w-[30%] xl:max-w-[40%] xl:mr-[10%] flex flex-col lg:fixed items-end xl:items-start">
+        <h1 className="font-fancy text-xl lg:text-lg-2xl lg:text-right text-transparent bg-linear-gradient bg-clip-text w-fit leading-[1]">
           {circleInfo.circleName}
         </h1>
         <motion.span

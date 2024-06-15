@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { SERVER_ENDPOINT } from "../../../config/globals";
 
 interface JoinCircleStateInterface {
-  nextState: () => void;
+  nextState: (circleCode: string) => void;
   goToCreateCircle: () => void;
 }
 
@@ -36,10 +36,9 @@ const JoinCircleState = React.forwardRef<
         return;
       }
 
-      nextState();
+      nextState(circleCode);
     };
     if (circleCode.length === 20 && !!!circleCodeError) {
-      // this runs a trillion times
       addUserToCircle();
       setCircleCode("");
     }

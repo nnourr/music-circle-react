@@ -7,14 +7,14 @@ import { SERVER_ENDPOINT } from "../../../config/globals";
 import { useUserCircles } from "../../../providers/userCircles.provider";
 
 interface CreateCircleStateProps {
-  nextState: () => any;
+  goToHome: (circleCode: string) => any;
   prevState: () => any;
 }
 
 const CreateCircleState = React.forwardRef<
   HTMLDivElement,
   CreateCircleStateProps
->(({ nextState, prevState }, ref) => {
+>(({ goToHome, prevState }, ref) => {
   const [newCircleName, setNewCircleName] = useState<string>("");
   const [circleNameError, setCircleNameError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -40,7 +40,7 @@ const CreateCircleState = React.forwardRef<
         ...userCircles,
         { circleName: newCircleName, circleCode: newCircleCode },
       ]);
-      nextState();
+      goToHome(newCircleCode);
     };
 
     if (newCircleName.length === 0) {
