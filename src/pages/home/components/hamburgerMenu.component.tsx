@@ -85,7 +85,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
           <h2 className="bg-linear-gradient my-4 bg-clip-text leading-[1] font-fancy text-transparent text-xl lg:text-lg-xl">
             Your Circles
           </h2>
-          <div className="overflow-y-auto h-full">{circleList}</div>
+          <div className="overflow-y-auto h-full w-full">{circleList}</div>
 
           <Button
             className="w-full"
