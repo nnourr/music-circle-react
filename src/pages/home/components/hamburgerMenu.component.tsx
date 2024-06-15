@@ -67,12 +67,13 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
       <motion.div
         initial={{ width: 0 }}
         animate={{ width: isMobile ? "100%" : "34rem" }}
-        className="bg-black h-full px-8 lg:px-14 py-9"
+        className="bg-black flex flex-col h-full px-8 lg:px-14 py-9"
       >
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
+          className="h-full flex flex-col items-start"
         >
           <button onClick={close} className="absolute left-5 top-2 w-7 h-7" />
           <button onClick={close}>
@@ -84,7 +85,8 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
           <h2 className="bg-linear-gradient my-4 bg-clip-text leading-[1] font-fancy text-transparent text-xl lg:text-lg-xl">
             Your Circles
           </h2>
-          {circleList}
+          <div className="overflow-y-auto h-full">{circleList}</div>
+
           <Button
             className="w-full"
             white={true}
