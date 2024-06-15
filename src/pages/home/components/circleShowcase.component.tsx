@@ -114,7 +114,7 @@ export const CircleShowcaseComponent: React.FC<
 
       <StackedBar
         artistsData={consolidatedArtistData}
-        className="h-full w-full lg:max-w-[55%] lg:ml-[7%] xl:ml-[15%] mt-4"
+        className="h-full w-full lg:max-w-[55%] xl:max-w-[40%] lg:ml-[7%] xl:ml-[15%] mt-4"
       ></StackedBar>
     </motion.div>
   );
