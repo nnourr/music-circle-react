@@ -25,6 +25,15 @@ const spotifyVariants: Variants = {
   },
 };
 
+const barVariants: Variants = {
+  hover: {
+    height: "60%",
+  },
+  inView: {
+    opacity: [0.1, 1],
+  },
+};
+
 export const StackedBar: React.FC<StackedBarProps> = ({
   artistsData,
   className,
@@ -32,6 +41,14 @@ export const StackedBar: React.FC<StackedBarProps> = ({
   const isMobile = useIsMobile();
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const [largestTitle, setLargestTitle] = useState<number>(-1);
+
+  if (artistsData.length === 0) {
+    return (
+      <h2 className={`${className} text-lg lg:text-lg-lg text-white`}>
+        Please select a user
+      </h2>
+    );
+  }
 
   const handleBarClick = (index: number) => {
     if (isMobile) {
@@ -48,27 +65,18 @@ export const StackedBar: React.FC<StackedBarProps> = ({
     },
   };
 
-  const artistNameContainerVariants: Variants = {
-    hover: {
-      maxWidth: isMobile ? undefined : "70vw",
-    },
-  };
-
-  const barVariants: Variants = {
-    hover: {
-      height: "60%",
-    },
-    inView: {
-      opacity: [0.1, 1],
-    },
-  };
-
   const gradientBarVariants: Variants = {
     hover: isMobile
       ? {
           width: "5px",
         }
       : {},
+  };
+
+  const artistNameContainerVariants: Variants = {
+    hover: {
+      maxWidth: isMobile ? undefined : "70vw",
+    },
   };
 
   const artistBar = artistsData.map((artist, i, { length }) => {
@@ -145,18 +153,26 @@ export const StackedBar: React.FC<StackedBarProps> = ({
           </motion.div>
           <motion.div
             variants={artistDetailVariants}
-            className="text-base text-white pl-6 pointer-events-[scroll] lg:w-[30rem] lg:overflow-y-auto"
+            className="text-base text-white pl-6 pointer-events-[scroll] lg:overflow-y-auto"
             style={{ opacity: 0 }}
           >
             <motion.div className="w-1/2 lg:w-1/3">
               <img src={artistImage} alt={`${artist.name}`}></img>
             </motion.div>
-            <motion.p variants={artistDetailVariants}>
-              Contributors: {artist.contributors}
+            <motion.p
+              variants={artistDetailVariants}
+              className="leading-1 text-wrap bg-linear-gradient bg-clip-text text-transparent"
+            >
+              Contributors:{" "}
+              <span className="text-white">
+                {artist.contributors.join(", ")}
+              </span>
               <br />
-              Popularity: {artist.popularity}
+              Genres:
+              <span className="text-white"> {artist.genres.join(", ")}</span>
               <br />
-              Genres: {artist.genres}
+              Popularity:{" "}
+              <span className="text-white">{artist.popularity}</span>
             </motion.p>
           </motion.div>
         </motion.div>
