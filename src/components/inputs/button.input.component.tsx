@@ -27,7 +27,6 @@ export const Button: React.FC<ButtonProps> = ({
     text: white
       ? { disabled: "text-white/20", active: "text-white/80" }
       : { disabled: "text-black/20", active: "text-black/80" },
-    borderColour: white ? "border-white/10" : "border-black/10",
   };
   const motionColour = white ? "255, 255, 255" : "0,0,0";
   return (
@@ -41,7 +40,9 @@ export const Button: React.FC<ButtonProps> = ({
       transition={{ duration: 0.1 }}
       whileTap={{ scale: 0.95 }}
       disabled={isDisabled}
-      initial={{ borderColor: `rgba(${motionColour},0.1)` }}
+      initial={{
+        borderColor: `rgba(${motionColour},${white ? "0.5" : "0.1"})`,
+      }}
       whileHover={
         isDisabled
           ? {}

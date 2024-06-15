@@ -22,7 +22,7 @@ const Selector: React.FC<SelectorProps> = ({
 
   useEffect(() => {
     onSelectionChange(selectedItems);
-  }, [selectedItems, onSelectionChange]);
+  }, [onSelectionChange, selectedItems]);
 
   const isSelected = (item: string) => selectedItems.includes(item);
 
@@ -55,7 +55,7 @@ const Selector: React.FC<SelectorProps> = ({
     }),
     wiggle: (custom) => ({
       backgroundImage: [LINEAR_GRADIENT_WHITE, LINEAR_GRADIENT_WHITE],
-      translateX: [null, "-20px", "20px", "0"],
+      translateX: [null, "-10px", "20px", "0"],
 
       transition: { repeat: Infinity, repeatDelay: 1, delay: custom / 2 + 0.5 },
     }),

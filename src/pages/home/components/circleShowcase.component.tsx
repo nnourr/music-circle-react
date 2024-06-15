@@ -5,7 +5,7 @@ import {
   consolidateTopArtistsWithPoints,
 } from "../helpers/consolidateTopArtistsWithPoints.helper";
 import { StackedBar } from "./stackedBar.component";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useUser } from "../../../providers/user.provider";
 import MultiSelector from "./multiSelector.component";
 import { cloneDeep } from "lodash";
@@ -45,6 +45,11 @@ export const CircleShowcaseComponent: React.FC<
     setConsolidatedArtistData(consolidateTopArtistsWithPoints(circleInfoClone));
   }, [circleInfo, selectedUsers]);
 
+  const onSelectionChange = useCallback((selectedUsernames: string[]) => {
+    setShowFilter(true);
+    setSelectedUsers(selectedUsernames);
+  }, []);
+
   if (
     Object.values(consolidatedArtistData).some((value) => {
       return (
@@ -78,32 +83,16 @@ export const CircleShowcaseComponent: React.FC<
         >
           {copyCircleCodeText}
         </motion.span>
-        {isMobile ? (
-          <Button
-            btnSize={btnSizes.md}
-            onClick={() => setShowFilter(!showFilter)}
-            className="mt-6"
-            white={true}
-          >
-            Filter by User
-          </Button>
-        ) : (
-          ""
-        )}
-        <motion.div
-          animate={{
-            height: showFilter ? "fit-content" : "0px",
-            opacity: showFilter ? 1 : 0,
-            pointerEvents: showFilter ? "all" : "none",
-          }}
-        >
+        {!isMobile ? (
           <MultiSelector
             itemsData={circleInfo.users.map((user) => user.username)}
             onSelectionChange={(selectedUsernames) =>
               setSelectedUsers(selectedUsernames)
             }
           />
-        </motion.div>
+        ) : (
+          ""
+        )}
       </div>
       {/* <pre className="text-white">
         {JSON.stringify(consolidateTopArtistsWithPoints(circleInfo), null, " ")}
@@ -111,6 +100,31 @@ export const CircleShowcaseComponent: React.FC<
       <h2 className="bg-linear-gradient font-bold opacity-80 bg-clip-text text-transparent lg:ml-[7%] xl:ml-[15%] mt-2 text-lg lg:text-lg-xl w-fit">
         Top 10 Artists:
       </h2>
+
+      {isMobile ? (
+        <Button
+          btnSize={btnSizes.md}
+          onClick={() => setShowFilter(!showFilter)}
+          className="mt-6"
+          white={true}
+        >
+          Filter by User
+          <motion.div
+            animate={{
+              height: showFilter ? "fit-content" : "0px",
+              opacity: showFilter ? 1 : 0,
+              pointerEvents: showFilter ? "all" : "none",
+            }}
+          >
+            <MultiSelector
+              itemsData={circleInfo.users.map((user) => user.username)}
+              onSelectionChange={onSelectionChange}
+            />
+          </motion.div>
+        </Button>
+      ) : (
+        ""
+      )}
 
       <StackedBar
         artistsData={consolidatedArtistData}
