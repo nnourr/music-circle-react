@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Input from "../../../components/inputs/text.input.component";
 import { useUser } from "../../../providers/user.provider";
 import Button from "../../../components/inputs/button.input.component";
@@ -19,8 +19,8 @@ const JoinCircleState = React.forwardRef<
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { email, username } = useUser();
 
-  useEffect(() => {
-    const addUserToCircle = async () => {
+  const addUserToCircle = useCallback(
+    async (circleCode: string) => {
       setIsLoading(true);
       const addUserToCircleResponse = await fetch(
         `${SERVER_ENDPOINT}/user/${email}/circle/${circleCode}`,
@@ -37,12 +37,24 @@ const JoinCircleState = React.forwardRef<
       }
 
       nextState(circleCode);
-    };
+    },
+    [email, nextState]
+  );
+
+  useEffect(() => {
+    const initialCircleCode = localStorage.getItem("initialCircleCode");
+    if (!!initialCircleCode) {
+      localStorage.removeItem("initialCircleCode");
+      addUserToCircle(initialCircleCode);
+    }
+  }, [addUserToCircle]);
+
+  useEffect(() => {
     if (circleCode.length === 20 && !!!circleCodeError) {
-      addUserToCircle();
+      addUserToCircle(circleCode);
       setCircleCode("");
     }
-  }, [circleCode, circleCodeError, email, nextState]);
+  }, [addUserToCircle, circleCode, circleCodeError, email, nextState]);
 
   useEffect(() => {
     setCircleCodeError(undefined);
