@@ -81,9 +81,9 @@ export const CircleShowcaseComponent: React.FC<
       <div className="mt-3 lg:mt-8 lg:right-0 lg:mr-[5%] lg:max-w-[40%] xl:max-w-[30%] xl:mr-[10%] flex flex-col lg:text-left lg:fixed items-start">
         <ReactFitty
           maxSize={isMobile ? 80 : 200}
-          minSize={isMobile ? 55 : 120}
+          minSize={isMobile ? 55 : 100}
           wrapText={true}
-          className="font-fancy text-xl lg:text-lg-2xl text-transparent bg-linear-gradient bg-clip-text leading-[1]"
+          className="font-fancy text-xl lg:text-lg-2xl text-transparent bg-linear-gradient bg-clip-text leading-[1] w-full"
         >
           {isLoading ? (
             <>
