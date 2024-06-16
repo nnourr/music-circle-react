@@ -83,7 +83,10 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
           if (circles.length > 0) {
             setUserCircles(circles);
 
-            if (params.get("noRedirect") !== "true") {
+            if (
+              params.get("noRedirect") !== "true" &&
+              !!params.get("circleCode")
+            ) {
               navigate("/home");
             }
           }
@@ -148,18 +151,30 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
     }
     window.history.replaceState({}, document.title, "/");
     handleUserLogin(loginCode);
-  }, [setEmail, setUsername, email, navigate, params]);
+  }, [setEmail, setUsername, email, navigate]);
 
   useEffect(() => {
     if (
       !!email &&
       !!username &&
       !!userCircles.length &&
-      params.get("noRedirect") !== "true"
+      params.get("noRedirect") !== "true" &&
+      !!params.get("circleCode")
     ) {
       navigate("/home");
     }
   }, [email, navigate, params, userCircles.length, username]);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const circleCodeParam = queryParams.get("circleCode");
+    if (!!!circleCodeParam) {
+      return;
+    }
+    console.log("hey mamas");
+
+    localStorage.setItem("initialCircleCode", circleCodeParam);
+  }, [params]);
 
   return (
     <motion.div
