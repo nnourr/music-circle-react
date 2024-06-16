@@ -14,7 +14,6 @@ import Button, {
 } from "../../../components/inputs/button.input.component";
 import { useIsMobile } from "../../../providers/isMobile.provider";
 import { ReactFitty } from "react-fitty";
-import { ROOT_URL } from "../../../config/globals";
 
 interface CircleShowcaseComponentProps {
   circleInfo: CircleInfo;
@@ -70,7 +69,7 @@ export const CircleShowcaseComponent: React.FC<
 
   const onCopyCodeClick = () => {
     navigator.clipboard.writeText(
-      `${ROOT_URL}?circleCode=${circleInfo.circleCode}`
+      `${window.location.origin}?circleCode=${circleInfo.circleCode}`
     );
     setCopyCircleCodeText("Code Copied!");
     setTimeout(() => {
