@@ -117,6 +117,7 @@ const CreateCircleState = React.forwardRef<
           Circle Name:&nbsp;
         </Input>
         <Button
+          title="Continue to home page"
           isDisabled={isLoading || !!circleNameError}
           onClick={() => createNewCircle()}
         >

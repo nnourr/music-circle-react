@@ -14,7 +14,9 @@ export const NotFoundPage = () => {
           <FontAwesomeIcon icon={faWarning} className="lg:mr-4" />
           This is not the page you're looking for
         </div>
-        <Button onClick={() => navigate(-1)}>go back</Button>
+        <Button title="Try Again" onClick={() => navigate(-1)}>
+          go back
+        </Button>
       </div>
       <BackgroundGradient />
     </>

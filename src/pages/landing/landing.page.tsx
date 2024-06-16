@@ -209,6 +209,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
             <FontAwesomeIcon icon={faWarning} className="lg:mr-4" /> {pageError}
           </div>
           <Button
+            title="Try Again"
             onClick={() => (window.location.href = window.location.pathname)}
           >
             Try Again
@@ -273,6 +274,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
       )}
       {noRedirect === "true" ? (
         <Button
+          title="Go Back Home"
           onClick={navigateToHome}
           className="!absolute top-[5%] left-6 lg:top-8 lg:left-16 z-20"
           btnSize={btnSizes.md}

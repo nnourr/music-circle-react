@@ -103,7 +103,11 @@ const JoinCircleState = React.forwardRef<
         <p className="text-base lg:text-lg-base text-black/80 text-center">
           or,
         </p>
-        <Button isDisabled={isLoading} onClick={() => goToCreateCircle()}>
+        <Button
+          title="Create New Circle"
+          isDisabled={isLoading}
+          onClick={() => goToCreateCircle()}
+        >
           Create New Circle
         </Button>
       </div>

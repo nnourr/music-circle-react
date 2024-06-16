@@ -2,7 +2,11 @@ import { motion } from "framer-motion";
 import { UserCircle } from "../../../models/userCircle.model";
 import { useIsMobile } from "../../../providers/isMobile.provider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAdd, faClose } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAdd,
+  faArrowRightFromBracket,
+  faClose,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   createSearchParams,
   useNavigate,
@@ -20,7 +24,6 @@ interface HamburgerMenuProps {
 }
 export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
   circles,
-  setCurrentCircle,
   currentCircleCode,
   close,
 }) => {
@@ -32,6 +35,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
     const isCurrentCircle = circle.circleCode === currentCircleCode;
     return (
       <Button
+        title={`go to ${circle.circleName}`}
         btnSize={btnSizes.md}
         white={true}
         onClick={() => {
@@ -87,19 +91,34 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
           </h2>
           <div className="overflow-y-auto h-full w-full">{circleList}</div>
 
-          <Button
-            className="w-full"
-            white={true}
-            btnSize={btnSizes.md}
-            onClick={() => {
-              navigate({
-                pathname: "/joinCircle",
-                search: createSearchParams({ noRedirect: "true" }).toString(),
-              });
-            }}
-          >
-            <FontAwesomeIcon icon={faAdd} />
-          </Button>
+          <div className="flex w-full gap-4">
+            <Button
+              className="w-2/3 !min-w-0"
+              white={true}
+              btnSize={btnSizes.md}
+              title="Join or Create Circle"
+              onClick={() => {
+                navigate({
+                  pathname: "/joinCircle",
+                  search: createSearchParams({ noRedirect: "true" }).toString(),
+                });
+              }}
+            >
+              <FontAwesomeIcon icon={faAdd} />
+            </Button>
+            <Button
+              title="Sign Out"
+              className="w-1/3 !min-w-0"
+              white={true}
+              btnSize={btnSizes.md}
+              onClick={() => {
+                localStorage.removeItem("user");
+                window.location.reload();
+              }}
+            >
+              <FontAwesomeIcon icon={faArrowRightFromBracket} />
+            </Button>
+          </div>
         </motion.div>
       </motion.div>
       <motion.div

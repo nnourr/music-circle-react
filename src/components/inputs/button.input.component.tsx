@@ -8,6 +8,7 @@ interface ButtonProps {
   white?: boolean | undefined;
   isDisabled?: boolean | undefined;
   btnSize?: string;
+  title: string;
 }
 
 export const btnSizes = {
@@ -22,6 +23,7 @@ export const Button: React.FC<ButtonProps> = ({
   white,
   className,
   btnSize = btnSizes.xl,
+  title,
 }) => {
   const tailwindColour = {
     text: white
@@ -50,6 +52,7 @@ export const Button: React.FC<ButtonProps> = ({
               borderColor: `rgba(${motionColour},${white ? "0.8" : "0.5"})`,
             }
       }
+      title={title}
     >
       {children}
     </motion.button>

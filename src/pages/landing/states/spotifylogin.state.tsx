@@ -23,7 +23,10 @@ const SpotifyLoginState = React.forwardRef<
       Music Circle.
     </h1>
 
-    <Button onClick={() => (isLoading ? () => {} : nextState())}>
+    <Button
+      title="Sign in with Spotify"
+      onClick={() => (isLoading ? () => {} : nextState())}
+    >
       {!isLoading ? (
         <>
           Sign-In With{" "}

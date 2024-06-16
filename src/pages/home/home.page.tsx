@@ -131,6 +131,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
                 {pageError}
               </div>
               <Button
+                title="Try Again"
                 onClick={() =>
                   (window.location.href = window.location.pathname)
                 }

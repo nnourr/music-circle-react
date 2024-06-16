@@ -142,7 +142,12 @@ export const CircleShowcaseComponent: React.FC<
       </h2>
 
       {isMobile ? (
-        <Button btnSize={btnSizes.md} white={true} onClick={() => {}}>
+        <Button
+          title="Show User Filters"
+          btnSize={btnSizes.md}
+          white={true}
+          onClick={() => {}}
+        >
           <span onClick={() => setShowFilter(!showFilter)}>filter by user</span>
           <motion.div
             animate={{
