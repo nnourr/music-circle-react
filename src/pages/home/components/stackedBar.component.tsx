@@ -51,9 +51,9 @@ export const StackedBar: React.FC<StackedBarProps> = ({
   }
 
   const handleBarClick = (index: number) => {
-    if (isMobile) {
-      setClickedIndex(index);
-    }
+    // if (isMobile) {
+    setClickedIndex(index);
+    // }
   };
 
   const artistNameVariants: Variants = {
@@ -98,6 +98,7 @@ export const StackedBar: React.FC<StackedBarProps> = ({
         className={`flex items-start min-h-12 lg:max-w-[50vw]`}
         key={artist.name}
         onClick={() => handleBarClick(i)}
+        onMouseEnter={() => handleBarClick(i)}
       >
         <motion.div
           className="bg-linear-gradient w-28 lg:w-48 h-full flex-shrink-0"

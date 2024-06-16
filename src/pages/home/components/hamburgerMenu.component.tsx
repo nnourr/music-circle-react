@@ -98,7 +98,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
           <FontAwesomeIcon
             icon={faCircleXmark}
             onClick={() => setCircleToLeave(circle)}
-            className="z-10 relative px-5 pt-[6px] lg:px-7"
+            className="z-10 relative px-5 pt-[4px] lg:pt-[6px] lg:px-7"
             title="Leave Circle"
           />
         </div>
@@ -122,16 +122,21 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
             key="leaveCircleModal"
             className="h-full w-full z-50 flex justify-center items-center absolute top-0 left-0"
           >
-            <motion.div className="w-[43rem] h-80 bg-black rounded-3xl px-12 py-8 flex flex-col justify-between">
+            <motion.div className="w-[90%] lg:w-[43rem] lg:h-80 border-white/50 border-4 bg-black rounded-3xl gap-12 px-6 lg:px-12 py-4 lg:py-8 flex flex-col justify-between">
               <h2 className="text-white text-1xl lg:text-lg-1xl leading-tight">
-                Are you sure you want to leave {circleToLeave?.circleName}?
+                Are you sure you want to leave{" "}
+                <span className="bg-linear-gradient text-transparent bg-clip-text font-bold">
+                  {circleToLeave?.circleName}
+                </span>
+                ?
               </h2>
-              <div className="flex w-full justify-end gap-6">
+              <div className="flex w-full flex-col lg:flex-row items-end justify-end gap-2 lg:gap-6">
                 <Button
                   onClick={() => setCircleToLeave(undefined)}
                   title="Don't leave Circle"
                   white={true}
                   btnSize={btnSizes.md}
+                  className=" !w-full lg:w-auto"
                 >
                   No, Stay in Circle
                 </Button>
@@ -140,7 +145,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
                   title="Yes, leave Circle"
                   white={true}
                   btnSize={btnSizes.md}
-                  className="overflow-hidden relative"
+                  className="overflow-hidden relative !w-full lg:w-auto"
                 >
                   <div className="absolute top-0 left-0 w-full h-full opacity-40 bg-linear-gradient" />
                   <span className="relative z-20">Yes, Leave Circle</span>
