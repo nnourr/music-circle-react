@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { UserCircle } from "../../../models/userCircle.model";
 import { useIsMobile } from "../../../providers/isMobile.provider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,6 +15,11 @@ import {
 import Button, {
   btnSizes,
 } from "../../../components/inputs/button.input.component";
+import { useCallback, useState } from "react";
+import { SERVER_ENDPOINT } from "../../../config/globals";
+import { useUser } from "../../../providers/user.provider";
+import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
+import { useUserCircles } from "../../../providers/userCircles.provider";
 
 interface HamburgerMenuProps {
   circles: UserCircle[];
@@ -29,7 +34,36 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
 }) => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const { email } = useUser();
+  const { userCircles, setUserCircles } = useUserCircles();
   const [, setSearchParams] = useSearchParams();
+  const [circleToLeave, setCircleToLeave] = useState<UserCircle | undefined>();
+
+  const leaveCircle = useCallback(
+    async (circleCode: string) => {
+      const addUserToCircleResponse = await fetch(
+        `${SERVER_ENDPOINT}/user/${email}/circle/${circleCode}`,
+        { method: "delete" }
+      );
+      if (addUserToCircleResponse.status !== 200) {
+        console.error("unable to leave circle " + circleCode);
+        return;
+      }
+      setCircleToLeave(undefined);
+      setUserCircles(
+        userCircles.filter((circle) => circle.circleCode !== circleCode)
+      );
+      if (circleCode === currentCircleCode) {
+        navigate({
+          pathname: "/home",
+          search: createSearchParams({
+            circleCode: circles[0].circleCode,
+          }).toString(),
+        });
+      }
+    },
+    [circles, currentCircleCode, email, navigate, setUserCircles, userCircles]
+  );
 
   const circleList = circles.map((circle) => {
     const isCurrentCircle = circle.circleCode === currentCircleCode;
@@ -38,14 +72,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
         title={`go to ${circle.circleName}`}
         btnSize={btnSizes.md}
         white={true}
-        onClick={() => {
-          setSearchParams(
-            createSearchParams({
-              circleCode: circle.circleCode,
-            })
-          );
-          close();
-        }}
+        onClick={() => {}}
         className="w-full mb-3 overflow-hidden"
         key={circle.circleCode}
       >
@@ -54,9 +81,27 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
         ) : (
           ""
         )}
-        <p className="z-10 px-5 lg:px-7 text-left relative">
-          {circle.circleName}
-        </p>
+        <div className="flex justify-between">
+          <p
+            onClick={() => {
+              setSearchParams(
+                createSearchParams({
+                  circleCode: circle.circleCode,
+                })
+              );
+              close();
+            }}
+            className="z-10 px-5 lg:px-7 text-left w-full relative"
+          >
+            {circle.circleName}
+          </p>
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            onClick={() => setCircleToLeave(circle)}
+            className="z-10 relative px-5 pt-[4px] lg:pt-[6px] lg:px-7"
+            title="Leave Circle"
+          />
+        </div>
       </Button>
     );
   });
@@ -68,6 +113,54 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
       exit={{ opacity: [null, 0] }}
       className="h-full w-full z-50 bg-black/60 absolute top-0 left-0"
     >
+      <AnimatePresence>
+        {!!circleToLeave ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            key="leaveCircleModal"
+            className="h-full w-full z-50 flex justify-center items-center absolute top-0 left-0"
+          >
+            <motion.div className="w-[90%] lg:w-[43rem] lg:h-80 border-white/50 border-4 bg-black rounded-3xl gap-12 px-6 lg:px-12 py-4 lg:py-8 flex flex-col justify-between">
+              <h2 className="text-white text-1xl lg:text-lg-1xl leading-tight">
+                Are you sure you want to leave{" "}
+                <span className="bg-linear-gradient text-transparent bg-clip-text font-bold">
+                  {circleToLeave?.circleName}
+                </span>
+                ?
+              </h2>
+              <div className="flex w-full flex-col lg:flex-row items-end justify-end gap-2 lg:gap-6">
+                <Button
+                  onClick={() => setCircleToLeave(undefined)}
+                  title="Don't leave Circle"
+                  white={true}
+                  btnSize={btnSizes.md}
+                  className=" !w-full lg:w-auto"
+                >
+                  No, Stay in Circle
+                </Button>
+                <Button
+                  onClick={() => leaveCircle(circleToLeave.circleCode)}
+                  title="Yes, leave Circle"
+                  white={true}
+                  btnSize={btnSizes.md}
+                  className="overflow-hidden relative !w-full lg:w-auto"
+                >
+                  <div className="absolute top-0 left-0 w-full h-full opacity-40 bg-linear-gradient" />
+                  <span className="relative z-20">Yes, Leave Circle</span>
+                </Button>
+              </div>
+            </motion.div>
+            <div
+              className="h-full w-full -z-10 bg-black/60 absolute top-0 left-0"
+              onClick={() => setCircleToLeave(undefined)}
+            ></div>
+          </motion.div>
+        ) : (
+          ""
+        )}
+      </AnimatePresence>
       <motion.div
         initial={{ width: 0 }}
         animate={{ width: isMobile ? "100%" : "34rem" }}
