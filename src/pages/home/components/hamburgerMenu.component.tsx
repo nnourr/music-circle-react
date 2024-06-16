@@ -93,7 +93,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
 
           <div className="flex w-full gap-4">
             <Button
-              className="w-2/3 !min-w-0"
+              className="!w-2/3 !min-w-0"
               white={true}
               btnSize={btnSizes.md}
               title="Join or Create Circle"
@@ -108,7 +108,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
             </Button>
             <Button
               title="Sign Out"
-              className="w-1/3 !min-w-0"
+              className="!w-1/3 !min-w-0"
               white={true}
               btnSize={btnSizes.md}
               onClick={() => {
