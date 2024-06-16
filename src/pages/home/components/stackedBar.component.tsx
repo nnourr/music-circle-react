@@ -153,7 +153,7 @@ export const StackedBar: React.FC<StackedBarProps> = ({
           </motion.div>
           <motion.div
             variants={artistDetailVariants}
-            className="text-base text-white pl-6 pointer-events-[scroll] lg:overflow-y-auto"
+            className="text-base text-white pl-6 pointer-events-[scroll] lg:max-w-[30vw] xl:max-w-[20vw] lg:overflow-y-auto"
             style={{ opacity: 0 }}
           >
             <motion.div className="w-1/2 lg:w-1/3">

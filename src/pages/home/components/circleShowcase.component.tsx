@@ -13,6 +13,7 @@ import Button, {
   btnSizes,
 } from "../../../components/inputs/button.input.component";
 import { useIsMobile } from "../../../providers/isMobile.provider";
+import { ReactFitty } from "react-fitty";
 
 interface CircleShowcaseComponentProps {
   circleInfo: CircleInfo;
@@ -33,7 +34,6 @@ export const CircleShowcaseComponent: React.FC<
   const [selectedUsers, setSelectedUsers] = useState<string[]>(
     circleInfo.users.map((user) => user.username)
   );
-
   const { username } = useUser();
   const isMobile = useIsMobile();
   const [showFilter, setShowFilter] = useState<boolean>(false);
@@ -76,8 +76,13 @@ export const CircleShowcaseComponent: React.FC<
   };
   return (
     <motion.div className="mt-1 flex flex-col h-full box-border w-full px-6 py-2 overflow-auto">
-      <div className="mt-3 lg:mt-8 lg:right-0 lg:mr-[5%] lg:max-w-[30%] xl:max-w-[40%] xl:mr-[10%] flex flex-col lg:fixed items-start lg:items-end xl:items-start">
-        <h1 className="font-fancy text-xl lg:text-lg-2xl lg:text-right text-transparent bg-linear-gradient bg-clip-text w-fit leading-[1]">
+      <div className="mt-3 lg:mt-8 lg:right-0 lg:mr-[5%] lg:max-w-[40%] xl:max-w-[30%] xl:mr-[10%] flex flex-col lg:text-left lg:fixed items-start">
+        <ReactFitty
+          maxSize={isMobile ? 80 : 200}
+          minSize={isMobile ? 55 : 120}
+          wrapText={true}
+          className="font-fancy text-xl lg:text-lg-2xl text-transparent bg-linear-gradient bg-clip-text leading-[1]"
+        >
           {isLoading ? (
             <>
               <motion.span
@@ -111,7 +116,7 @@ export const CircleShowcaseComponent: React.FC<
           ) : (
             circleInfo.circleName
           )}
-        </h1>
+        </ReactFitty>
 
         <motion.span
           className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer w-fit text-nowrap"
