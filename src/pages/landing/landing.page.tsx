@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BackgroundGradient } from "./components/background-gradient.component";
 import React from "react";
 import queryString from "query-string";
@@ -43,7 +43,14 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const { userCircles, setUserCircles } = useUserCircles();
   const [pageError, setPageError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [params] = useSearchParams();
+  const [hashParams] = useSearchParams(); // for hash params
+  const urlParams = new URLSearchParams(window.location.search);
+  const loginCode = urlParams.get("code");
+  const error = urlParams.get("error");
+  const noRedirect = hashParams.get("noRedirect");
+  const initialCircleCodeParam =
+    urlParams.get("circleCode") || hashParams.get("circleCode");
+  const initialCircleCodeStorage = localStorage.getItem("initialCircleCode");
   const navigate = useNavigate();
 
   const scope = "user-top-read user-read-email";
@@ -59,17 +66,20 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
       });
   };
 
-  const navigateToHome = (circleCode?: string) => {
-    const searchParamsObject = {
-      noAnimation: params.get("noRedirect") || "false",
-      circleCode: circleCode || "",
-    };
-    const navigateObject = {
-      pathname: "/home",
-      search: createSearchParams(searchParamsObject).toString(),
-    };
-    navigate(navigateObject);
-  };
+  const navigateToHome = useCallback(
+    (circleCode?: string) => {
+      const searchParamsObject = {
+        noAnimation: noRedirect || "false",
+        circleCode: circleCode || "",
+      };
+      const navigateObject = {
+        pathname: "/home",
+        search: createSearchParams(searchParamsObject).toString(),
+      };
+      navigate(navigateObject);
+    },
+    [navigate, noRedirect]
+  );
 
   useEffect(() => {
     const getUserCircles = async (email: string) => {
@@ -84,8 +94,9 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
             setUserCircles(circles);
 
             if (
-              params.get("noRedirect") !== "true" &&
-              !!params.get("circleCode")
+              noRedirect !== "true" &&
+              !!!initialCircleCodeStorage &&
+              !!!initialCircleCodeParam
             ) {
               navigate("/home");
             }
@@ -97,12 +108,20 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
         console.error("Error getting circles " + error);
       }
     };
-    if (!!!email) {
+    if (!!!email || userCircles.length !== 0) {
       return;
     } else {
       getUserCircles(email);
     }
-  }, [email, navigate, params, setUserCircles]);
+  }, [
+    email,
+    initialCircleCodeParam,
+    initialCircleCodeStorage,
+    navigate,
+    noRedirect,
+    setUserCircles,
+    userCircles.length,
+  ]);
 
   useEffect(() => {
     const handleUserLogin = async (loginCode: string) => {
@@ -135,10 +154,6 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
       }
       setIsLoading(false);
     };
-    const queryParams = new URLSearchParams(window.location.search);
-
-    const loginCode = queryParams.get("code");
-    const error = queryParams.get("error");
 
     if (error !== null) {
       console.error(error);
@@ -151,30 +166,36 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
     }
     window.history.replaceState({}, document.title, "/");
     handleUserLogin(loginCode);
-  }, [setEmail, setUsername, email, navigate]);
+  }, [setEmail, setUsername, email, navigate, error, loginCode]);
 
   useEffect(() => {
     if (
       !!email &&
       !!username &&
       !!userCircles.length &&
-      params.get("noRedirect") !== "true" &&
-      !!params.get("circleCode")
+      noRedirect !== "true" &&
+      !!!initialCircleCodeStorage &&
+      !!!initialCircleCodeParam
     ) {
       navigate("/home");
     }
-  }, [email, navigate, params, userCircles.length, username]);
+  }, [
+    email,
+    initialCircleCodeParam,
+    initialCircleCodeStorage,
+    navigate,
+    noRedirect,
+    userCircles.length,
+    username,
+  ]);
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const circleCodeParam = queryParams.get("circleCode");
-    if (!!!circleCodeParam) {
+    if (!!!initialCircleCodeParam) {
       return;
     }
-    console.log("hey mamas");
 
-    localStorage.setItem("initialCircleCode", circleCodeParam);
-  }, [params]);
+    localStorage.setItem("initialCircleCode", initialCircleCodeParam);
+  }, [initialCircleCodeParam]);
 
   return (
     <motion.div
@@ -218,13 +239,14 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
                 goToCreateCircle={() => {
                   navigate({
                     pathname: "/createCircle",
-                    search: createSearchParams(params).toString(),
+                    search: createSearchParams(hashParams).toString(),
                   });
                 }}
                 variants={landingPageVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
+                initialCircleCode={initialCircleCodeStorage}
               />
             }
           />
@@ -237,7 +259,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
                 prevState={() => {
                   navigate({
                     pathname: "/joinCircle",
-                    search: createSearchParams(params).toString(),
+                    search: createSearchParams(hashParams).toString(),
                   });
                 }}
                 variants={landingPageVariants}
@@ -249,7 +271,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
           />
         </Routes>
       )}
-      {params.get("noRedirect") === "true" ? (
+      {noRedirect === "true" ? (
         <Button
           onClick={navigateToHome}
           className="!absolute top-[5%] left-6 lg:top-8 lg:left-16 z-20"

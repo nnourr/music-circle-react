@@ -8,12 +8,13 @@ import { SERVER_ENDPOINT } from "../../../config/globals";
 interface JoinCircleStateInterface {
   nextState: (circleCode: string) => void;
   goToCreateCircle: () => void;
+  initialCircleCode: string | null;
 }
 
 const JoinCircleState = React.forwardRef<
   HTMLDivElement,
   JoinCircleStateInterface
->(({ nextState, goToCreateCircle }, ref) => {
+>(({ nextState, goToCreateCircle, initialCircleCode }, ref) => {
   const [circleCode, setCircleCode] = useState<string>("");
   const [circleCodeError, setCircleCodeError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -42,12 +43,11 @@ const JoinCircleState = React.forwardRef<
   );
 
   useEffect(() => {
-    const initialCircleCode = localStorage.getItem("initialCircleCode");
     if (!!initialCircleCode) {
-      localStorage.removeItem("initialCircleCode");
       addUserToCircle(initialCircleCode);
+      // window.localStorage.removeItem("initialCircleCode");
     }
-  }, [addUserToCircle]);
+  }, [addUserToCircle, initialCircleCode]);
 
   useEffect(() => {
     if (circleCode.length === 20 && !!!circleCodeError) {

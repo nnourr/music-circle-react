@@ -26,6 +26,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const { email } = useUser();
   const navigate = useNavigate();
   const [params] = useSearchParams();
+  window.localStorage.removeItem("initialCircleCode");
 
   setTimeout(() => {
     setIsEntering(false);

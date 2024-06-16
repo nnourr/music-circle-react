@@ -1,7 +1,7 @@
 export const SPOTIFY_CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 export const SPOTIFY_REDIRECT_URI = process.env.REACT_APP_SPOTIFY_REDIRECT_URI;
 export const SERVER_ENDPOINT = process.env.REACT_APP_SERVER_ENDPOINT;
-export const ROOT_URL = process.env.ROOT_URL;
+export const ROOT_URL = process.env.REACT_APP_ROOT_URL;
 
 export const RADIAL_GRADIENT =
   "radial-gradient(50% 50% at 50% 50%, rgb(41 235 38) 0%, rgb(63 177 171) 70%, rgb(41 195 159) 100%)";
