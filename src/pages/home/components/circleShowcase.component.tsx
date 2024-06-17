@@ -191,25 +191,6 @@ export const CircleShowcaseComponent: React.FC<
             <CirclePopularity circlePopularityData={circlePopularityData} />
           </div>
         ) : (
-          // <Button
-          //   title="Show Circle Popularity"
-          //   btnSize={btnSizes.md}
-          //   white={true}
-          //   onClick={() => {}}
-          // >
-          //   <span onClick={() => setShowFilter(!showFilter)}>
-          //     Show Popularity
-          //   </span>
-          //   <motion.div
-          //     animate={{
-          //       height: showFilter ? "fit-content" : "0px",
-          //       opacity: showFilter ? 1 : 0,
-          //       pointerEvents: showFilter ? "auto" : "none",
-          //     }}
-          //   >
-          //     <CirclePopularity circlePopularityData={circlePopularityData} />
-          //   </motion.div>
-          // </Button>
           ""
         )}
       </div>
@@ -254,18 +235,6 @@ export const CircleShowcaseComponent: React.FC<
       ) : (
         ""
       )}
-      {/* <div className="overflow-x-auto fit-content">
-        <div className="inline-block h-[100vh]">
-          <StackedBar
-            artistsData={consolidatedArtistData}
-            className="w-full h-full lg:max-w-[50%] xl:max-w-[40%] lg:ml-[5%] xl:ml-[15%] mt-4"
-          ></StackedBar>
-        </div>
-        <CirclePopularity
-          className="w-full h-full relative -right-full top-0"
-          circlePopularityData={circlePopularityData}
-        />
-      </div> */}
     </motion.div>
   );
 };
