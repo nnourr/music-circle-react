@@ -130,12 +130,11 @@ export const StackedBar: React.FC<StackedBarProps> = ({
               variants={artistNameVariants}
               rel="noreferrer"
               title="Listen on Spotify"
-              className="inline-block font-bold w-full overflow-ellipsis overflow-hidden"
+              className="inline-block font-bold w-full overflow-ellipsis overflow-hidden bg-clip-text"
               style={{
                 backgroundImage:
                   "linear-gradient(215deg, #ffffff 0%, #ffffff 55%, #ffffff 100%)",
                 color: "rgba(0,0,0,0)",
-                backgroundClip: "text",
                 textWrap: "nowrap",
                 fontSize: !isMobile
                   ? `${Math.max(artist.weightedPoints * 2.5, 24)}px`
