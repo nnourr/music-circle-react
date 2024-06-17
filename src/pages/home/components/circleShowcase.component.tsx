@@ -198,7 +198,7 @@ export const CircleShowcaseComponent: React.FC<
         <motion.h2
           initial={{ opacity: 0.3 }}
           whileInView={{ opacity: 0.8 }}
-          viewport={{ margin: "400px -200px 400px -200px" }}
+          viewport={{ margin: "400px -150px 400px -150px" }}
           onViewportEnter={() => {
             handleShowArtists();
           }}
@@ -209,7 +209,7 @@ export const CircleShowcaseComponent: React.FC<
         <motion.h2
           initial={{ opacity: isMobile ? 0.3 : 0 }}
           whileInView={{ opacity: isMobile ? 0.8 : 0 }}
-          viewport={{ margin: "400px -200px 400px -200px" }}
+          viewport={{ margin: "400px -150px 400px -150px" }}
           onViewportEnter={() => {
             handleShowPopularity();
           }}
