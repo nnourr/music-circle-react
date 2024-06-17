@@ -232,7 +232,7 @@ export const CircleShowcaseComponent: React.FC<
           onViewportEnter={() => {
             handleShowPopularity();
           }}
-          className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text text-transparent lg:ml-[3%] xl:ml-[13%] text-1xl lg:text-lg-xl w-fit"
+          className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text pl-6 text-transparent lg:ml-[3%] xl:ml-[13%] text-1xl lg:text-lg-xl w-fit"
         >
           circle popularity:
         </motion.h2>
@@ -248,7 +248,7 @@ export const CircleShowcaseComponent: React.FC<
       )}
       {showPopularity && isMobile ? (
         <CirclePopularity
-          className="w-full"
+          className="w-fit mt-6 mx-6"
           circlePopularityData={circlePopularityData}
         />
       ) : (
