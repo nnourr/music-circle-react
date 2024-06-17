@@ -25,15 +25,6 @@ const spotifyVariants: Variants = {
   },
 };
 
-const barVariants: Variants = {
-  hover: {
-    height: "60%",
-  },
-  inView: {
-    opacity: [0.1, 1],
-  },
-};
-
 export const StackedBar: React.FC<StackedBarProps> = ({
   artistsData,
   className,
@@ -51,9 +42,7 @@ export const StackedBar: React.FC<StackedBarProps> = ({
   }
 
   const handleBarClick = (index: number) => {
-    if (isMobile) {
-      setClickedIndex(index);
-    }
+    setClickedIndex(index);
   };
 
   const artistNameVariants: Variants = {
@@ -62,6 +51,15 @@ export const StackedBar: React.FC<StackedBarProps> = ({
       backgroundImage: LINEAR_GRADIENT,
       lineHeight: "50px",
       textWrap: "balance",
+    },
+  };
+
+  const barVariants: Variants = {
+    hover: {
+      height: isMobile ? "60vh" : "60%",
+    },
+    inView: {
+      opacity: [0.1, 1],
     },
   };
 
@@ -98,6 +96,7 @@ export const StackedBar: React.FC<StackedBarProps> = ({
         className={`flex items-start min-h-12 lg:max-w-[50vw]`}
         key={artist.name}
         onClick={() => handleBarClick(i)}
+        onMouseEnter={() => handleBarClick(i)}
       >
         <motion.div
           className="bg-linear-gradient w-28 lg:w-48 h-full flex-shrink-0"
@@ -168,10 +167,13 @@ export const StackedBar: React.FC<StackedBarProps> = ({
               </span>
               <br />
               Genres:
-              <span className="text-white"> {artist.genres.join(", ")}</span>
+              <span className="text-white">
+                {" "}
+                {isMobile ? artist.genres[0] : artist.genres.join(", ")}
+              </span>
               <br />
               Popularity:{" "}
-              <span className="text-white">{artist.popularity}</span>
+              <span className="text-white">{artist.popularity}/100</span>
             </motion.p>
           </motion.div>
         </motion.div>
@@ -183,6 +185,8 @@ export const StackedBar: React.FC<StackedBarProps> = ({
     <motion.div
       onMouseLeave={() => setClickedIndex(null)}
       className={`${className}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
     >
       {artistBar}
     </motion.div>
