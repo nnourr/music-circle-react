@@ -23,7 +23,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const [pageError, setPageError] = useState<string | undefined>();
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { email } = useUser();
+  const { userId } = useUser();
   const navigate = useNavigate();
   const [params] = useSearchParams();
   window.localStorage.removeItem("initialCircleCode");
@@ -58,7 +58,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
     if (!!currentCircleInfo) {
       return;
     }
-    if (!!!email) {
+    if (!!!userId) {
       navigate("/");
     }
 
@@ -66,7 +66,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
       return;
     }
     getFirstCircle();
-  }, [currentCircleInfo, email, navigate, setCurrentCircle, userCircles]);
+  }, [currentCircleInfo, userId, navigate, setCurrentCircle, userCircles]);
 
   useEffect(() => {
     const paramCircleCode = params.get("circleCode");
@@ -82,11 +82,11 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
   }, [params, setCurrentCircle, userCircles]);
 
   useEffect(() => {
-    const getUserCircles = async (email: string) => {
+    const getUserCircles = async (userId: string) => {
       setIsLoading(true);
       try {
         const getUserCirclesResponse = await fetch(
-          `${SERVER_ENDPOINT}/user/${email}/circles`
+          `${SERVER_ENDPOINT}/user/${userId}/circles`
         );
         if (getUserCirclesResponse.status === 200) {
           const circles = (await getUserCirclesResponse.json()) as UserCircle[];
@@ -99,12 +99,12 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
       }
       setIsLoading(false);
     };
-    if (!!!email) {
+    if (!!!userId) {
       navigate("/");
       return;
     }
-    getUserCircles(email);
-  }, [email, navigate, setUserCircles]);
+    getUserCircles(userId);
+  }, [userId, navigate, setUserCircles]);
 
   return (
     <div ref={ref} className="h-full w-full">

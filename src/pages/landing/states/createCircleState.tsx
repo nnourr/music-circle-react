@@ -18,13 +18,13 @@ const CreateCircleState = React.forwardRef<
   const [newCircleName, setNewCircleName] = useState<string>("");
   const [circleNameError, setCircleNameError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { email, username } = useUser();
+  const { userId, username } = useUser();
   const { userCircles, setUserCircles } = useUserCircles();
 
   const createNewCircle = async () => {
     const addUserToCircle = async (circleCode: string) => {
       const addUserToCircleResponse = await fetch(
-        `${SERVER_ENDPOINT}/user/${email}/circle/${circleCode}`,
+        `${SERVER_ENDPOINT}/user/${userId}/circle/${circleCode}`,
         { method: "post" }
       );
       if (addUserToCircleResponse.status === 404) {
