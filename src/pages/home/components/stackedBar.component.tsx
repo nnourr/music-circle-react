@@ -56,7 +56,7 @@ export const StackedBar: React.FC<StackedBarProps> = ({
 
   const barVariants: Variants = {
     hover: {
-      height: isMobile ? "70%" : "60%",
+      height: isMobile ? "60vh" : "60%",
     },
     inView: {
       opacity: [0.1, 1],
@@ -174,7 +174,7 @@ export const StackedBar: React.FC<StackedBarProps> = ({
               </span>
               <br />
               Popularity:{" "}
-              <span className="text-white">{artist.popularity}</span>
+              <span className="text-white">{artist.popularity}/100</span>
             </motion.p>
           </motion.div>
         </motion.div>
@@ -186,6 +186,8 @@ export const StackedBar: React.FC<StackedBarProps> = ({
     <motion.div
       onMouseLeave={() => setClickedIndex(null)}
       className={`${className}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
     >
       {artistBar}
     </motion.div>

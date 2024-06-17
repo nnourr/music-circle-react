@@ -77,7 +77,7 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
   return (
     <motion.div
       key="multiMultiSelector"
-      className={`${className} flex flex-col items-start py-2 lg:py-4 px-4 text-sm font-bold opacity-90 lg:text-lg-sm w-fit`}
+      className={`${className} flex flex-col items-start text-sm font-bold opacity-90 lg:text-lg-sm w-fit`}
       onClick={onClick}
     >
       <motion.div
