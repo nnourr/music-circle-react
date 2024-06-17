@@ -7,9 +7,9 @@ import React, {
 } from "react";
 
 interface UserContextInterface {
-  email: string | undefined;
+  userId: string | undefined;
   username: string | undefined;
-  setEmail: (email: string | undefined) => void;
+  setUserId: (userId: string | undefined) => void;
   setUsername: (username: string | undefined) => void;
 }
 
@@ -28,11 +28,11 @@ interface UserProviderProps {
 }
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [email, setEmail] = useState<string | undefined>(() => {
+  const [userId, setUserId] = useState<string | undefined>(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const storedUserObj = JSON.parse(storedUser);
-      return storedUserObj.email || undefined;
+      return storedUserObj.userId || undefined;
     }
     return undefined;
   });
@@ -47,16 +47,16 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   });
 
   useEffect(() => {
-    const user = { email, username };
-    if (email || username) {
+    const user = { userId, username };
+    if (userId || username) {
       localStorage.setItem("user", JSON.stringify(user));
     } else {
       localStorage.removeItem("user");
     }
-  }, [email, username]);
+  }, [userId, username]);
 
   return (
-    <UserContext.Provider value={{ email, username, setEmail, setUsername }}>
+    <UserContext.Provider value={{ userId, username, setUserId, setUsername }}>
       {children}
     </UserContext.Provider>
   );

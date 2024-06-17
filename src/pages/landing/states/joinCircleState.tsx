@@ -18,13 +18,13 @@ const JoinCircleState = React.forwardRef<
   const [circleCode, setCircleCode] = useState<string>("");
   const [circleCodeError, setCircleCodeError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { email, username } = useUser();
+  const { userId, username } = useUser();
 
   const addUserToCircle = useCallback(
     async (circleCode: string) => {
       setIsLoading(true);
       const addUserToCircleResponse = await fetch(
-        `${SERVER_ENDPOINT}/user/${email}/circle/${circleCode}`,
+        `${SERVER_ENDPOINT}/user/${userId}/circle/${circleCode}`,
         { method: "post" }
       );
       if (addUserToCircleResponse.status === 404) {
@@ -39,7 +39,7 @@ const JoinCircleState = React.forwardRef<
 
       nextState(circleCode);
     },
-    [email, nextState]
+    [userId, nextState]
   );
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const JoinCircleState = React.forwardRef<
       addUserToCircle(circleCode);
       setCircleCode("");
     }
-  }, [addUserToCircle, circleCode, circleCodeError, email, nextState]);
+  }, [addUserToCircle, circleCode, circleCodeError, userId, nextState]);
 
   useEffect(() => {
     setCircleCodeError(undefined);

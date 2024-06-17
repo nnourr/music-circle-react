@@ -39,7 +39,7 @@ const errorVariants = {
 };
 
 const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
-  const { email, username, setEmail, setUsername } = useUser();
+  const { userId, username, setUserId, setUsername } = useUser();
   const { userCircles, setUserCircles } = useUserCircles();
   const [pageError, setPageError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -82,10 +82,10 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
   );
 
   useEffect(() => {
-    const getUserCircles = async (email: string) => {
+    const getUserCircles = async (userId: string) => {
       try {
         const getUserCirclesResponse = await fetch(
-          `${SERVER_ENDPOINT}/user/${email}/circles`
+          `${SERVER_ENDPOINT}/user/${userId}/circles`
         );
         if (getUserCirclesResponse.status === 200) {
           const circles = (await getUserCirclesResponse.json()) as UserCircle[];
@@ -108,13 +108,13 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
         console.error("Error getting circles " + error);
       }
     };
-    if (!!!email || userCircles.length !== 0) {
+    if (!!!userId || userCircles.length !== 0) {
       return;
     } else {
-      getUserCircles(email);
+      getUserCircles(userId);
     }
   }, [
-    email,
+    userId,
     initialCircleCodeParam,
     initialCircleCodeStorage,
     navigate,
@@ -137,12 +137,12 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
 
         if (setUserResponse.status === 200) {
           const userObj = (await setUserResponse.json()) as userLoginInterface;
-          const email = userObj.email;
+          const userId = userObj.userId;
           const username = userObj.username;
-          if (!!!email || !!!username) {
-            throw new Error("email or username not found in response");
+          if (!!!userId || !!!username) {
+            throw new Error("userId or username not found in response");
           }
-          setEmail(email);
+          setUserId(userId);
           setUsername(userObj.username);
           navigate("/joinCircle");
         } else {
@@ -166,11 +166,11 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
     }
     window.history.replaceState({}, document.title, "/");
     handleUserLogin(loginCode);
-  }, [setEmail, setUsername, email, navigate, error, loginCode]);
+  }, [setUserId, setUsername, userId, navigate, error, loginCode]);
 
   useEffect(() => {
     if (
-      !!email &&
+      !!userId &&
       !!username &&
       !!userCircles.length &&
       noRedirect !== "true" &&
@@ -180,7 +180,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
       navigate("/home");
     }
   }, [
-    email,
+    userId,
     initialCircleCodeParam,
     initialCircleCodeStorage,
     navigate,

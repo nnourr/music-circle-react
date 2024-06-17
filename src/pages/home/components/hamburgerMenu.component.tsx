@@ -34,7 +34,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
 }) => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
-  const { email } = useUser();
+  const { userId } = useUser();
   const { userCircles, setUserCircles } = useUserCircles();
   const [, setSearchParams] = useSearchParams();
   const [circleToLeave, setCircleToLeave] = useState<UserCircle | undefined>();
@@ -42,7 +42,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
   const leaveCircle = useCallback(
     async (circleCode: string) => {
       const addUserToCircleResponse = await fetch(
-        `${SERVER_ENDPOINT}/user/${email}/circle/${circleCode}`,
+        `${SERVER_ENDPOINT}/user/${userId}/circle/${circleCode}`,
         { method: "delete" }
       );
       if (addUserToCircleResponse.status !== 200) {
@@ -62,7 +62,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
         });
       }
     },
-    [circles, currentCircleCode, email, navigate, setUserCircles, userCircles]
+    [circles, currentCircleCode, userId, navigate, setUserCircles, userCircles]
   );
 
   const circleList = circles.map((circle) => {
