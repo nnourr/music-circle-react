@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useCallback, useEffect, useState } from "react";
-import MotionEnterAnimation from "./states/enterAnimation.state";
+import MotionHomeState from "./states/home.state";
 import { NavbarComponent } from "./components/navbar.component";
-import { CircleShowcaseComponent } from "./components/circleShowcase.component";
+import { CircleShowcaseState } from "./states/circleShowcase.state";
 import { useUserCircles } from "../../providers/userCircles.provider";
 import { CircleInfo } from "./models/circleInfo.model";
 import { SERVER_ENDPOINT } from "../../config/globals";
@@ -15,7 +15,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { HamburgerMenu } from "./components/hamburgerMenu.component";
 
 const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
-  const [isEntering, setIsEntering] = useState<boolean>(true);
   const [currentCircleInfo, setCurrentCircleInfo] = useState<
     CircleInfo | undefined
   >();
@@ -27,10 +26,6 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   window.localStorage.removeItem("initialCircleCode");
-
-  setTimeout(() => {
-    setIsEntering(false);
-  }, 4700);
 
   const setCurrentCircle = useCallback(async (circleCode: string) => {
     setIsLoading(true);
@@ -52,9 +47,6 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
   }, []);
 
   useEffect(() => {
-    const getFirstCircle = async () => {
-      await setCurrentCircle(userCircles[0].circleCode);
-    };
     if (!!currentCircleInfo) {
       return;
     }
@@ -65,7 +57,6 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
     if (!!!userCircles || userCircles.length === 0) {
       return;
     }
-    getFirstCircle();
   }, [currentCircleInfo, userId, navigate, setCurrentCircle, userCircles]);
 
   useEffect(() => {
@@ -107,41 +98,32 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
   }, [userId, navigate, setUserCircles]);
 
   return (
-    <div ref={ref} className="h-full w-full">
-      {isEntering && params.get("noAnimation") !== "true" ? (
-        <div className="h-full w-full flex items-center justify-center">
-          <MotionEnterAnimation />
-        </div>
-      ) : (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="h-full w-full flex flex-col"
-        >
-          <NavbarComponent menuClicked={() => setShowMenu(true)} />
-          {!!currentCircleInfo && !!!pageError ? (
-            <CircleShowcaseComponent
+    <div ref={ref} className="h-full w-full flex flex-col">
+      {!!!pageError ? (
+        !!currentCircleInfo ? (
+          <>
+            <NavbarComponent menuClicked={() => setShowMenu(true)} />
+            <CircleShowcaseState
               circleInfo={currentCircleInfo}
               isLoading={isLoading}
             />
-          ) : (
-            <div className="w-4/5 flex items-center justify-center text-lg lg:text-lg-xl text-error m-auto flex-col">
-              <div>
-                <FontAwesomeIcon icon={faWarning} className="lg:mr-4" />{" "}
-                {pageError}
-              </div>
-              <Button
-                title="Try Again"
-                onClick={() =>
-                  (window.location.href = window.location.pathname)
-                }
-                white={true}
-              >
-                Try Again
-              </Button>
-            </div>
-          )}
-        </motion.div>
+          </>
+        ) : (
+          <MotionHomeState />
+        )
+      ) : (
+        <div className="w-4/5 flex items-center justify-center text-lg lg:text-lg-xl text-error m-auto flex-col">
+          <div>
+            <FontAwesomeIcon icon={faWarning} className="lg:mr-4" /> {pageError}
+          </div>
+          <Button
+            title="Try Again"
+            onClick={() => (window.location.href = window.location.pathname)}
+            white={true}
+          >
+            Try Again
+          </Button>
+        </div>
       )}
       <AnimatePresence>
         {showMenu ? (

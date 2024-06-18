@@ -4,10 +4,10 @@ import {
   ConsolidatedArtist,
   consolidateTopArtistsWithPoints,
 } from "../helpers/consolidateTopArtistsWithPoints.helper";
-import { StackedBar } from "./stackedBar.component";
+import { StackedBar } from "../components/stackedBar.component";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useUser } from "../../../providers/user.provider";
-import MultiSelector from "./multiSelector.component";
+import MultiSelector from "../components/multiSelector.component";
 import { cloneDeep } from "lodash";
 import Button, {
   btnSizes,
@@ -18,15 +18,16 @@ import {
   CirclePopularityData,
   getCirclePopularityData,
 } from "../helpers/getCirclePopularity";
-import { CirclePopularity } from "./circlePopularity.component";
+import { CirclePopularity } from "../components/circlePopularity.component";
 
-interface CircleShowcaseComponentProps {
+interface CircleShowcaseStateProps {
   circleInfo: CircleInfo;
   isLoading: boolean;
 }
-export const CircleShowcaseComponent: React.FC<
-  CircleShowcaseComponentProps
-> = ({ circleInfo, isLoading }) => {
+export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
+  circleInfo,
+  isLoading,
+}) => {
   const [copyCircleCodeText, setCopyCircleCodeText] = useState<string>();
   useEffect(() => {
     setCopyCircleCodeText(`#${circleInfo.circleCode}`);

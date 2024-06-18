@@ -77,11 +77,12 @@ const CreateCircleState = React.forwardRef<
 
   useEffect(() => {
     setCircleNameError(undefined);
-    if (newCircleName === "") {
+    const trimmedCircleCode = newCircleName.trim();
+    if (trimmedCircleCode === "") {
       return;
     }
     const invalidCodePattern = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
-    if (invalidCodePattern.test(newCircleName)) {
+    if (invalidCodePattern.test(trimmedCircleCode)) {
       setCircleNameError("sorry, no special characters.");
       return;
     }

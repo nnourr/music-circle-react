@@ -7,20 +7,13 @@ import {
   faArrowRightFromBracket,
   faClose,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  createSearchParams,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import Button, {
   btnSizes,
 } from "../../../components/inputs/button.input.component";
-import { ReactNode, useCallback, useState } from "react";
-import { SERVER_ENDPOINT } from "../../../config/globals";
-import { useUser } from "../../../providers/user.provider";
-import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
-import { useUserCircles } from "../../../providers/userCircles.provider";
+import { ReactNode, useState } from "react";
 import { ModalComponent } from "../../../components/modal.component";
+import { UserCircleListComponent } from "./userCircleList.component";
 
 interface HamburgerMenuProps {
   circles: UserCircle[];
@@ -35,88 +28,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
 }) => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
-  const { userId } = useUser();
-  const { userCircles, setUserCircles } = useUserCircles();
-  const [, setSearchParams] = useSearchParams();
-  const [circleToLeave, setCircleToLeave] = useState<UserCircle | undefined>();
   const [showSignOut, setShowSignOut] = useState<boolean>(false);
-
-  const leaveCircle = useCallback(
-    async (circleCode: string) => {
-      const addUserToCircleResponse = await fetch(
-        `${SERVER_ENDPOINT}/user/${userId}/circle/${circleCode}`,
-        { method: "delete" }
-      );
-      if (addUserToCircleResponse.status !== 200) {
-        console.error("unable to leave circle " + circleCode);
-        return;
-      }
-      setCircleToLeave(undefined);
-      setUserCircles(
-        userCircles.filter((circle) => circle.circleCode !== circleCode)
-      );
-      if (circleCode === currentCircleCode) {
-        navigate({
-          pathname: "/home",
-          search: createSearchParams({
-            circleCode: circles[0].circleCode,
-          }).toString(),
-        });
-      }
-    },
-    [circles, currentCircleCode, userId, navigate, setUserCircles, userCircles]
-  );
-
-  const circleList = circles.map((circle) => {
-    const isCurrentCircle = circle.circleCode === currentCircleCode;
-    return (
-      <Button
-        title={`go to ${circle.circleName}`}
-        btnSize={btnSizes.md}
-        white={true}
-        onClick={() => {}}
-        className="w-full mb-3 overflow-hidden"
-        key={circle.circleCode}
-      >
-        {isCurrentCircle ? (
-          <div className="absolute top-0 left-0 w-full h-full opacity-40 bg-linear-gradient" />
-        ) : (
-          ""
-        )}
-        <div className="flex justify-between">
-          <p
-            onClick={() => {
-              setSearchParams(
-                createSearchParams({
-                  circleCode: circle.circleCode,
-                })
-              );
-              close();
-            }}
-            className="z-10 px-5 lg:px-7 text-left w-full relative"
-          >
-            {circle.circleName}
-          </p>
-          <FontAwesomeIcon
-            icon={faCircleXmark}
-            onClick={() => setCircleToLeave(circle)}
-            className="z-10 relative px-5 pt-[4px] lg:pt-[6px] lg:px-7"
-            title="Leave Circle"
-          />
-        </div>
-      </Button>
-    );
-  });
-
-  const leaveCircleModalText: ReactNode = (
-    <span>
-      Are you sure you want to leave{" "}
-      <span className="bg-linear-gradient text-transparent bg-clip-text font-bold">
-        {circleToLeave?.circleName}
-      </span>
-      ?
-    </span>
-  );
 
   const signOutModalText: ReactNode = (
     <h2>Are you sure you want to sign out?</h2>
@@ -130,29 +42,6 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
       className="h-full w-full z-50 bg-black/60 absolute top-0 left-0"
     >
       <AnimatePresence>
-        {!!circleToLeave ? (
-          <ModalComponent
-            cancelAction={{
-              actionText: "No, Stay in Circle",
-              actionTitle: "I do not want to leave this circle",
-              onAction: () => {
-                setCircleToLeave(undefined);
-              },
-            }}
-            confirmAction={{
-              actionText: "Yes, Leave Circle",
-              actionTitle: "I want to leave this Circle",
-              onAction: () => {
-                leaveCircle(circleToLeave.circleCode);
-              },
-            }}
-            promptText={leaveCircleModalText}
-            onClose={() => setCircleToLeave(undefined)}
-            key={"LeaveCircleModal"}
-          />
-        ) : (
-          ""
-        )}
         {showSignOut ? (
           <ModalComponent
             cancelAction={{
@@ -171,7 +60,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
               },
             }}
             promptText={signOutModalText}
-            onClose={() => setCircleToLeave(undefined)}
+            onClose={() => setShowSignOut(false)}
             key={"SignOutModal"}
           />
         ) : (
@@ -214,7 +103,12 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
           <h2 className="bg-linear-gradient my-4 bg-clip-text leading-[1] font-fancy text-transparent text-xl lg:text-lg-xl">
             Your Circles
           </h2>
-          <div className="overflow-y-auto h-full w-full">{circleList}</div>
+          <UserCircleListComponent
+            currentCircleCode={currentCircleCode}
+            onCircleClick={close}
+            className="overflow-y-auto h-full w-full"
+            btnSize={btnSizes.md}
+          />
 
           <Button
             className="w-full"
