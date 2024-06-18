@@ -7,7 +7,7 @@ export interface UserObscurity {
 
 export interface CirclePopularityData {
   averagePopularity: number;
-  obscurityRanking: UserObscurity[];
+  userPopularityRanking: UserObscurity[];
 }
 
 export const getCirclePopularityData = (
@@ -15,7 +15,7 @@ export const getCirclePopularityData = (
 ): CirclePopularityData => {
   const circlePopularity: CirclePopularityData = {
     averagePopularity: 0,
-    obscurityRanking: [],
+    userPopularityRanking: [],
   };
 
   if (circle.users.length === 0) {
@@ -30,7 +30,7 @@ export const getCirclePopularityData = (
       averagePopularity: 0,
       username: user.username,
     };
-    circlePopularity.obscurityRanking.push(userObscurity);
+    circlePopularity.userPopularityRanking.push(userObscurity);
 
     let totalWeightedPopularity = 0;
     let totalWeight = 0;
@@ -47,16 +47,16 @@ export const getCirclePopularityData = (
   });
 
   circlePopularity.averagePopularity =
-    circlePopularity.obscurityRanking.reduce(
+    circlePopularity.userPopularityRanking.reduce(
       (acc, user) => acc + user.averagePopularity,
       0
-    ) / circlePopularity.obscurityRanking.length;
+    ) / circlePopularity.userPopularityRanking.length;
 
   circlePopularity.averagePopularity =
     Math.round(circlePopularity.averagePopularity * 100) / 100;
 
-  circlePopularity.obscurityRanking.sort(
-    (a, b) => a.averagePopularity - b.averagePopularity
+  circlePopularity.userPopularityRanking.sort(
+    (a, b) => b.averagePopularity - a.averagePopularity
   );
 
   return circlePopularity;
