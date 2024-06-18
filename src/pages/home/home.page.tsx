@@ -99,13 +99,15 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
 
   return (
     <div ref={ref} className="h-full w-full flex flex-col">
-      <NavbarComponent menuClicked={() => setShowMenu(true)} />
       {!!!pageError ? (
         !!currentCircleInfo ? (
-          <CircleShowcaseState
-            circleInfo={currentCircleInfo}
-            isLoading={isLoading}
-          />
+          <>
+            <NavbarComponent menuClicked={() => setShowMenu(true)} />
+            <CircleShowcaseState
+              circleInfo={currentCircleInfo}
+              isLoading={isLoading}
+            />
+          </>
         ) : (
           <MotionHomeState />
         )
