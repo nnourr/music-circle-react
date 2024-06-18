@@ -109,13 +109,17 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
   });
 
   const leaveCircleModalText: ReactNode = (
-    <h2>
+    <span>
       Are you sure you want to leave{" "}
       <span className="bg-linear-gradient text-transparent bg-clip-text font-bold">
         {circleToLeave?.circleName}
       </span>
       ?
-    </h2>
+    </span>
+  );
+
+  const signOutModalText: ReactNode = (
+    <h2>Are you sure you want to sign out?</h2>
   );
 
   return (
@@ -149,6 +153,30 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
         ) : (
           ""
         )}
+        {showSignOut ? (
+          <ModalComponent
+            cancelAction={{
+              actionText: "No, Stay Signed In",
+              actionTitle: "I do not want to sign out",
+              onAction: () => {
+                setShowSignOut(false);
+              },
+            }}
+            confirmAction={{
+              actionText: "Yes, Sign Out",
+              actionTitle: "I want to sign out",
+              onAction: () => {
+                localStorage.removeItem("user");
+                window.location.reload();
+              },
+            }}
+            promptText={signOutModalText}
+            onClose={() => setCircleToLeave(undefined)}
+            key={"SignOutModal"}
+          />
+        ) : (
+          ""
+        )}
       </AnimatePresence>
       <motion.div
         initial={{ width: 0 }}
@@ -162,45 +190,46 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
           className="h-full flex flex-col items-start"
         >
           <button onClick={close} className="absolute left-5 top-2 w-7 h-7" />
-          <button onClick={close}>
-            <FontAwesomeIcon
-              icon={faClose}
-              className="text-white/90 text-lg lg:text-lg-lg"
-            />
-          </button>
+          <div className="flex w-full justify-between">
+            <button onClick={close}>
+              <FontAwesomeIcon
+                icon={faClose}
+                className="text-white/90 text-lg lg:text-lg-lg"
+              />
+            </button>
+            <button
+              title="Sign Out"
+              className="text-base lg:text-lg-base text-error/90"
+              onClick={() => {
+                setShowSignOut(true);
+              }}
+            >
+              Sign out{" "}
+              <FontAwesomeIcon
+                className="ml-2"
+                icon={faArrowRightFromBracket}
+              />
+            </button>
+          </div>
           <h2 className="bg-linear-gradient my-4 bg-clip-text leading-[1] font-fancy text-transparent text-xl lg:text-lg-xl">
             Your Circles
           </h2>
           <div className="overflow-y-auto h-full w-full">{circleList}</div>
 
-          <div className="flex w-full gap-4">
-            <Button
-              className="!w-2/3 !min-w-0"
-              white={true}
-              btnSize={btnSizes.md}
-              title="Join or Create Circle"
-              onClick={() => {
-                navigate({
-                  pathname: "/joinCircle",
-                  search: createSearchParams({ noRedirect: "true" }).toString(),
-                });
-              }}
-            >
-              <FontAwesomeIcon icon={faAdd} />
-            </Button>
-            <Button
-              title="Sign Out"
-              className="!w-1/3 !min-w-0"
-              white={true}
-              btnSize={btnSizes.md}
-              onClick={() => {
-                localStorage.removeItem("user");
-                window.location.reload();
-              }}
-            >
-              <FontAwesomeIcon icon={faArrowRightFromBracket} />
-            </Button>
-          </div>
+          <Button
+            className="w-full"
+            white={true}
+            btnSize={btnSizes.md}
+            title="Join or Create Circle"
+            onClick={() => {
+              navigate({
+                pathname: "/joinCircle",
+                search: createSearchParams({ noRedirect: "true" }).toString(),
+              });
+            }}
+          >
+            <FontAwesomeIcon icon={faAdd} />
+          </Button>
         </motion.div>
       </motion.div>
       <motion.div
