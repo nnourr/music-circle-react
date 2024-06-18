@@ -15,11 +15,12 @@ import {
 import Button, {
   btnSizes,
 } from "../../../components/inputs/button.input.component";
-import { useCallback, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import { SERVER_ENDPOINT } from "../../../config/globals";
 import { useUser } from "../../../providers/user.provider";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { useUserCircles } from "../../../providers/userCircles.provider";
+import { ModalComponent } from "../../../components/modal.component";
 
 interface HamburgerMenuProps {
   circles: UserCircle[];
@@ -38,6 +39,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
   const { userCircles, setUserCircles } = useUserCircles();
   const [, setSearchParams] = useSearchParams();
   const [circleToLeave, setCircleToLeave] = useState<UserCircle | undefined>();
+  const [showSignOut, setShowSignOut] = useState<boolean>(false);
 
   const leaveCircle = useCallback(
     async (circleCode: string) => {
@@ -106,6 +108,16 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
     );
   });
 
+  const leaveCircleModalText: ReactNode = (
+    <h2>
+      Are you sure you want to leave{" "}
+      <span className="bg-linear-gradient text-transparent bg-clip-text font-bold">
+        {circleToLeave?.circleName}
+      </span>
+      ?
+    </h2>
+  );
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -115,48 +127,25 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
     >
       <AnimatePresence>
         {!!circleToLeave ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            key="leaveCircleModal"
-            className="h-full w-full z-50 flex justify-center items-center absolute top-0 left-0"
-          >
-            <motion.div className="w-[90%] lg:w-[43rem] lg:h-80 border-white/50 border-4 bg-black rounded-3xl gap-12 px-6 lg:px-12 py-4 lg:py-8 flex flex-col justify-between">
-              <h2 className="text-white text-1xl lg:text-lg-1xl leading-tight">
-                Are you sure you want to leave{" "}
-                <span className="bg-linear-gradient text-transparent bg-clip-text font-bold">
-                  {circleToLeave?.circleName}
-                </span>
-                ?
-              </h2>
-              <div className="flex w-full flex-col lg:flex-row items-end justify-end gap-2 lg:gap-6">
-                <Button
-                  onClick={() => setCircleToLeave(undefined)}
-                  title="Don't leave Circle"
-                  white={true}
-                  btnSize={btnSizes.md}
-                  className=" !w-full lg:w-auto"
-                >
-                  No, Stay in Circle
-                </Button>
-                <Button
-                  onClick={() => leaveCircle(circleToLeave.circleCode)}
-                  title="Yes, leave Circle"
-                  white={true}
-                  btnSize={btnSizes.md}
-                  className="overflow-hidden relative !w-full lg:w-auto"
-                >
-                  <div className="absolute top-0 left-0 w-full h-full opacity-40 bg-linear-gradient" />
-                  <span className="relative z-20">Yes, Leave Circle</span>
-                </Button>
-              </div>
-            </motion.div>
-            <div
-              className="h-full w-full -z-10 bg-black/60 absolute top-0 left-0"
-              onClick={() => setCircleToLeave(undefined)}
-            ></div>
-          </motion.div>
+          <ModalComponent
+            cancelAction={{
+              actionText: "No, Stay in Circle",
+              actionTitle: "I do not want to leave this circle",
+              onAction: () => {
+                setCircleToLeave(undefined);
+              },
+            }}
+            confirmAction={{
+              actionText: "Yes, Leave Circle",
+              actionTitle: "I want to leave this Circle",
+              onAction: () => {
+                leaveCircle(circleToLeave.circleCode);
+              },
+            }}
+            promptText={leaveCircleModalText}
+            onClose={() => setCircleToLeave(undefined)}
+            key={"LeaveCircleModal"}
+          />
         ) : (
           ""
         )}
