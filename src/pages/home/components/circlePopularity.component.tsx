@@ -10,7 +10,7 @@ export const CirclePopularity: React.FC<CirclePopularityProps> = ({
   circlePopularityData,
   className,
 }) => {
-  const obscurityRanking = circlePopularityData.obscurityRanking.map(
+  const userPopularityRanking = circlePopularityData.userPopularityRanking.map(
     (user, i) => (
       <li className="text-base lg:text-base text-white" key={user.username}>
         {i + 1}. {user.username}:{" "}
@@ -41,10 +41,10 @@ export const CirclePopularity: React.FC<CirclePopularityProps> = ({
         /100
       </h2>
       <span className="text-lg lg:text-lg font-bold bg-linear-gradient bg-clip-text text-transparent">
-        users by obscurity:
+        users by popularity:
       </span>
       <ul className="lg:h-[10vh] lg:ml-4 xl:h-[20vh] overflow-auto pointer-events-auto">
-        {obscurityRanking}
+        {userPopularityRanking}
       </ul>
     </motion.div>
   );

@@ -15,11 +15,12 @@ import {
 import Button, {
   btnSizes,
 } from "../../../components/inputs/button.input.component";
-import { useCallback, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import { SERVER_ENDPOINT } from "../../../config/globals";
 import { useUser } from "../../../providers/user.provider";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { useUserCircles } from "../../../providers/userCircles.provider";
+import { ModalComponent } from "../../../components/modal.component";
 
 interface HamburgerMenuProps {
   circles: UserCircle[];
@@ -38,6 +39,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
   const { userCircles, setUserCircles } = useUserCircles();
   const [, setSearchParams] = useSearchParams();
   const [circleToLeave, setCircleToLeave] = useState<UserCircle | undefined>();
+  const [showSignOut, setShowSignOut] = useState<boolean>(false);
 
   const leaveCircle = useCallback(
     async (circleCode: string) => {
@@ -106,6 +108,20 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
     );
   });
 
+  const leaveCircleModalText: ReactNode = (
+    <span>
+      Are you sure you want to leave{" "}
+      <span className="bg-linear-gradient text-transparent bg-clip-text font-bold">
+        {circleToLeave?.circleName}
+      </span>
+      ?
+    </span>
+  );
+
+  const signOutModalText: ReactNode = (
+    <h2>Are you sure you want to sign out?</h2>
+  );
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -115,48 +131,49 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
     >
       <AnimatePresence>
         {!!circleToLeave ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            key="leaveCircleModal"
-            className="h-full w-full z-50 flex justify-center items-center absolute top-0 left-0"
-          >
-            <motion.div className="w-[90%] lg:w-[43rem] lg:h-80 border-white/50 border-4 bg-black rounded-3xl gap-12 px-6 lg:px-12 py-4 lg:py-8 flex flex-col justify-between">
-              <h2 className="text-white text-1xl lg:text-lg-1xl leading-tight">
-                Are you sure you want to leave{" "}
-                <span className="bg-linear-gradient text-transparent bg-clip-text font-bold">
-                  {circleToLeave?.circleName}
-                </span>
-                ?
-              </h2>
-              <div className="flex w-full flex-col lg:flex-row items-end justify-end gap-2 lg:gap-6">
-                <Button
-                  onClick={() => setCircleToLeave(undefined)}
-                  title="Don't leave Circle"
-                  white={true}
-                  btnSize={btnSizes.md}
-                  className=" !w-full lg:w-auto"
-                >
-                  No, Stay in Circle
-                </Button>
-                <Button
-                  onClick={() => leaveCircle(circleToLeave.circleCode)}
-                  title="Yes, leave Circle"
-                  white={true}
-                  btnSize={btnSizes.md}
-                  className="overflow-hidden relative !w-full lg:w-auto"
-                >
-                  <div className="absolute top-0 left-0 w-full h-full opacity-40 bg-linear-gradient" />
-                  <span className="relative z-20">Yes, Leave Circle</span>
-                </Button>
-              </div>
-            </motion.div>
-            <div
-              className="h-full w-full -z-10 bg-black/60 absolute top-0 left-0"
-              onClick={() => setCircleToLeave(undefined)}
-            ></div>
-          </motion.div>
+          <ModalComponent
+            cancelAction={{
+              actionText: "No, Stay in Circle",
+              actionTitle: "I do not want to leave this circle",
+              onAction: () => {
+                setCircleToLeave(undefined);
+              },
+            }}
+            confirmAction={{
+              actionText: "Yes, Leave Circle",
+              actionTitle: "I want to leave this Circle",
+              onAction: () => {
+                leaveCircle(circleToLeave.circleCode);
+              },
+            }}
+            promptText={leaveCircleModalText}
+            onClose={() => setCircleToLeave(undefined)}
+            key={"LeaveCircleModal"}
+          />
+        ) : (
+          ""
+        )}
+        {showSignOut ? (
+          <ModalComponent
+            cancelAction={{
+              actionText: "No, Stay Signed In",
+              actionTitle: "I do not want to sign out",
+              onAction: () => {
+                setShowSignOut(false);
+              },
+            }}
+            confirmAction={{
+              actionText: "Yes, Sign Out",
+              actionTitle: "I want to sign out",
+              onAction: () => {
+                localStorage.removeItem("user");
+                window.location.reload();
+              },
+            }}
+            promptText={signOutModalText}
+            onClose={() => setCircleToLeave(undefined)}
+            key={"SignOutModal"}
+          />
         ) : (
           ""
         )}
@@ -173,45 +190,46 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
           className="h-full flex flex-col items-start"
         >
           <button onClick={close} className="absolute left-5 top-2 w-7 h-7" />
-          <button onClick={close}>
-            <FontAwesomeIcon
-              icon={faClose}
-              className="text-white/90 text-lg lg:text-lg-lg"
-            />
-          </button>
+          <div className="flex w-full justify-between">
+            <button onClick={close}>
+              <FontAwesomeIcon
+                icon={faClose}
+                className="text-white/90 text-lg lg:text-lg-lg"
+              />
+            </button>
+            <button
+              title="Sign Out"
+              className="text-base lg:text-lg-base text-error/90"
+              onClick={() => {
+                setShowSignOut(true);
+              }}
+            >
+              Sign out{" "}
+              <FontAwesomeIcon
+                className="ml-2"
+                icon={faArrowRightFromBracket}
+              />
+            </button>
+          </div>
           <h2 className="bg-linear-gradient my-4 bg-clip-text leading-[1] font-fancy text-transparent text-xl lg:text-lg-xl">
             Your Circles
           </h2>
           <div className="overflow-y-auto h-full w-full">{circleList}</div>
 
-          <div className="flex w-full gap-4">
-            <Button
-              className="!w-2/3 !min-w-0"
-              white={true}
-              btnSize={btnSizes.md}
-              title="Join or Create Circle"
-              onClick={() => {
-                navigate({
-                  pathname: "/joinCircle",
-                  search: createSearchParams({ noRedirect: "true" }).toString(),
-                });
-              }}
-            >
-              <FontAwesomeIcon icon={faAdd} />
-            </Button>
-            <Button
-              title="Sign Out"
-              className="!w-1/3 !min-w-0"
-              white={true}
-              btnSize={btnSizes.md}
-              onClick={() => {
-                localStorage.removeItem("user");
-                window.location.reload();
-              }}
-            >
-              <FontAwesomeIcon icon={faArrowRightFromBracket} />
-            </Button>
-          </div>
+          <Button
+            className="w-full"
+            white={true}
+            btnSize={btnSizes.md}
+            title="Join or Create Circle"
+            onClick={() => {
+              navigate({
+                pathname: "/joinCircle",
+                search: createSearchParams({ noRedirect: "true" }).toString(),
+              });
+            }}
+          >
+            <FontAwesomeIcon icon={faAdd} />
+          </Button>
         </motion.div>
       </motion.div>
       <motion.div

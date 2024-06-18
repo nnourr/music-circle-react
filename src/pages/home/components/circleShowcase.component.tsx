@@ -229,7 +229,7 @@ export const CircleShowcaseComponent: React.FC<
       )}
       {showPopularity && isMobile ? (
         <CirclePopularity
-          className="w-fit mt-6 mx-6"
+          className="w-fit mt-6 mx-6 mb-24"
           circlePopularityData={circlePopularityData}
         />
       ) : (
