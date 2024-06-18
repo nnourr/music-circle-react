@@ -6,7 +6,6 @@ import {
   LINEAR_GRADIENT_BREATHE_2,
 } from "../../../config/globals";
 import { useSearchParams } from "react-router-dom";
-import { useUserCircles } from "../../../providers/userCircles.provider";
 import { UserCircleListComponent } from "../components/userCircleList.component";
 import { btnSizes } from "../../../components/inputs/button.input.component";
 import { useIsMobile } from "../../../providers/isMobile.provider";

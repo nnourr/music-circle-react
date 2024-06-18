@@ -7,19 +7,11 @@ import {
   faArrowRightFromBracket,
   faClose,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  createSearchParams,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import Button, {
   btnSizes,
 } from "../../../components/inputs/button.input.component";
-import { ReactNode, useCallback, useState } from "react";
-import { SERVER_ENDPOINT } from "../../../config/globals";
-import { useUser } from "../../../providers/user.provider";
-import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
-import { useUserCircles } from "../../../providers/userCircles.provider";
+import { ReactNode, useState } from "react";
 import { ModalComponent } from "../../../components/modal.component";
 import { UserCircleListComponent } from "./userCircleList.component";
 
@@ -36,8 +28,6 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
 }) => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
-  const { userId } = useUser();
-  const { userCircles, setUserCircles } = useUserCircles();
   const [showSignOut, setShowSignOut] = useState<boolean>(false);
 
   const signOutModalText: ReactNode = (
