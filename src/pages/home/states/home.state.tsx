@@ -139,7 +139,7 @@ const HomeState = React.forwardRef<HTMLDivElement>((_, ref) => {
               }}
               className="text-transparent text-3xl lg:text-lg-3xl font-fancy bg-clip-text"
             >
-              Music Circle
+              Music Circle.
             </motion.h1>
           </motion.div>
         </motion.div>
