@@ -1,12 +1,11 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { UserCircle } from "../../../models/userCircle.model";
 import { useIsMobile } from "../../../providers/isMobile.provider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faAdd,
   faArrowRightFromBracket,
   faClose,
 } from "@fortawesome/free-solid-svg-icons";
+import { faCircle, faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import Button, {
   btnSizes,
@@ -16,13 +15,11 @@ import { ModalComponent } from "../../../components/modal.component";
 import { UserCircleListComponent } from "./userCircleList.component";
 
 interface HamburgerMenuProps {
-  circles: UserCircle[];
   currentCircleCode: string | undefined;
   setCurrentCircle: (circleCode: string) => any;
   close: () => any;
 }
 export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
-  circles,
   currentCircleCode,
   close,
 }) => {
@@ -122,7 +119,11 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
               });
             }}
           >
-            <FontAwesomeIcon icon={faAdd} />
+            add circle{" "}
+            <FontAwesomeIcon
+              icon={faCircleXmark}
+              className="rotate-45 translate-y-[2px] ml-2"
+            />
           </Button>
         </motion.div>
       </motion.div>

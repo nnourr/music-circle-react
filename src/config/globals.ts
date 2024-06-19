@@ -13,8 +13,8 @@ export const RADIAL_GRADIENT_WHITE =
 export const LINEAR_GRADIENT =
   "linear-gradient(215deg, #29EB26 0%, #29C39F 55%, #3FB1AB 100%)";
 export const LINEAR_GRADIENT_BREATHE_1 =
-  "linear-gradient(215deg, #29EB26 0%, #29C39F 30%, #3FB1AB 100%)";
+  "linear-gradient(275deg, #29EB26 0%, #29C39F 40%, #3FB1AB 100%)";
 export const LINEAR_GRADIENT_BREATHE_2 =
-  "linear-gradient(215deg, #29EB26 0%, #29C39F 70%, #3FB1AB 100%)";
+  "linear-gradient(275deg, #29EB26 0%, #29C39F 80%, #3FB1AB 100%)";
 export const LINEAR_GRADIENT_WHITE =
   "linear-gradient(215deg, #ffffff 0%, #ffffff 55%, #ffffff 100%)";

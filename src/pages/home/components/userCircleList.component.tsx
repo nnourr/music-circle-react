@@ -13,7 +13,7 @@ import { ModalComponent } from "../../../components/modal.component";
 import { UserCircle } from "../../../models/userCircle.model";
 import { SERVER_ENDPOINT } from "../../../config/globals";
 import { useUser } from "../../../providers/user.provider";
-import { faAdd } from "@fortawesome/free-solid-svg-icons";
+import { faCircle } from "@fortawesome/free-regular-svg-icons";
 
 interface UserCircleListComponentProps {
   currentCircleCode?: string;
@@ -137,7 +137,7 @@ export const UserCircleListComponent: React.FC<
             });
           }}
         >
-          <FontAwesomeIcon icon={faAdd} />
+          <FontAwesomeIcon icon={faCircle} />
         </Button>
       )}
       <AnimatePresence>
