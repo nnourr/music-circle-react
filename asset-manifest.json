@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.0c307e47.css",
-    "main.js": "/static/js/main.12820487.js",
+    "main.js": "/static/js/main.e40e218f.js",
     "static/media/Chiralla.otf": "/static/media/Chiralla.8b58e688901769985dd5.otf",
     "static/media/LeagueSpartan.woff2": "/static/media/LeagueSpartan.6ed351c4a3144c5e355c.woff2",
     "index.html": "/index.html",
     "main.0c307e47.css.map": "/static/css/main.0c307e47.css.map",
-    "main.12820487.js.map": "/static/js/main.12820487.js.map"
+    "main.e40e218f.js.map": "/static/js/main.e40e218f.js.map"
   },
   "entrypoints": [
     "static/css/main.0c307e47.css",
-    "static/js/main.12820487.js"
+    "static/js/main.e40e218f.js"
   ]
 }
