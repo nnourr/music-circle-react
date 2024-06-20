@@ -72,7 +72,7 @@ export const Input: React.FC<InputProps> = ({
             maxLength={maxLength}
             onFocus={() => setOnFocus(true)}
             onBlur={() => setOnFocus(false)}
-            className="bg-transparent placeholder:text-black/30 text-center w-full lg:text-left focus:outline-none lg:w-[7em]"
+            className="bg-transparent placeholder:text-black/30 text-center w-full lg:text-left focus:outline-none lg:w-[8em]"
           ></input>
         </>
       )}
