@@ -5,7 +5,7 @@ import {
   consolidateTopArtistsWithPoints,
 } from "../helpers/consolidateTopArtistsWithPoints.helper";
 import { StackedBar } from "../components/stackedBar.component";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useUser } from "../../../providers/user.provider";
 import MultiSelector from "../components/multiSelector.component";
 import { cloneDeep } from "lodash";
@@ -49,6 +49,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   const [showFilter, setShowFilter] = useState<boolean>(false);
   const [showArtists, setShowArtists] = useState<boolean>(false);
   const [showPopularity, setShowPopularity] = useState<boolean>(false);
+  const scrollContainerRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const circleInfoClone = cloneDeep(circleInfo);
@@ -89,6 +90,8 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
     }, 1000);
   };
 
+  const isFirstTime = localStorage.getItem("firstTime") === "true";
+
   const onShareCircle = async () => {
     try {
       await navigator.share({
@@ -112,6 +115,13 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   const handleShowPopularity = () => {
     setShowPopularity(true);
     setShowArtists(false);
+  };
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 10 });
+      localStorage.setItem("firstTime", "false");
+    }
   };
 
   return (
@@ -167,7 +177,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             {copyCircleCodeText}
           </motion.span>
           <motion.span
-            className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer pointer-events-auto ml-2 lg:ml-4"
+            className="text-sm font-sans text-white/80 hover:text-white  transition-all cursor-pointer pointer-events-auto ml-2 lg:ml-4"
             onClick={onShareCircle}
             title="Share Circle"
             whileTap={{ scale: 0.9 }}
@@ -221,7 +231,15 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
           ""
         )}
       </div>
-      <div className="overflow-x-auto flex flex-row gap-4 w-full snap-x snap-mandatory pr-[30vw] lg:pr-0">
+      <motion.div
+        animate={
+          isFirstTime
+            ? { gap: ["0px", "8px", "0px"], transition: { repeat: Infinity } }
+            : {}
+        }
+        ref={scrollContainerRef}
+        className="overflow-x-auto flex flex-row gap-4 w-full snap-x snap-mandatory pr-[30vw] lg:pr-0"
+      >
         <motion.h2
           initial={{ opacity: 0.3 }}
           whileInView={{ opacity: 0.8 }}
@@ -240,11 +258,12 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
           onViewportEnter={() => {
             handleShowPopularity();
           }}
+          onClick={handleScroll}
           className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text pl-6 text-transparent lg:ml-[3%] xl:ml-[13%] text-1xl lg:text-lg-xl w-fit"
         >
           circle popularity:
         </motion.h2>
-      </div>
+      </motion.div>
 
       {showArtists || !isMobile ? (
         <StackedBar

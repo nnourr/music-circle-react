@@ -22,6 +22,8 @@ const JoinCircleState = React.forwardRef<
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { userId, username } = useUser();
 
+  const isFirstTime = localStorage.getItem("firstTime") === "true";
+
   const addUserToCircle = useCallback(
     async (circleCode: string) => {
       setIsLoading(true);
@@ -51,11 +53,14 @@ const JoinCircleState = React.forwardRef<
   }, [addUserToCircle, initialCircleCode]);
 
   const handleSubmit = () => {
-    if (circleCode.length !== 20) {
+    const trimmedCircleCode = circleCode.trim();
+
+    if (trimmedCircleCode.length !== 20) {
       setCircleCodeError("sorry, circle codes are 20 characters long");
+      return;
     }
     if (!!!circleCodeError) {
-      addUserToCircle(circleCode);
+      addUserToCircle(trimmedCircleCode);
       setCircleCode("");
     }
   };
@@ -79,15 +84,20 @@ const JoinCircleState = React.forwardRef<
   return (
     <div
       ref={ref}
-      className="h-full w-full flex justify-center items-center flex-col gap-8 lg:gap-24"
+      className="h-full w-full flex justify-center items-center flex-col gap-8 lg:gap-24 p-7"
     >
       <div className="flex flex-col">
-        <h2 className="text-lg lg:text-lg-xl px-7 font-fancy self-start -mb-2 lg:-mb-8 text-black/80">
+        <h2 className="text-lg lg:text-lg-xl lg:px-7 font-fancy self-start -mb-2 lg:-mb-8 text-black/80">
           hey {username},
         </h2>
-        <h1 className="text-3xl lg:text-lg-3xl px-7 font-fancy text-black/80">
+        <h1 className="text-3xl lg:text-lg-3xl lg:text-nowrap font-fancy text-black/80">
           Join Circle.
         </h1>
+        {isFirstTime && (
+          <p className="mx-3 lg:my-3 text-sm lg:text-base lg:text-right font-sans leading-none text-black/80">
+            (circle codes are auto-generated and 20 letters long)
+          </p>
+        )}
       </div>
 
       <div className="flex flex-col gap-4 items-center relative">
