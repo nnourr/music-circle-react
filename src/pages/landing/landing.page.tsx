@@ -205,6 +205,14 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
     localStorage.setItem("initialCircleCode", initialCircleCodeParam);
   }, [initialCircleCodeParam, navigate, userId]);
 
+  useEffect(() => {
+    const firstTime = localStorage.getItem("firstTime");
+    if (!!!firstTime) {
+      localStorage.setItem("firstTime", "true");
+      window.location.reload();
+    }
+  }, []);
+
   return (
     <motion.div
       ref={ref}

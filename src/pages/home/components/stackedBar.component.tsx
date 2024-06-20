@@ -1,4 +1,4 @@
-import { Variants, motion } from "framer-motion";
+import { Variants, inView, motion } from "framer-motion";
 import { ConsolidatedArtist } from "../helpers/consolidateTopArtistsWithPoints.helper";
 import { useIsMobile } from "../../../providers/isMobile.provider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -42,6 +42,9 @@ export const StackedBar: React.FC<StackedBarProps> = ({
   }
 
   const handleBarClick = (index: number) => {
+    if (index === 0 && isFirstTime) {
+      localStorage.setItem("firstTime", "false");
+    }
     setClickedIndex(index);
   };
 
@@ -77,9 +80,14 @@ export const StackedBar: React.FC<StackedBarProps> = ({
     },
   };
 
+  const isFirstTime = localStorage.getItem("firstTime") === "true";
   const artistBar = artistsData.map((artist, i, { length }) => {
     const artistImage = artist.images === undefined ? "" : artist.images[0].url;
     const isClicked = clickedIndex === i;
+    const firstTimePulse =
+      isFirstTime && i === 0 && !isClicked
+        ? "animate-borderPulse transition-all border-white/70"
+        : "";
     if (artist.weightedPoints * 2.5 > largestTitle) {
       setLargestTitle(artist.weightedPoints * 2.5);
     }
@@ -99,7 +107,7 @@ export const StackedBar: React.FC<StackedBarProps> = ({
         onMouseEnter={() => handleBarClick(i)}
       >
         <motion.div
-          className="bg-linear-gradient w-28 lg:w-48 h-full flex-shrink-0"
+          className={`bg-linear-gradient w-28 lg:w-48 h-full flex-shrink-0 ${firstTimePulse}`}
           style={{
             opacity: `${100 - (i / length) * 100}%`,
             borderTopLeftRadius: `${i === 0 ? "20px" : ""}`,
