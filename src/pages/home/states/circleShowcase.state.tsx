@@ -167,7 +167,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             {copyCircleCodeText}
           </motion.span>
           <motion.span
-            className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer w-fit text-nowrap pointer-events-auto lg:ml-4"
+            className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer pointer-events-auto ml-2 lg:ml-4"
             onClick={onShareCircle}
             title="Share Circle"
             whileTap={{ scale: 0.9 }}
