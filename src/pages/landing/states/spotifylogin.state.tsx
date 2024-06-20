@@ -10,34 +10,43 @@ interface SpotifyLoginStateProps {
   isLoading: boolean;
 }
 
-// Forward ref to the DOM element you want to animate
 const SpotifyLoginState = React.forwardRef<
   HTMLDivElement,
   SpotifyLoginStateProps
->(({ nextState, isLoading }, ref) => (
-  <div
-    ref={ref}
-    className="h-full w-full flex justify-center items-center flex-col gap-12 lg:gap-24 opacity-100"
-  >
-    <h1 className="text-3xl px-7 lg:text-lg-3xl font-fancy text-black/80">
-      Music Circle.
-    </h1>
-
-    <Button
-      title="Sign in with Spotify"
-      onClick={() => (isLoading ? () => {} : nextState())}
+>(({ nextState, isLoading }, ref) => {
+  const isFirstTime = localStorage.getItem("firstTime") === "true";
+  return (
+    <div
+      ref={ref}
+      className="h-full w-full flex justify-center items-center flex-col gap-12 lg:gap-24 opacity-100"
     >
-      {!isLoading ? (
-        <>
-          Sign-In With{" "}
-          <FontAwesomeIcon className="!align-text-bottom" icon={faSpotify} />
-        </>
-      ) : (
-        <FontAwesomeIcon className="animate-spin" icon={faSpinner} />
-      )}
-    </Button>
-  </div>
-));
+      <div className="w-min">
+        <h1 className="text-3xl text-center lg:text-nowrap lg:text-lg-3xl font-fancy text-black/80">
+          Music Circle.
+        </h1>
+        {isFirstTime && (
+          <p className="m-3 text-base font-sans leading-none text-black/80">
+            Curious about your friends' true music tastes?
+          </p>
+        )}
+      </div>
+
+      <Button
+        title="Sign in with Spotify"
+        onClick={() => (isLoading ? () => {} : nextState())}
+      >
+        {!isLoading ? (
+          <>
+            Sign-In With{" "}
+            <FontAwesomeIcon className="!align-text-bottom" icon={faSpotify} />
+          </>
+        ) : (
+          <FontAwesomeIcon className="animate-spin" icon={faSpinner} />
+        )}
+      </Button>
+    </div>
+  );
+});
 
 const MotionSpotifyLoginState = motion(SpotifyLoginState, {
   forwardMotionProps: true,

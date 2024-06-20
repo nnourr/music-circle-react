@@ -21,6 +21,7 @@ export const CirclePopularity: React.FC<CirclePopularityProps> = ({
       </li>
     )
   );
+  const isFirstTime = localStorage.getItem("firstTime") === "true";
 
   return (
     <motion.div
@@ -34,15 +35,25 @@ export const CirclePopularity: React.FC<CirclePopularityProps> = ({
       <h2 className="text-lg hidden lg:block w-min text-nowrap lg:text-lg-lg bg-linear-gradient bg-clip-text text-transparent leading-[1]">
         average popularity:
       </h2>
+      {isFirstTime && (
+        <span className="text-white text-sm lg:text-base font-normal">
+          (this is the average popularity of everyone's top 50 artists)
+        </span>
+      )}
       <h2 className="text-xl lg:ml-4 w-fit lg:text-lg-lg text-white">
         <span className="bg-linear-gradient font-bold bg-clip-text text-transparent">
           {circlePopularityData.averagePopularity}
         </span>
         /100
       </h2>
-      <span className="text-lg lg:text-lg font-bold bg-linear-gradient bg-clip-text text-transparent">
+      <p className="text-lg lg:text-lg font-bold bg-linear-gradient bg-clip-text text-transparent">
         users by popularity:
-      </span>
+      </p>
+      {isFirstTime && (
+        <span className="text-white text-sm lg:text-base font-normal">
+          (this is the average popularity of each person's top 50 artists)
+        </span>
+      )}
       <ul className="lg:h-[10vh] lg:ml-4 xl:h-[20vh] overflow-auto pointer-events-auto">
         {userPopularityRanking}
       </ul>
