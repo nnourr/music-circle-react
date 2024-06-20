@@ -209,8 +209,9 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
     const firstTime = localStorage.getItem("firstTime");
     if (!!!firstTime) {
       localStorage.setItem("firstTime", "true");
+      window.location.reload();
     }
-  });
+  }, []);
 
   return (
     <motion.div
