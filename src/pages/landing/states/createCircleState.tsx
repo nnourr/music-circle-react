@@ -1,20 +1,22 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import Input from "../../../components/inputs/text.input.component";
-import Button from "../../../components/inputs/button.input.component";
+import Button, {
+  btnSizes,
+} from "../../../components/inputs/button.input.component";
 import { useUser } from "../../../providers/user.provider";
 import { SERVER_ENDPOINT } from "../../../config/globals";
 import { useUserCircles } from "../../../providers/userCircles.provider";
 
 interface CreateCircleStateProps {
   goToHome: (circleCode: string) => any;
-  prevState: () => any;
+  goToJoinCircle: () => any;
 }
 
 const CreateCircleState = React.forwardRef<
   HTMLDivElement,
   CreateCircleStateProps
->(({ goToHome, prevState }, ref) => {
+>(({ goToHome, goToJoinCircle }, ref) => {
   const [newCircleName, setNewCircleName] = useState<string>("");
   const [circleNameError, setCircleNameError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -111,26 +113,33 @@ const CreateCircleState = React.forwardRef<
         <Input
           onChange={(change: any) => setNewCircleName(change.target.value)}
           error={!!circleNameError}
-          placeholder="Shelbyville"
+          placeholder="enter circle name"
           isLoading={isLoading}
           maxLength={16}
         >
           Circle Name:&nbsp;
         </Input>
         <Button
-          title="Continue to home page"
+          title={`Create new Circle with name ${newCircleName}`}
           isDisabled={isLoading || !!circleNameError}
           onClick={() => createNewCircle()}
         >
-          Continue
+          Submit
         </Button>
+        <div className="mt-4 flex flex-col items-center">
+          <p className="text-base lg:text-lg-base text-black/80 text-center">
+            want to join an existing circle?
+          </p>
+          <Button
+            title="Create New Circle"
+            isDisabled={isLoading}
+            onClick={() => goToJoinCircle()}
+            btnSize={btnSizes.md}
+          >
+            Join Circle
+          </Button>
+        </div>
       </div>
-      <button
-        onClick={prevState}
-        className="absolute bottom-[10%] text-black/90 text-base lg:text-lg-base"
-      >
-        go back
-      </button>
     </div>
   );
 });

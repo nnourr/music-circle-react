@@ -81,47 +81,47 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
     [navigate, noRedirect]
   );
 
-  useEffect(() => {
-    const getUserCircles = async (userId: string) => {
-      try {
-        const getUserCirclesResponse = await fetch(
-          `${SERVER_ENDPOINT}/user/${userId}/circles`
-        );
-        if (getUserCirclesResponse.status === 200) {
-          const circles = (await getUserCirclesResponse.json()) as UserCircle[];
+  // useEffect(() => {
+  //   const getUserCircles = async (userId: string) => {
+  //     try {
+  //       const getUserCirclesResponse = await fetch(
+  //         `${SERVER_ENDPOINT}/user/${userId}/circles`
+  //       );
+  //       if (getUserCirclesResponse.status === 200) {
+  //         const circles = (await getUserCirclesResponse.json()) as UserCircle[];
 
-          if (circles.length > 0) {
-            setUserCircles(circles);
+  //         if (circles.length > 0) {
+  //           setUserCircles(circles);
 
-            if (
-              noRedirect !== "true" &&
-              !!!initialCircleCodeStorage &&
-              !!!initialCircleCodeParam
-            ) {
-              navigate("/home");
-            }
-          }
-        } else {
-          throw new Error("get user circles response not 200");
-        }
-      } catch (error) {
-        console.error("Error getting circles " + error);
-      }
-    };
-    if (!!!userId || userCircles.length !== 0) {
-      return;
-    } else {
-      getUserCircles(userId);
-    }
-  }, [
-    userId,
-    initialCircleCodeParam,
-    initialCircleCodeStorage,
-    navigate,
-    noRedirect,
-    setUserCircles,
-    userCircles.length,
-  ]);
+  //           if (
+  //             noRedirect !== "true" &&
+  //             !!!initialCircleCodeStorage &&
+  //             !!!initialCircleCodeParam
+  //           ) {
+  //             navigate("/home");
+  //           }
+  //         }
+  //       } else {
+  //         throw new Error("get user circles response not 200");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error getting circles " + error);
+  //     }
+  //   };
+  //   if (!!!userId || userCircles.length !== 0) {
+  //     return;
+  //   } else {
+  //     getUserCircles(userId);
+  //   }
+  // }, [
+  //   userId,
+  //   initialCircleCodeParam,
+  //   initialCircleCodeStorage,
+  //   navigate,
+  //   noRedirect,
+  //   setUserCircles,
+  //   userCircles.length,
+  // ]);
 
   useEffect(() => {
     const handleUserLogin = async (loginCode: string) => {
@@ -144,7 +144,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
           }
           setUserId(userId);
           setUsername(userObj.username);
-          navigate("/joinCircle");
+          navigate("/createCircle");
         } else {
           throw new Error("setUser response not 200");
         }
@@ -168,26 +168,26 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
     handleUserLogin(loginCode);
   }, [setUserId, setUsername, userId, navigate, error, loginCode]);
 
-  useEffect(() => {
-    if (
-      !!userId &&
-      !!username &&
-      !!userCircles.length &&
-      noRedirect !== "true" &&
-      !!!initialCircleCodeStorage &&
-      !!!initialCircleCodeParam
-    ) {
-      navigate("/home");
-    }
-  }, [
-    userId,
-    initialCircleCodeParam,
-    initialCircleCodeStorage,
-    navigate,
-    noRedirect,
-    userCircles.length,
-    username,
-  ]);
+  // useEffect(() => {
+  //   if (
+  //     !!userId &&
+  //     !!username &&
+  //     !!userCircles.length &&
+  //     noRedirect !== "true" &&
+  //     !!!initialCircleCodeStorage &&
+  //     !!!initialCircleCodeParam
+  //   ) {
+  //     navigate("/home");
+  //   }
+  // }, [
+  //   userId,
+  //   initialCircleCodeParam,
+  //   initialCircleCodeStorage,
+  //   navigate,
+  //   noRedirect,
+  //   userCircles.length,
+  //   username,
+  // ]);
 
   useEffect(() => {
     if (!!!initialCircleCodeParam) {
@@ -232,11 +232,30 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
             }
           />
           <Route
+            path="/createCircle"
+            element={
+              <MotionCreateCircleState
+                key={"MotionCreateCircleState"}
+                goToHome={navigateToHome}
+                goToJoinCircle={() => {
+                  navigate({
+                    pathname: "/joinCircle",
+                    search: createSearchParams(hashParams).toString(),
+                  });
+                }}
+                variants={landingPageVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              />
+            }
+          />
+          <Route
             path="/joinCircle"
             element={
               <MotionJoinCircleState
                 key={"MotionJoinCircleState"}
-                nextState={navigateToHome}
+                goToHome={navigateToHome}
                 goToCreateCircle={() => {
                   navigate({
                     pathname: "/createCircle",
@@ -248,25 +267,6 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
                 animate="visible"
                 exit="exit"
                 initialCircleCode={initialCircleCodeStorage}
-              />
-            }
-          />
-          <Route
-            path="/createCircle"
-            element={
-              <MotionCreateCircleState
-                key={"MotionCreateCircleState"}
-                goToHome={navigateToHome}
-                prevState={() => {
-                  navigate({
-                    pathname: "/joinCircle",
-                    search: createSearchParams(hashParams).toString(),
-                  });
-                }}
-                variants={landingPageVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
               />
             }
           />

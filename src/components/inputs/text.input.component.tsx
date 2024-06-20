@@ -32,7 +32,7 @@ export const Input: React.FC<InputProps> = ({
 
   return (
     <motion.div
-      className={`${inputSize} px-14 flex justify-center items-center relative text-center py-1 pb-0 text-lg lg:text-lg-lg text-black/80 border-black/50 border-b-2 lg:border-2 lg:rounded-3xl`}
+      className={`${inputSize} lg:px-14 flex justify-center items-center relative text-center py-1 pb-0 text-lg lg:text-lg-lg text-black/80 border-black/50 border-b-2 lg:border-2 lg:rounded-3xl`}
       animate={
         error
           ? {
