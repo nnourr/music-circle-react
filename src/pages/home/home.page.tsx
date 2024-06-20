@@ -128,7 +128,6 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
       <AnimatePresence>
         {showMenu ? (
           <HamburgerMenu
-            circles={userCircles}
             close={() => setShowMenu(false)}
             currentCircleCode={currentCircleInfo?.circleCode}
             setCurrentCircle={setCurrentCircle}

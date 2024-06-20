@@ -105,7 +105,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
           maxSize={isMobile ? 80 : 200}
           minSize={isMobile ? 50 : 100}
           wrapText={true}
-          className="font-fancy text-xl lg:text-lg-2xl text-transparent bg-linear-gradient bg-clip-text leading-[1] w-full"
+          className="font-fancy text-transparent bg-linear-gradient bg-clip-text leading-[1] w-full"
         >
           {isLoading ? (
             <>

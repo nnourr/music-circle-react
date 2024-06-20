@@ -144,7 +144,11 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
           }
           setUserId(userId);
           setUsername(userObj.username);
-          navigate("/joinCircle");
+          if (localStorage.getItem("initialCircleCode")) {
+            navigate("/joinCircle");
+            return;
+          }
+          navigate("/createCircle");
         } else {
           throw new Error("setUser response not 200");
         }
@@ -194,8 +198,12 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
       return;
     }
 
+    if (!!userId) {
+      navigate("/joinCircle");
+    }
+
     localStorage.setItem("initialCircleCode", initialCircleCodeParam);
-  }, [initialCircleCodeParam]);
+  }, [initialCircleCodeParam, navigate, userId]);
 
   return (
     <motion.div
@@ -232,11 +240,30 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
             }
           />
           <Route
+            path="/createCircle"
+            element={
+              <MotionCreateCircleState
+                key={"MotionCreateCircleState"}
+                goToHome={navigateToHome}
+                goToJoinCircle={() => {
+                  navigate({
+                    pathname: "/joinCircle",
+                    search: createSearchParams(hashParams).toString(),
+                  });
+                }}
+                variants={landingPageVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              />
+            }
+          />
+          <Route
             path="/joinCircle"
             element={
               <MotionJoinCircleState
                 key={"MotionJoinCircleState"}
-                nextState={navigateToHome}
+                goToHome={navigateToHome}
                 goToCreateCircle={() => {
                   navigate({
                     pathname: "/createCircle",
@@ -248,25 +275,6 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
                 animate="visible"
                 exit="exit"
                 initialCircleCode={initialCircleCodeStorage}
-              />
-            }
-          />
-          <Route
-            path="/createCircle"
-            element={
-              <MotionCreateCircleState
-                key={"MotionCreateCircleState"}
-                goToHome={navigateToHome}
-                prevState={() => {
-                  navigate({
-                    pathname: "/joinCircle",
-                    search: createSearchParams(hashParams).toString(),
-                  });
-                }}
-                variants={landingPageVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
               />
             }
           />

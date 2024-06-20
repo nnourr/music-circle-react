@@ -30,7 +30,7 @@ export const NavbarComponent: React.FC<NavbarComponentInterface> = ({
           animate={{ opacity: 0.8 }}
           transition={{ duration: 0.4 }}
         >
-          {showUsername ? `hey, ${username}` : "Music Circle"}
+          {showUsername ? `hey, ${username}.` : "Music Circle."}
         </motion.span>
       </AnimatePresence>
     </motion.div>

@@ -13,25 +13,17 @@ import { ModalComponent } from "../../../components/modal.component";
 import { UserCircle } from "../../../models/userCircle.model";
 import { SERVER_ENDPOINT } from "../../../config/globals";
 import { useUser } from "../../../providers/user.provider";
-import { faAdd } from "@fortawesome/free-solid-svg-icons";
 
 interface UserCircleListComponentProps {
   currentCircleCode?: string;
   onCircleClick?: () => any;
   className?: string;
   btnSize: string;
-  showAddCircle?: boolean;
 }
 
 export const UserCircleListComponent: React.FC<
   UserCircleListComponentProps
-> = ({
-  currentCircleCode,
-  className,
-  onCircleClick,
-  btnSize,
-  showAddCircle = false,
-}) => {
+> = ({ currentCircleCode, className, onCircleClick, btnSize }) => {
   const { userCircles, setUserCircles } = useUserCircles();
   const [, setSearchParams] = useSearchParams();
   const [circleToLeave, setCircleToLeave] = useState<UserCircle | undefined>();
@@ -124,22 +116,6 @@ export const UserCircleListComponent: React.FC<
       animate={{ opacity: 1 }}
     >
       {circleList}
-      {showAddCircle && (
-        <Button
-          className="w-full mb-3"
-          white={true}
-          btnSize={btnSize}
-          title="Join or Create Circle"
-          onClick={() => {
-            navigate({
-              pathname: "/joinCircle",
-              search: createSearchParams({ noRedirect: "true" }).toString(),
-            });
-          }}
-        >
-          <FontAwesomeIcon icon={faAdd} />
-        </Button>
-      )}
       <AnimatePresence>
         {circleToLeave && (
           <ModalComponent

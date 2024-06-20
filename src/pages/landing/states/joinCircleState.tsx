@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Input from "../../../components/inputs/text.input.component";
 import { useUser } from "../../../providers/user.provider";
-import Button from "../../../components/inputs/button.input.component";
+import Button, {
+  btnSizes,
+} from "../../../components/inputs/button.input.component";
 import { motion } from "framer-motion";
 import { SERVER_ENDPOINT } from "../../../config/globals";
 
 interface JoinCircleStateInterface {
-  nextState: (circleCode: string) => void;
+  goToHome: (circleCode: string) => void;
   goToCreateCircle: () => void;
   initialCircleCode: string | null;
 }
@@ -14,7 +16,7 @@ interface JoinCircleStateInterface {
 const JoinCircleState = React.forwardRef<
   HTMLDivElement,
   JoinCircleStateInterface
->(({ nextState, goToCreateCircle, initialCircleCode }, ref) => {
+>(({ goToHome, goToCreateCircle, initialCircleCode }, ref) => {
   const [circleCode, setCircleCode] = useState<string>("");
   const [circleCodeError, setCircleCodeError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -37,24 +39,26 @@ const JoinCircleState = React.forwardRef<
         return;
       }
 
-      nextState(circleCode);
+      goToHome(circleCode);
     },
-    [userId, nextState]
+    [userId, goToHome]
   );
 
   useEffect(() => {
     if (!!initialCircleCode) {
       addUserToCircle(initialCircleCode);
-      // window.localStorage.removeItem("initialCircleCode");
     }
   }, [addUserToCircle, initialCircleCode]);
 
-  useEffect(() => {
-    if (circleCode.length === 20 && !!!circleCodeError) {
+  const handleSubmit = () => {
+    if (circleCode.length !== 20) {
+      setCircleCodeError("sorry, circle codes are 20 characters long");
+    }
+    if (!!!circleCodeError) {
       addUserToCircle(circleCode);
       setCircleCode("");
     }
-  }, [addUserToCircle, circleCode, circleCodeError, userId, nextState]);
+  };
 
   useEffect(() => {
     setCircleCodeError(undefined);
@@ -75,7 +79,7 @@ const JoinCircleState = React.forwardRef<
   return (
     <div
       ref={ref}
-      className="h-full w-full flex justify-center items-center flex-col gap-12 lg:gap-24"
+      className="h-full w-full flex justify-center items-center flex-col gap-8 lg:gap-24"
     >
       <div className="flex flex-col">
         <h2 className="text-lg lg:text-lg-xl px-7 font-fancy self-start -mb-2 lg:-mb-8 text-black/80">
@@ -86,7 +90,7 @@ const JoinCircleState = React.forwardRef<
         </h1>
       </div>
 
-      <div className="flex flex-col items-center relative">
+      <div className="flex flex-col gap-4 items-center relative">
         {!!circleCodeError ? (
           <p className="text-base -translate-y-[70%] left-0 absolute lg:text-lg-base text-error">
             {circleCodeError}
@@ -95,21 +99,31 @@ const JoinCircleState = React.forwardRef<
         <Input
           onChange={(change: any) => setCircleCode(change.target.value)}
           error={!!circleCodeError}
-          placeholder="examplecode"
+          placeholder="enter circle code"
           isLoading={isLoading}
         >
           Circle Code:&nbsp;
         </Input>
-        <p className="text-base lg:text-lg-base text-black/80 text-center">
-          or,
-        </p>
         <Button
-          title="Create New Circle"
-          isDisabled={isLoading}
-          onClick={() => goToCreateCircle()}
+          title={`Join Circle with code ${circleCode}`}
+          isDisabled={isLoading || !!circleCodeError}
+          onClick={handleSubmit}
         >
-          Create New Circle
+          Submit
         </Button>
+        <div className="flex items-center flex-col">
+          <p className="text-black/90 text-base lg:text-lg-base">
+            don't have a circle code?
+          </p>
+          <Button
+            title="Create New Circle"
+            isDisabled={isLoading}
+            onClick={goToCreateCircle}
+            btnSize={btnSizes.md}
+          >
+            Create Circle
+          </Button>
+        </div>
       </div>
     </div>
   );
