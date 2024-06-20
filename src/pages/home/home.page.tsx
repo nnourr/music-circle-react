@@ -8,7 +8,7 @@ import { CircleInfo } from "./models/circleInfo.model";
 import { SERVER_ENDPOINT } from "../../config/globals";
 import Button from "../../components/inputs/button.input.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWarning } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, faWarning } from "@fortawesome/free-solid-svg-icons";
 import { useUser } from "../../providers/user.provider";
 import { UserCircle } from "../../models/userCircle.model";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -35,7 +35,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
       );
       if (getFirstCircleResponse.status === 200) {
         const firstCircle = (await getFirstCircleResponse.json()) as CircleInfo;
-        setCurrentCircleInfo(firstCircle);
+        setTimeout(() => setCurrentCircleInfo(firstCircle), 2000);
       } else {
         throw new Error("get circle info response not 200");
       }
@@ -108,6 +108,14 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
               isLoading={isLoading}
             />
           </>
+        ) : isLoading ? (
+          <div className="h-full w-full flex justify-center items-center">
+            {" "}
+            <FontAwesomeIcon
+              icon={faSpinner}
+              className="spin text-2xl lg:text-lg-2xl text-white animate-spin"
+            />
+          </div>
         ) : (
           <MotionHomeState />
         )
