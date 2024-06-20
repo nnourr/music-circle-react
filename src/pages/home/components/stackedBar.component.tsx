@@ -1,4 +1,4 @@
-import { Variants, inView, motion } from "framer-motion";
+import { Variants, motion } from "framer-motion";
 import { ConsolidatedArtist } from "../helpers/consolidateTopArtistsWithPoints.helper";
 import { useIsMobile } from "../../../providers/isMobile.provider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
