@@ -144,6 +144,10 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
           }
           setUserId(userId);
           setUsername(userObj.username);
+          if (localStorage.getItem("initialCircleCode")) {
+            navigate("/joinCircle");
+            return;
+          }
           navigate("/createCircle");
         } else {
           throw new Error("setUser response not 200");
@@ -194,8 +198,12 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
       return;
     }
 
+    if (!!userId) {
+      navigate("/joinCircle");
+    }
+
     localStorage.setItem("initialCircleCode", initialCircleCodeParam);
-  }, [initialCircleCodeParam]);
+  }, [initialCircleCodeParam, navigate, userId]);
 
   return (
     <motion.div
