@@ -147,7 +147,7 @@ const HomeState = React.forwardRef<HTMLDivElement>((_, ref) => {
           variants={circleListVariants}
           initial="initial"
           animate="visible"
-          className="font-bold bg-linear-gradient text-transparent bg-clip-text text-1xl lg:text-lg-1xl my-4 flex w-full justify-between"
+          className="font-bold bg-linear-gradient text-transparent bg-clip-text text-1xl lg:text-lg-1xl mt-4 lg:mb-4 flex w-full justify-between"
         >
           your circles:
           {!isMobile && (
