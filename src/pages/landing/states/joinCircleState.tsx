@@ -79,7 +79,7 @@ const JoinCircleState = React.forwardRef<
   return (
     <div
       ref={ref}
-      className="h-full w-full flex justify-center items-center flex-col gap-12 lg:gap-24"
+      className="h-full w-full flex justify-center items-center flex-col gap-8 lg:gap-24"
     >
       <div className="flex flex-col">
         <h2 className="text-lg lg:text-lg-xl px-7 font-fancy self-start -mb-2 lg:-mb-8 text-black/80">
