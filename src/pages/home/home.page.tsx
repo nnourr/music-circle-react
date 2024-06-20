@@ -35,7 +35,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
       );
       if (getFirstCircleResponse.status === 200) {
         const firstCircle = (await getFirstCircleResponse.json()) as CircleInfo;
-        setTimeout(() => setCurrentCircleInfo(firstCircle), 2000);
+        setCurrentCircleInfo(firstCircle);
       } else {
         throw new Error("get circle info response not 200");
       }
