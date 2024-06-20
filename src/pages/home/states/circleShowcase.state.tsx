@@ -19,6 +19,8 @@ import {
   getCirclePopularityData,
 } from "../helpers/getCirclePopularity";
 import { CirclePopularity } from "../components/circlePopularity.component";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShare } from "@fortawesome/free-solid-svg-icons";
 
 interface CircleShowcaseStateProps {
   circleInfo: CircleInfo;
@@ -79,10 +81,24 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   }
 
   const onCopyCodeClick = () => {
-    navigator.clipboard.writeText(
-      `${window.location.origin}?circleCode=${circleInfo.circleCode}`
-    );
+    navigator.clipboard.writeText(circleInfo.circleCode);
+
     setCopyCircleCodeText("Code Copied!");
+    setTimeout(() => {
+      setCopyCircleCodeText(`#${circleInfo.circleCode}`);
+    }, 1000);
+  };
+
+  const onShareCircle = async () => {
+    try {
+      await navigator.share({
+        url: `${window.location.origin}?circleCode=${circleInfo.circleCode}`,
+      });
+    } catch {
+      onCopyCodeClick();
+    }
+
+    setCopyCircleCodeText("Circle Shared!");
     setTimeout(() => {
       setCopyCircleCodeText(`#${circleInfo.circleCode}`);
     }, 1000);
@@ -141,14 +157,24 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             circleInfo.circleName
           )}
         </ReactFitty>
-        <motion.span
-          className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer w-fit text-nowrap pointer-events-auto lg:ml-4"
-          onClick={onCopyCodeClick}
-          title="Copy Circle Code"
-          whileTap={{ scale: 0.9 }}
-        >
-          {copyCircleCodeText}
-        </motion.span>
+        <div>
+          <motion.span
+            className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer w-fit text-nowrap pointer-events-auto lg:ml-4"
+            onClick={onCopyCodeClick}
+            title="Copy Circle Code"
+            whileTap={{ scale: 0.9 }}
+          >
+            {copyCircleCodeText}
+          </motion.span>
+          <motion.span
+            className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer w-fit text-nowrap pointer-events-auto lg:ml-4"
+            onClick={onShareCircle}
+            title="Share Circle"
+            whileTap={{ scale: 0.9 }}
+          >
+            <FontAwesomeIcon icon={faShare} />
+          </motion.span>
+        </div>
 
         {isMobile ? (
           <Button
