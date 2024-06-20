@@ -5,7 +5,7 @@ import {
   faArrowRightFromBracket,
   faClose,
 } from "@fortawesome/free-solid-svg-icons";
-import { faCircle, faCircleXmark } from "@fortawesome/free-regular-svg-icons";
+import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import Button, {
   btnSizes,
