@@ -6,12 +6,13 @@ import { useIsMobile } from "../../providers/isMobile.provider";
 
 interface InputProps {
   onChange: (change: any) => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   placeholder: string;
   className?: string;
   error?: boolean;
   isLoading?: boolean;
   maxLength?: number;
+  white?: boolean;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -21,6 +22,8 @@ export const Input: React.FC<InputProps> = ({
   placeholder = "this is a placeholder!",
   maxLength = 20,
   isLoading,
+  white = false,
+  className,
 }) => {
   const size = {
     xl: "w-[20rem] lg:w-auto",
@@ -30,9 +33,25 @@ export const Input: React.FC<InputProps> = ({
   const [onFocus, setOnFocus] = useState<boolean>(false);
   const isMobile = useIsMobile();
 
+  const tailwindDynamicStyles = {
+    text: white
+      ? {
+          disabled: "text-white/20",
+          active: "text-white/90",
+          placeholder: "text-white/20",
+        }
+      : {
+          disabled: "text-black/20",
+          active: "text-black/80",
+          placeholder: "text-black/20",
+        },
+    inputAlign: isMobile || !!!children ? "text-center" : "text-left",
+  };
+  const motionColour = white ? "255, 255, 255" : "0,0,0";
+
   return (
     <motion.div
-      className={`${inputSize} lg:px-14 flex justify-center items-center relative text-center py-1 pb-0 text-lg lg:text-lg-lg text-black/80 border-black/50 border-b-2 lg:border-2 lg:rounded-3xl`}
+      className={`${inputSize} ${tailwindDynamicStyles.text.active} ${className} lg:px-14 flex justify-center items-center relative text-center lg:pt-1 text-lg lg:text-lg-lg text-black/80 border-b-2 lg:border-2 lg:rounded-3xl`}
       animate={
         error
           ? {
@@ -44,7 +63,9 @@ export const Input: React.FC<InputProps> = ({
           : {
               translateY: 0,
               opacity: 1,
-              borderColor: onFocus ? "rgba(0 0 0 0.5)" : "rgba(0 0 0 0.1)",
+              borderColor: onFocus
+                ? `rgba(${motionColour} 0.5)`
+                : `rgba(${motionColour} 0.1)`,
             }
       }
       transition={{ duration: 0.4 }}
@@ -54,7 +75,7 @@ export const Input: React.FC<InputProps> = ({
           ? {
               borderColor: "rgba(227 0 73 0.9)",
             }
-          : { borderColor: "rgba(0 0 0 0.5)" }
+          : { borderColor: `rgba(${motionColour} 0.5)` }
       }
     >
       {isLoading ? (
@@ -64,7 +85,7 @@ export const Input: React.FC<InputProps> = ({
         />
       ) : (
         <>
-          {!isMobile ? children : undefined}
+          <span className="text-nowrap">{!isMobile && children}</span>
           <input
             type="text"
             onChange={onChange}
@@ -72,7 +93,7 @@ export const Input: React.FC<InputProps> = ({
             maxLength={maxLength}
             onFocus={() => setOnFocus(true)}
             onBlur={() => setOnFocus(false)}
-            className="bg-transparent placeholder:text-black/30 text-center w-full lg:text-left focus:outline-none lg:w-[8em]"
+            className={`bg-transparent placeholder:${tailwindDynamicStyles.text.placeholder} ${tailwindDynamicStyles.inputAlign} w-full text-nowrap focus:outline-none lg:w-[8em]`}
           ></input>
         </>
       )}

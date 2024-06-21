@@ -33,7 +33,7 @@ export const ModalComponent: React.FC<ModalComponentProps> = ({
         <h2 className="text-white text-1xl lg:text-lg-1xl leading-tight">
           {promptText}
         </h2>
-        <div className="flex w-full flex-col lg:flex-row items-end justify-end gap-2 lg:gap-6">
+        <div className="flex w-full flex-col lg:flex-row items-end justify-end gap-4 mb-4 lg:gap-6">
           <Button
             onClick={cancelAction.onAction}
             title={cancelAction.actionTitle}
