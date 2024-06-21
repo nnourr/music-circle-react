@@ -26,7 +26,7 @@ export const CirclePopularity: React.FC<CirclePopularityProps> = ({
   return (
     <motion.div
       key="circlePopularityData"
-      className={`${className} font-bold text-left flex-grow flex-shrink overflow-hidden flex h-full flex-col`}
+      className={`${className} font-bold text-left flex-grow flex-shrink overflow-hidden flex flex-col`}
       initial={{ opacity: 0 }}
       animate={{
         opacity: circlePopularityData.averagePopularity === 0 ? 0 : 0.8,
@@ -54,8 +54,7 @@ export const CirclePopularity: React.FC<CirclePopularityProps> = ({
           (this is the average popularity of each person's top 50 artists)
         </span>
       )}
-      {/* <ul className="lg:h-[10vh] lg:ml-4 xl:h-[20vh] overflow-auto pointer-events-auto"> */}
-      <ul className="lg:ml-4 overflow-auto pointer-events-auto h-full">
+      <ul className="lg:ml-4 overflow-auto pointer-events-auto mb-4 lg-mb-0">
         {userPopularityRanking}
       </ul>
     </motion.div>
