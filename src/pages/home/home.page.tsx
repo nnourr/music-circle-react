@@ -70,6 +70,7 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
       setCurrentCircle(paramCircleCode);
       return;
     }
+    setCurrentCircleInfo(undefined);
   }, [params, setCurrentCircle, userCircles]);
 
   useEffect(() => {

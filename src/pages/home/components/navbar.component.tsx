@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useUser } from "../../../providers/user.provider";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 interface NavbarComponentInterface {
   menuClicked: () => any;
@@ -13,6 +14,8 @@ export const NavbarComponent: React.FC<NavbarComponentInterface> = ({
 }) => {
   const [showUsername, setShowUsername] = useState<boolean>(false);
   const { username } = useUser();
+  const [, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   return (
     <motion.div
@@ -29,6 +32,8 @@ export const NavbarComponent: React.FC<NavbarComponentInterface> = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.8 }}
           transition={{ duration: 0.4 }}
+          className="cursor-pointer"
+          onClick={() => setSearchParams(undefined)}
         >
           {showUsername ? `hey, ${username}.` : "Music Circle."}
         </motion.span>

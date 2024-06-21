@@ -124,8 +124,6 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
     }
   };
 
-  console.log(window.visualViewport?.height);
-
   return (
     <motion.div className="mt-1 h-full box-border w-full px-6 py-2 overflow-auto">
       <div className="mt-3 lg:right-0 lg:mr-[5%] lg:max-w-[40%] xl:max-w-[30%] xl:mr-[10%] flex flex-col lg:text-left lg:fixed items-start pointer-events-none box-border lg:h-svh lg:pt-20 lg:pb-10 lg:mt-0 top-0">
