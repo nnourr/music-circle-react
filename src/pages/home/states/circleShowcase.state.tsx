@@ -124,14 +124,16 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
     }
   };
 
+  console.log(window.visualViewport?.height);
+
   return (
     <motion.div className="mt-1 h-full box-border w-full px-6 py-2 overflow-auto">
-      <div className="mt-3 lg:mt-8 lg:right-0 lg:mr-[5%] lg:max-w-[40%] xl:max-w-[30%] xl:mr-[10%] flex flex-col lg:text-left lg:fixed items-start pointer-events-none">
+      <div className="mt-3 lg:right-0 lg:mr-[5%] lg:max-w-[40%] xl:max-w-[30%] xl:mr-[10%] flex flex-col lg:text-left lg:fixed items-start pointer-events-none box-border lg:h-svh lg:pt-20 lg:pb-10 lg:mt-0 top-0">
         <ReactFitty
-          maxSize={isMobile ? 80 : 200}
+          maxSize={isMobile ? 80 : 140}
           minSize={isMobile ? 50 : 100}
           wrapText={true}
-          className="font-fancy text-transparent bg-linear-gradient bg-clip-text leading-[1] w-full"
+          className="font-fancy text-transparent bg-linear-gradient bg-clip-text leading-none"
         >
           {isLoading ? (
             <>
@@ -215,20 +217,14 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             </motion.div>
           </Button>
         ) : (
-          ""
-        )}
-
-        {!isMobile ? (
-          <div className="flex flex-col lg:mt-4 h-full xl:mt-8 lg:gap-4 xl:gap-8">
+          <>
             <MultiSelector
               itemsData={circleUsernames}
               onSelectionChange={onSelectionChange}
-              className="flex-shrink-0 pointer-events-auto ml-4"
+              className="pointer-events-auto ml-4 my-4"
             />
             <CirclePopularity circlePopularityData={circlePopularityData} />
-          </div>
-        ) : (
-          ""
+          </>
         )}
       </div>
       <motion.div
