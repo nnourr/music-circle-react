@@ -119,7 +119,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 10 });
+      scrollContainerRef.current.scrollBy({ left: 10, behavior: "smooth" });
       localStorage.setItem("firstTime", "false");
     }
   };
@@ -131,7 +131,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
           maxSize={isMobile ? 80 : 140}
           minSize={isMobile ? 50 : 100}
           wrapText={true}
-          className="font-fancy text-transparent bg-linear-gradient bg-clip-text leading-none"
+          className="font-fancy text-transparent bg-linear-gradient bg-clip-text leading-none overflow-hidden text-ellipsis w-full"
         >
           {isLoading ? (
             <>

@@ -83,7 +83,7 @@ const CreateCircleState = React.forwardRef<
     if (trimmedCircleCode === "") {
       return;
     }
-    const invalidCodePattern = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
+    const invalidCodePattern = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~0-9]/;
     if (invalidCodePattern.test(trimmedCircleCode)) {
       setCircleNameError("sorry, no special characters.");
       return;
@@ -111,11 +111,11 @@ const CreateCircleState = React.forwardRef<
       </div>
 
       <div className="flex flex-col gap-4 items-center relative">
-        {!!circleNameError ? (
+        {!!circleNameError && (
           <p className="text-base -translate-y-[70%] left-0 absolute lg:text-lg-base text-error">
             {circleNameError}
           </p>
-        ) : undefined}
+        )}
         <Input
           onChange={(change: any) => setNewCircleName(change.target.value)}
           error={!!circleNameError}

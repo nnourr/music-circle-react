@@ -1,4 +1,7 @@
-import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
+import {
+  faCircleXmark,
+  faPenToSquare,
+} from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   createSearchParams,
@@ -8,11 +11,12 @@ import {
 import Button from "../../../components/inputs/button.input.component";
 import { useUserCircles } from "../../../providers/userCircles.provider";
 import { AnimatePresence, motion } from "framer-motion";
-import { ReactNode, useCallback, useState } from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 import { ModalComponent } from "../../../components/modal.component";
 import { UserCircle } from "../../../models/userCircle.model";
 import { SERVER_ENDPOINT } from "../../../config/globals";
 import { useUser } from "../../../providers/user.provider";
+import Input from "../../../components/inputs/text.input.component";
 
 interface UserCircleListComponentProps {
   currentCircleCode?: string;
@@ -27,6 +31,9 @@ export const UserCircleListComponent: React.FC<
   const { userCircles, setUserCircles } = useUserCircles();
   const [, setSearchParams] = useSearchParams();
   const [circleToLeave, setCircleToLeave] = useState<UserCircle | undefined>();
+  const [circleToEdit, setCircleToEdit] = useState<UserCircle | undefined>();
+  const [circleNameError, setCircleNameError] = useState<string | undefined>();
+  const [newCircleName, setNewCircleName] = useState<string>("");
   const navigate = useNavigate();
   const { userId } = useUser();
 
@@ -56,6 +63,74 @@ export const UserCircleListComponent: React.FC<
     [currentCircleCode, userId, navigate, setUserCircles, userCircles]
   );
 
+  const renameCircle = useCallback(async () => {
+    if (!!!circleToEdit) {
+      return;
+    }
+    const trimmedCircleName = newCircleName.trim();
+    if (trimmedCircleName.length === 0) {
+      setCircleNameError("circle name cannot be empty");
+      return;
+    }
+
+    if (!!circleNameError) {
+      return;
+    }
+
+    const renameCircleResponse = await fetch(
+      `${SERVER_ENDPOINT}/circle/${circleToEdit?.circleCode}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ newCircleName: trimmedCircleName }),
+      }
+    );
+    if (renameCircleResponse.status !== 200) {
+      console.error("unable to rename circle " + circleToEdit?.circleCode);
+      setCircleNameError("unable to rename circle");
+      return;
+    }
+    setCircleToEdit(undefined);
+    setUserCircles(
+      userCircles.map((circle) => {
+        if (circle.circleCode === circleToEdit?.circleCode) {
+          circle.circleName = trimmedCircleName;
+        }
+        return circle;
+      })
+    );
+    if (!!currentCircleCode && circleToEdit?.circleCode !== currentCircleCode) {
+      navigate({
+        pathname: "/home",
+        search: createSearchParams({
+          circleCode: circleToEdit?.circleCode,
+        }).toString(),
+      });
+    }
+  }, [
+    circleToEdit,
+    newCircleName,
+    circleNameError,
+    setUserCircles,
+    userCircles,
+    currentCircleCode,
+    navigate,
+  ]);
+
+  useEffect(() => {
+    setCircleNameError(undefined);
+    const trimmedCircleCode = newCircleName.trim();
+    setNewCircleName(trimmedCircleCode);
+
+    const invalidCodePattern = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~0-9]/;
+    if (invalidCodePattern.test(trimmedCircleCode)) {
+      setCircleNameError("sorry, no special characters.");
+      return;
+    }
+  }, [newCircleName]);
+
   const leaveCircleModalText: ReactNode = (
     <span>
       Are you sure you want to leave{" "}
@@ -63,6 +138,29 @@ export const UserCircleListComponent: React.FC<
         {circleToLeave?.circleName}
       </span>
       ?
+    </span>
+  );
+
+  const editCircleModalText: ReactNode = (
+    <span>
+      Rename{" "}
+      <span className="bg-linear-gradient text-transparent bg-clip-text font-bold">
+        {circleToEdit?.circleName}
+      </span>
+      :
+      {!!circleNameError && (
+        <p className="text-base absolute lg:text-lg-base text-error">
+          {circleNameError}
+        </p>
+      )}
+      <Input
+        maxLength={16}
+        onChange={(change) => setNewCircleName(change.target.value)}
+        placeholder="enter circle name"
+        white={true}
+        error={!!circleNameError}
+        className="mt-8 w-full"
+      ></Input>
     </span>
   );
 
@@ -94,10 +192,16 @@ export const UserCircleListComponent: React.FC<
                 onCircleClick();
               }
             }}
-            className="z-10 px-5 lg:px-7 text-left w-full relative"
+            className="z-10 pl-5 lg:pl-7 flex-shrink-1 overflow-hidden text-ellipsis text-left w-full relative"
           >
             {circle.circleName}
           </p>
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            onClick={() => setCircleToEdit(circle)}
+            className="z-10 relative pt-[4px] lg:pt-[6px]"
+            title="Rename Circle"
+          />
           <FontAwesomeIcon
             icon={faCircleXmark}
             onClick={() => setCircleToLeave(circle)}
@@ -136,6 +240,25 @@ export const UserCircleListComponent: React.FC<
             promptText={leaveCircleModalText}
             onClose={() => setCircleToLeave(undefined)}
             key={"LeaveCircleModal"}
+          />
+        )}
+        {circleToEdit && (
+          <ModalComponent
+            cancelAction={{
+              actionText: "Cancel",
+              actionTitle: "I do not want to rename this circle",
+              onAction: () => {
+                setCircleToEdit(undefined);
+              },
+            }}
+            confirmAction={{
+              actionText: "Confirm",
+              actionTitle: "I want to rename this Circle",
+              onAction: renameCircle,
+            }}
+            promptText={editCircleModalText}
+            onClose={() => setCircleToEdit(undefined)}
+            key={"RenameCircleModal"}
           />
         )}
       </AnimatePresence>

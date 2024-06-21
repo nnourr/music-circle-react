@@ -30,11 +30,11 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const setCurrentCircle = useCallback(async (circleCode: string) => {
     setIsLoading(true);
     try {
-      const getFirstCircleResponse = await fetch(
+      const getCircleResponse = await fetch(
         `${SERVER_ENDPOINT}/circle/${circleCode}`
       );
-      if (getFirstCircleResponse.status === 200) {
-        const firstCircle = (await getFirstCircleResponse.json()) as CircleInfo;
+      if (getCircleResponse.status === 200) {
+        const firstCircle = (await getCircleResponse.json()) as CircleInfo;
         setCurrentCircleInfo(firstCircle);
       } else {
         throw new Error("get circle info response not 200");
