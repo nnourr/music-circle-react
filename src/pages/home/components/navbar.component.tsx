@@ -15,7 +15,6 @@ export const NavbarComponent: React.FC<NavbarComponentInterface> = ({
   const [showUsername, setShowUsername] = useState<boolean>(false);
   const { username } = useUser();
   const [, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
 
   return (
     <motion.div
