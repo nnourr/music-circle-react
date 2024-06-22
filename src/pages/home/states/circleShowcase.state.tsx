@@ -1,9 +1,5 @@
 import { motion } from "framer-motion";
 import { CircleInfo } from "../models/circleInfo.model";
-import {
-  ConsolidatedArtist,
-  consolidateTopArtistsWithPoints,
-} from "../helpers/consolidateTopArtistsWithPoints.helper";
 import { StackedBar } from "../components/stackedBar.component";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useUser } from "../../../providers/user.provider";
@@ -21,6 +17,8 @@ import {
 import { CirclePopularity } from "../components/circlePopularity.component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShare } from "@fortawesome/free-solid-svg-icons";
+import { ConsolidatedCircle } from "../models/consolidatedItems.model";
+import { consolidateCircle } from "../helpers/consolidateCircleInfo";
 
 interface CircleShowcaseStateProps {
   circleInfo: CircleInfo;
@@ -35,9 +33,8 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
     setCopyCircleCodeText(`#${circleInfo.circleCode}`);
   }, [circleInfo.circleCode]);
 
-  const [consolidatedArtistData, setConsolidatedArtistData] = useState<
-    ConsolidatedArtist[]
-  >(consolidateTopArtistsWithPoints(circleInfo));
+  const [consolidatedCircleData, setConsolidatedCircleData] =
+    useState<ConsolidatedCircle>(consolidateCircle(circleInfo));
   const [circlePopularityData, setCirclePopularityData] =
     useState<CirclePopularityData>(getCirclePopularityData(circleInfo));
 
@@ -56,7 +53,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
     circleInfoClone.users = circleInfoClone.users.filter((user) =>
       selectedUsers.includes(user.username)
     );
-    setConsolidatedArtistData(consolidateTopArtistsWithPoints(circleInfoClone));
+    setConsolidatedCircleData(consolidateCircle(circleInfoClone));
     setCirclePopularityData(getCirclePopularityData(circleInfoClone));
   }, [circleInfo, selectedUsers]);
 
@@ -70,7 +67,13 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   );
 
   if (
-    Object.values(consolidatedArtistData).some((value) => {
+    Object.values(consolidatedCircleData.artists).some((value) => {
+      return (
+        value.contributors.includes(username || "") &&
+        Object.values(value).some((value) => value === undefined)
+      );
+    }) ||
+    Object.values(consolidatedCircleData.tracks).some((value) => {
       return (
         value.contributors.includes(username || "") &&
         Object.values(value).some((value) => value === undefined)
@@ -261,7 +264,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
 
       {showArtists || !isMobile ? (
         <StackedBar
-          artistsData={consolidatedArtistData}
+          itemsData={consolidatedCircleData.artists}
           className="h-full w-full mt-4 lg:max-w-[50%] xl:max-w-[40%] lg:ml-[5%] xl:ml-[15%]"
         ></StackedBar>
       ) : (
