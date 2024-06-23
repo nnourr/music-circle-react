@@ -134,13 +134,13 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   };
 
   return (
-    <motion.div className="mt-1 h-full box-border w-full px-6 py-2 relative overflow-auto">
+    <motion.div className="mt-1 h-full box-border w-full px-6 py-2 relative overflow-y-auto overflow-x-hidden">
       <div className="mt-3 lg:right-0 lg:mr-[5%] lg:max-w-[40%] xl:max-w-[30%] xl:mr-[10%] flex flex-col lg:text-left lg:fixed items-start pointer-events-none box-border lg:h-svh lg:pt-20 lg:pb-10 lg:mt-0 top-0">
         <ReactFitty
           maxSize={isMobile ? 80 : 140}
           minSize={isMobile ? 50 : 100}
           wrapText={true}
-          className="font-fancy text-transparent bg-linear-gradient bg-clip-text leading-none overflow-hidden text-ellipsis w-full"
+          className="font-fancy text-transparent bg-linear-gradient bg-clip-text leading-none overflow-hidden text-ellipsis"
         >
           {isLoading ? (
             <>
@@ -209,14 +209,14 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
               itemsData={circleUsernames}
               onSelectionChange={onSelectionChange}
               isCollapsible={true}
-              collapsibleTitle="users"
+              collapsibleTitle="members"
               className="mt-4 pointer-events-auto text-nowrap w-full basis-1/2 h-fit"
             />
           </div>
         ) : (
           <>
             <h2 className="font-bold block w-min mt-4 mb-2 opacity-80 text-nowrap text-lg-1xl bg-linear-gradient bg-clip-text text-transparent leading-none">
-              users:
+              members:
             </h2>
             <MultiSelector
               itemsData={circleUsernames}
