@@ -103,14 +103,14 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
       await navigator.share({
         url: `${window.location.origin}?circleCode=${circleInfo.circleCode}`,
       });
+
+      setCopyCircleCodeText("Circle Shared!");
+      setTimeout(() => {
+        setCopyCircleCodeText(`#${circleInfo.circleCode}`);
+      }, 1000);
     } catch {
       onCopyCodeClick();
     }
-
-    setCopyCircleCodeText("Circle Shared!");
-    setTimeout(() => {
-      setCopyCircleCodeText(`#${circleInfo.circleCode}`);
-    }, 1000);
   };
 
   const handleShowArtists = () => {

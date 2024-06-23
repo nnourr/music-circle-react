@@ -83,6 +83,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
                 className="text-white/90 text-lg lg:text-lg-lg"
               />
             </button>
+            '
             <button
               title="Sign Out"
               className="text-base lg:text-lg-base text-error/90"
@@ -96,6 +97,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
                 icon={faArrowRightFromBracket}
               />
             </button>
+            '
           </div>
           <h2 className="bg-linear-gradient my-4 bg-clip-text leading-[1] font-fancy text-transparent text-xl lg:text-lg-xl">
             Your Circles
@@ -114,7 +116,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
             title="Join or Create Circle"
             onClick={() => {
               navigate({
-                pathname: "/joinCircle",
+                pathname: "/createCircle",
                 search: createSearchParams({ noRedirect: "true" }).toString(),
               });
             }}

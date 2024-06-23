@@ -29,7 +29,7 @@ export const ModalComponent: React.FC<ModalComponentProps> = ({
       key="leaveCircleModal"
       className="h-full w-full z-50 flex justify-center items-center absolute top-0 left-0"
     >
-      <motion.div className="w-[90%] lg:w-[43rem] lg:h-80 border-white/50 border-4 bg-black rounded-3xl gap-12 px-6 lg:px-12 py-4 lg:py-8 flex flex-col justify-between">
+      <motion.div className="w-[90%] lg:w-[43rem] lg:min-h-80 border-white/50 border-4 bg-black rounded-3xl gap-12 px-6 lg:px-12 py-4 lg:py-8 flex flex-col justify-between">
         <h2 className="text-white text-1xl lg:text-lg-1xl leading-tight">
           {promptText}
         </h2>

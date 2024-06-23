@@ -147,7 +147,7 @@ const HomeState = React.forwardRef<HTMLDivElement>((_, ref) => {
           variants={circleListVariants}
           initial="initial"
           animate="visible"
-          className="text text-1xl lg:text-lg-1xl mt-4 lg:mb-4 flex w-full justify-between"
+          className="text text-1xl lg:text-lg-1xl mt-4 lg:mb-4 flex w-full justify-between items-baseline"
         >
           <span className="font-bold bg-linear-gradient text-transparent bg-clip-text">
             your circles:
@@ -165,7 +165,7 @@ const HomeState = React.forwardRef<HTMLDivElement>((_, ref) => {
                 title="Join or Create Circle"
                 onClick={() => {
                   navigate({
-                    pathname: "/joinCircle",
+                    pathname: "/createCircle",
                     search: createSearchParams({
                       noRedirect: "true",
                     }).toString(),
@@ -207,7 +207,7 @@ const HomeState = React.forwardRef<HTMLDivElement>((_, ref) => {
               title="Join or Create Circle"
               onClick={() => {
                 navigate({
-                  pathname: "/joinCircle",
+                  pathname: "/createCircle",
                   search: createSearchParams({ noRedirect: "true" }).toString(),
                 });
               }}
