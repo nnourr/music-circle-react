@@ -30,6 +30,15 @@ const spotifyVariants: Variants = {
   },
 };
 
+const barVariants: Variants = {
+  hover: {
+    height: "60%",
+  },
+  inView: {
+    opacity: [0.1, 1],
+  },
+};
+
 export const StackedBar: React.FC<StackedBarProps> = ({
   itemsData,
   className,
@@ -37,8 +46,8 @@ export const StackedBar: React.FC<StackedBarProps> = ({
   const isMobile = useIsMobile();
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const createItemDetails = (item: Item) => {
-    const isArtist = "genres" in item;
     const itemImage = item.images?.[0]?.url;
+    const isArtist = "genres" in item;
 
     return (
       <motion.div
@@ -56,7 +65,7 @@ export const StackedBar: React.FC<StackedBarProps> = ({
           Contributors:{" "}
           <span className="text-white">{item.contributors.join(", ")}</span>
           <br />
-          Popularity:
+          Popularity:{" "}
           <span className="text-white">{item.popularity / 100}</span>
           <br />
           {isArtist ? (
@@ -92,6 +101,7 @@ export const StackedBar: React.FC<StackedBarProps> = ({
   }
 
   const handleBarClick = (index: number) => {
+    localStorage.setItem("firstTime", "false");
     setClickedIndex(index);
   };
 
@@ -101,15 +111,6 @@ export const StackedBar: React.FC<StackedBarProps> = ({
       backgroundImage: LINEAR_GRADIENT,
       lineHeight: "50px",
       textWrap: "balance",
-    },
-  };
-
-  const barVariants: Variants = {
-    hover: {
-      height: isMobile ? "60vh" : "60%",
-    },
-    inView: {
-      opacity: [0.1, 1],
     },
   };
 

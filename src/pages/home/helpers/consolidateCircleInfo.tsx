@@ -8,6 +8,7 @@ import {
 import { TrackInterface } from "../models/track.model";
 
 type Item = ArtistInterface | TrackInterface;
+export type AllowedItems = "artists" | "tracks";
 
 type ConsolidatedItem<T> = T & {
   points: number;
@@ -32,7 +33,7 @@ function createConsolidatedItem(
 
 function consolidateTopItemsWithPoints(
   circle: CircleInfo,
-  itemType: "artists" | "tracks",
+  itemType: AllowedItems,
   scaleFactor: number,
   topX: number
 ): ConsolidatedItem<Item>[] {
