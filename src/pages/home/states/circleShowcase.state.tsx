@@ -234,7 +234,9 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
               onSelectionChange={onSelectionChange}
               className="pointer-events-auto ml-4 my-4"
             />
-            <CirclePopularity circlePopularityData={circlePopularityData} />
+            <CirclePopularity
+              itemPopularityData={circlePopularityData[selectedItem]}
+            />
           </>
         )}
       </div>
@@ -302,7 +304,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
       {showPopularity && isMobile ? (
         <CirclePopularity
           className="w-fit mt-20 mx-6 mb-24"
-          circlePopularityData={circlePopularityData}
+          itemPopularityData={circlePopularityData[selectedItem]}
         />
       ) : (
         ""

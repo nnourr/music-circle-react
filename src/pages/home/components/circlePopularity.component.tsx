@@ -1,16 +1,16 @@
 import { motion } from "framer-motion";
-import { CirclePopularityData } from "../helpers/getCirclePopularity";
+import { PopularityData } from "../helpers/getCirclePopularity";
 
 interface CirclePopularityProps {
-  circlePopularityData: CirclePopularityData;
+  itemPopularityData: PopularityData;
   className?: string;
 }
 
 export const CirclePopularity: React.FC<CirclePopularityProps> = ({
-  circlePopularityData,
+  itemPopularityData,
   className,
 }) => {
-  const userPopularityRanking = circlePopularityData.userPopularityRanking.map(
+  const userPopularityRanking = itemPopularityData.userPopularityRanking.map(
     (user, i) => (
       <li className="text-base lg:text-base text-white" key={user.username}>
         {i + 1}. {user.username}:{" "}
@@ -25,11 +25,11 @@ export const CirclePopularity: React.FC<CirclePopularityProps> = ({
 
   return (
     <motion.div
-      key="circlePopularityData"
+      key="itemPopularityData"
       className={`${className} font-bold text-left flex-grow flex-shrink overflow-hidden flex flex-col`}
       initial={{ opacity: 0 }}
       animate={{
-        opacity: circlePopularityData.averagePopularity === 0 ? 0 : 0.8,
+        opacity: itemPopularityData.averagePopularity === 0 ? 0 : 0.8,
       }}
     >
       <h2 className="text-lg hidden lg:block w-min text-nowrap lg:text-lg-lg bg-linear-gradient bg-clip-text text-transparent leading-none">
@@ -42,7 +42,7 @@ export const CirclePopularity: React.FC<CirclePopularityProps> = ({
       )}
       <h2 className="text-xl lg:ml-4 w-fit lg:text-lg-lg text-white">
         <span className="bg-linear-gradient font-bold bg-clip-text text-transparent">
-          {circlePopularityData.averagePopularity}
+          {itemPopularityData.averagePopularity}
         </span>
         /100
       </h2>

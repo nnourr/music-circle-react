@@ -1,10 +1,7 @@
-import { faCaretDown, faCaretLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import Button, { btnSizes } from "./button.input.component";
-import { useIsMobile } from "../../providers/isMobile.provider";
 import { motion } from "framer-motion";
-import { LINEAR_GRADIENT, LINEAR_GRADIENT_WHITE } from "../../config/globals";
 
 interface Option {
   label: string;
