@@ -257,7 +257,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
           <motion.h2
             initial={{ opacity: isMobile ? 0.3 : 0 }}
             whileInView={{ opacity: isMobile ? 0.8 : 0 }}
-            viewport={{ margin: "400px -150px 400px -150px" }}
+            viewport={{ margin: "400px -170px 400px -170px" }}
             onViewportEnter={() => {
               handleShowPopularity();
             }}
