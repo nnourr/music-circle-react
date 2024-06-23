@@ -1,17 +1,22 @@
 import { Variants, motion } from "framer-motion";
-import { ConsolidatedArtist } from "../helpers/consolidateTopArtistsWithPoints.helper";
 import { useIsMobile } from "../../../providers/isMobile.provider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
 import { LINEAR_GRADIENT } from "../../../config/globals";
 import { useState } from "react";
+import {
+  ConsolidatedArtist,
+  ConsolidatedTrack,
+} from "../models/consolidatedItems.model";
+
+type Item = ConsolidatedArtist | ConsolidatedTrack;
 
 interface StackedBarProps {
-  artistsData: ConsolidatedArtist[];
+  itemsData: Item[];
   className: string;
 }
 
-const artistDetailVariants: Variants = {
+const detailVariants: Variants = {
   hover: {
     opacity: 1,
   },
@@ -25,15 +30,69 @@ const spotifyVariants: Variants = {
   },
 };
 
+const barVariants: Variants = {
+  hover: {
+    height: "60%",
+  },
+  inView: {
+    opacity: [0.1, 1],
+  },
+};
+
 export const StackedBar: React.FC<StackedBarProps> = ({
-  artistsData,
+  itemsData,
   className,
 }) => {
   const isMobile = useIsMobile();
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
-  const [largestTitle, setLargestTitle] = useState<number>(-1);
+  const createItemDetails = (item: Item) => {
+    const itemImage = item.images?.[0]?.url;
+    const isArtist = "genres" in item;
 
-  if (artistsData.length === 0) {
+    return (
+      <motion.div
+        variants={detailVariants}
+        className="text-base text-white pl-6 pointer-events-[scroll] lg:max-w-[30vw] xl:max-w-[20vw] lg:overflow-y-auto"
+        style={{ opacity: 0 }}
+      >
+        <motion.div className="w-1/2 lg:w-1/3">
+          <img src={itemImage} alt={`${item.name}`} />
+        </motion.div>
+        <motion.p
+          variants={detailVariants}
+          className="leading-1 text-wrap bg-linear-gradient bg-clip-text text-transparent"
+        >
+          Contributors:{" "}
+          <span className="text-white">{item.contributors.join(", ")}</span>
+          <br />
+          Popularity:{" "}
+          <span className="text-white">{item.popularity / 100}</span>
+          <br />
+          {isArtist ? (
+            <>
+              Genres:{" "}
+              <span className="text-white">
+                {isMobile ? item.genres[0] : item.genres.join(", ")}
+              </span>
+              <br />
+            </>
+          ) : (
+            <>
+              Artist{item.artists.length > 1 && "s"}:{" "}
+              <span className="text-white">
+                {isMobile
+                  ? item.artists[0].name
+                  : item.artists.map((artist) => artist.name).join(", ")}
+              </span>
+              <br />
+            </>
+          )}
+        </motion.p>
+      </motion.div>
+    );
+  };
+
+  if (itemsData.length === 0) {
     return (
       <h2 className={`${className} text-lg lg:text-lg-lg text-white`}>
         Please select a user
@@ -42,27 +101,16 @@ export const StackedBar: React.FC<StackedBarProps> = ({
   }
 
   const handleBarClick = (index: number) => {
-    if (index === 0 && isFirstTime) {
-      localStorage.setItem("firstTime", "false");
-    }
+    localStorage.setItem("firstTime", "false");
     setClickedIndex(index);
   };
 
-  const artistNameVariants: Variants = {
+  const itemVariants: Variants = {
     hover: {
       fontSize: isMobile ? "35px" : "48px",
       backgroundImage: LINEAR_GRADIENT,
       lineHeight: "50px",
       textWrap: "balance",
-    },
-  };
-
-  const barVariants: Variants = {
-    hover: {
-      height: isMobile ? "60vh" : "60%",
-    },
-    inView: {
-      opacity: [0.1, 1],
     },
   };
 
@@ -74,35 +122,32 @@ export const StackedBar: React.FC<StackedBarProps> = ({
       : {},
   };
 
-  const artistNameContainerVariants: Variants = {
+  const itemDetailVariants: Variants = {
     hover: {
       maxWidth: isMobile ? undefined : "70vw",
     },
   };
 
   const isFirstTime = localStorage.getItem("firstTime") === "true";
-  const artistBar = artistsData.map((artist, i, { length }) => {
-    const artistImage = artist.images === undefined ? "" : artist.images[0].url;
+  const itemBars = itemsData.map((item, i, { length }) => {
     const isClicked = clickedIndex === i;
     const firstTimePulse =
       isFirstTime && i === 0 && !isClicked
         ? "animate-borderPulse transition-all border-white/70"
         : "";
-    if (artist.weightedPoints * 2.5 > largestTitle) {
-      setLargestTitle(artist.weightedPoints * 2.5);
-    }
+
     return (
       <motion.div
         layout
         style={{
-          height: `${artist.weightedPoints}%`,
+          height: `${item.weightedPoints}%`,
         }}
         variants={barVariants}
         whileHover="hover"
         whileInView="inView"
         animate={isClicked ? "hover" : ""}
         className={`flex items-start min-h-12 lg:max-w-[50vw]`}
-        key={artist.name}
+        key={item.name}
         onClick={() => handleBarClick(i)}
         onMouseEnter={() => handleBarClick(i)}
       >
@@ -129,12 +174,12 @@ export const StackedBar: React.FC<StackedBarProps> = ({
               width: "100%",
               maxWidth: isMobile ? undefined : "50vw",
             }}
-            variants={artistNameContainerVariants}
+            variants={itemDetailVariants}
           >
             <motion.a
-              href={artist.url}
+              href={item.url}
               target="_blank"
-              variants={artistNameVariants}
+              variants={itemVariants}
               rel="noreferrer"
               title="Listen on Spotify"
               className="inline-block font-bold w-full overflow-ellipsis overflow-hidden bg-clip-text"
@@ -144,11 +189,11 @@ export const StackedBar: React.FC<StackedBarProps> = ({
                 color: "rgba(0,0,0,0)",
                 textWrap: "nowrap",
                 fontSize: !isMobile
-                  ? `${Math.max(artist.weightedPoints * 2.5, 24)}px`
+                  ? `${Math.max(item.weightedPoints * 2.5, 24)}px`
                   : "1.5rem",
               }}
             >
-              {i + 1}. {artist.name}{" "}
+              {i + 1}. {item.name}{" "}
               <motion.span
                 variants={spotifyVariants}
                 style={{ color: "rgb(255 255 255)" }}
@@ -157,33 +202,7 @@ export const StackedBar: React.FC<StackedBarProps> = ({
               </motion.span>
             </motion.a>
           </motion.div>
-          <motion.div
-            variants={artistDetailVariants}
-            className="text-base text-white pl-6 pointer-events-[scroll] lg:max-w-[30vw] xl:max-w-[20vw] lg:overflow-y-auto"
-            style={{ opacity: 0 }}
-          >
-            <motion.div className="w-1/2 lg:w-1/3">
-              <img src={artistImage} alt={`${artist.name}`}></img>
-            </motion.div>
-            <motion.p
-              variants={artistDetailVariants}
-              className="leading-1 text-wrap bg-linear-gradient bg-clip-text text-transparent"
-            >
-              Contributors:{" "}
-              <span className="text-white">
-                {artist.contributors.join(", ")}
-              </span>
-              <br />
-              Genres:
-              <span className="text-white">
-                {" "}
-                {isMobile ? artist.genres[0] : artist.genres.join(", ")}
-              </span>
-              <br />
-              Popularity:{" "}
-              <span className="text-white">{artist.popularity}/100</span>
-            </motion.p>
-          </motion.div>
+          {createItemDetails(item)}
         </motion.div>
       </motion.div>
     );
@@ -196,7 +215,7 @@ export const StackedBar: React.FC<StackedBarProps> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      {artistBar}
+      {itemBars}
     </motion.div>
   );
 };
