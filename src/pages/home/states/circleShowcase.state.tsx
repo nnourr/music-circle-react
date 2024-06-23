@@ -289,7 +289,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
       {(showArtists || !isMobile) && (
         <StackedBar
           itemsData={consolidatedCircleData[selectedItem]}
-          className="h-auto w-full mt-4 lg:mt-32 lg:max-w-[50%] xl:max-w-[40%] lg:ml-[5%] xl:ml-[15%]"
+          className="h-auto min-h-full w-full mt-4 lg:mt-32 lg:max-w-[50%] xl:max-w-[40%] lg:ml-[5%] xl:ml-[15%]"
         ></StackedBar>
       )}
       {showPopularity && isMobile && (
