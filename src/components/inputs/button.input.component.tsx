@@ -33,7 +33,7 @@ export const Button: React.FC<ButtonProps> = ({
   const motionColour = white ? "255, 255, 255" : "0,0,0";
   return (
     <motion.button
-      className={`${btnSize} ${className} ${
+      className={`${className} ${btnSize} ${
         isDisabled
           ? `${tailwindColour.text.disabled}`
           : `${tailwindColour.text.active}`

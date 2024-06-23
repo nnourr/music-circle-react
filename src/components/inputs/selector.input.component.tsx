@@ -38,7 +38,7 @@ export const Selector: React.FC<SelectorProps> = ({
 
   return (
     <motion.div
-      className={`pt-1 inline-block px-2 lg:px-4 bg-black border-2 w-fit rounded-2xl lg:rounded-3xl`}
+      className={`${className} inline-block lg:static bg-black border-2 w-fit rounded-2xl lg:rounded-3xl lg:overflow-hidden`}
       whileTap={{ scale: 0.95 }}
       initial={{
         borderColor: `rgba(255, 255, 255, 0.5)`,
@@ -47,29 +47,28 @@ export const Selector: React.FC<SelectorProps> = ({
         borderColor: `rgba(255, 255, 255, 0.8)`,
       }}
     >
-      <button
+      <motion.button
         title="Select Item"
-        className="inline-block"
         onClick={() => setIsOpen(!isOpen)}
+        animate={{ opacity: isOpen ? 1 : 0.9 }}
+        className="w-full text-left inline-flex items-start lg:font-bold justify-between px-4 py-2 gap-2 lg:gap-6 text-base lg:text-lg-xl text-white lg:bg-linear-gradient lg:bg-clip-text lg:text-transparent leading-none"
       >
-        <span className="inline-flex items-center font-bold opacity-80 justify-between gap-2 lg:gap-6 text-1xl lg:text-lg-xl bg-linear-gradient bg-clip-text text-transparent leading-none">
-          <span>{selectedLabel}</span>
-          <FontAwesomeIcon
-            className={`text-spotify ${
-              isOpen ? "" : "fa-rotate-90"
-            } transition-all`}
-            icon={faCaretDown}
-          />
-        </span>
-      </button>
+        <span>{selectedLabel}</span>
+        <FontAwesomeIcon
+          className={`lg:text-spotify ${
+            isOpen ? "" : "fa-rotate-90"
+          } transition-all`}
+          icon={faCaretDown}
+        />
+      </motion.button>
       <motion.div
         layout
-        initial={{ height: 0 }}
-        animate={{ height: isOpen ? "fit-content" : 0 }}
-        className="w-full text-left font-bold text-1xl lg:text-lg-xl leading-none overflow-hidden"
+        initial={{ height: 0, opacity: 0 }}
+        animate={isOpen ? { height: "fit-content", opacity: 1 } : {}}
+        className="w-full bg-black rounded-b-2xl px-4 lg:font-bold text-base lg:text-lg-xl"
       >
-        <div className="w-full h-[1px] bg-linear-gradient mb-2" />
-        <ul className="py-1">
+        <div className="w-full h-[1px] bg-linear-gradient" />
+        <ul>
           {options.map((option) =>
             option.value === selectedValue ? (
               ""
@@ -89,6 +88,7 @@ export const Selector: React.FC<SelectorProps> = ({
                   type="button"
                   title={`Select ${option.label}`}
                   onClick={() => handleSelection(option.value)}
+                  className="h-full w-full py-1 text-left"
                 >
                   {option.label}
                 </button>

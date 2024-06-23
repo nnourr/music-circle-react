@@ -26,6 +26,7 @@ module.exports = {
         "lg-sm": "1.7rem",
         "lg-base": "2rem",
         "lg-lg": "2.5rem",
+        "lg-1xl": "3.5rem",
         "lg-xl": "5rem",
         "lg-2xl": "8rem",
         "lg-3xl": "11rem"
