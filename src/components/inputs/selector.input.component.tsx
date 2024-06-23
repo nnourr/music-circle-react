@@ -38,7 +38,7 @@ export const Selector: React.FC<SelectorProps> = ({
 
   return (
     <motion.div
-      className={`${className} inline-block relative lg:static bg-black border-2 w-fit rounded-2xl lg:rounded-3xl lg:overflow-hidden px-4`}
+      className={`${className} inline-block lg:static bg-black border-2 w-fit rounded-2xl lg:rounded-3xl lg:overflow-hidden`}
       whileTap={{ scale: 0.95 }}
       initial={{
         borderColor: `rgba(255, 255, 255, 0.5)`,
@@ -51,7 +51,7 @@ export const Selector: React.FC<SelectorProps> = ({
         title="Select Item"
         onClick={() => setIsOpen(!isOpen)}
         animate={{ opacity: isOpen ? 1 : 0.9 }}
-        className="w-full text-left inline-flex items-center lg:font-bold justify-between lg:pt-2 pb-1 gap-2 lg:gap-6 text-base lg:text-lg-xl text-white lg:bg-linear-gradient lg:bg-clip-text lg:text-transparent leading-none"
+        className="w-full text-left inline-flex items-start lg:font-bold justify-between px-4 py-2 gap-2 lg:gap-6 text-base lg:text-lg-xl text-white lg:bg-linear-gradient lg:bg-clip-text lg:text-transparent leading-none"
       >
         <span>{selectedLabel}</span>
         <FontAwesomeIcon
@@ -65,7 +65,7 @@ export const Selector: React.FC<SelectorProps> = ({
         layout
         initial={{ height: 0, opacity: 0 }}
         animate={isOpen ? { height: "fit-content", opacity: 1 } : {}}
-        className="w-full bg-black z-50 rounded-b-2xl lg:font-bold text-base lg:text-lg-xl"
+        className="w-full bg-black rounded-b-2xl px-4 lg:font-bold text-base lg:text-lg-xl"
       >
         <div className="w-full h-[1px] bg-linear-gradient" />
         <ul>

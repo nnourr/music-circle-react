@@ -7,12 +7,16 @@ import {
   RADIAL_GRADIENT_WHITE,
 } from "../../../config/globals";
 import { cloneDeep } from "lodash";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface MultiSelectorProps {
   itemsData: string[];
   onSelectionChange: (selectedItems: string[]) => void;
   onClick?: () => any;
   className?: string;
+  isCollapsible?: boolean;
+  collapsibleTitle?: string;
 }
 
 const MultiSelector: React.FC<MultiSelectorProps> = ({
@@ -20,8 +24,11 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
   onSelectionChange,
   className,
   onClick,
+  isCollapsible = false,
+  collapsibleTitle,
 }) => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState(!isCollapsible);
 
   useEffect(() => {
     setSelectedItems(cloneDeep(itemsData));
@@ -59,6 +66,7 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
     unselected: (custom) => ({
       transition: { delay: custom },
       backgroundImage: LINEAR_GRADIENT_WHITE,
+      opacity: 0.8,
     }),
     wiggle: (custom) => ({
       backgroundImage: [LINEAR_GRADIENT_WHITE, LINEAR_GRADIENT_WHITE],
@@ -76,39 +84,57 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
 
   return (
     <motion.div
-      key="multiMultiSelector"
-      className={`${className} flex flex-col items-start text-sm font-bold opacity-90 lg:text-lg-sm w-fit`}
-      onClick={onClick}
+      className={`${className} inline-block bg-black border-2 w-fit rounded-2xl lg:rounded-3xl lg:overflow-hidden`}
+      whileTap={isCollapsible && !isOpen ? { scale: 0.95 } : {}}
+      initial={{
+        borderColor: `rgba(255, 255, 255, 0.5)`,
+      }}
+      whileHover={{
+        borderColor: `rgba(255, 255, 255, 0.8)`,
+      }}
     >
+      {isCollapsible && (
+        <motion.button
+          title="Select Item"
+          onClick={() => setIsOpen(!isOpen)}
+          animate={{ opacity: isOpen ? 1 : 0.9 }}
+          className="w-full text-left inline-flex items-center lg:font-bold justify-between lg:pt-2 px-4 py-2 gap-2 lg:gap-6 text-base lg:text-lg-xl text-white lg:bg-linear-gradient lg:bg-clip-text lg:text-transparent leading-none"
+        >
+          <span>{collapsibleTitle}</span>
+          <FontAwesomeIcon
+            className={`lg:text-spotify ${
+              isOpen ? "" : "fa-rotate-90"
+            } transition-all`}
+            icon={faCaretDown}
+          />
+        </motion.button>
+      )}
       <motion.div
-        onClick={handleSelectAll}
-        className="flex items-center cursor-pointer mb-2 bg-clip-text text-transparent"
-        whileTap={{ scale: 0.9 }}
-        custom={0}
-        animate={
-          selectedItems.length === itemsData.length ? "selected" : "unselected"
+        key="multiMultiSelector"
+        layout
+        className={`flex flex-col px-4 items-start text-sm font-bold lg:text-lg-sm w-full`}
+        initial={
+          isCollapsible
+            ? { height: 0, opacity: 0, marginTop: 0 }
+            : { height: "fit-content", opacity: 0.8, marginTop: "0.75rem" }
         }
-        variants={itemVariants}
+        animate={
+          isOpen
+            ? {
+                height: "fit-content",
+                opacity: 0.9,
+              }
+            : {}
+        }
       >
         <motion.div
-          variants={circleVariants}
-          className="rounded-full aspect-square h-5"
-        ></motion.div>
-        <span className="ml-2">select all</span>
-      </motion.div>
-      <div className="w-full h-[1px] bg-linear-gradient mb-2" />
-      {itemsData.map((item, i) => (
-        <motion.div
-          key={item}
-          onClick={() => handleToggle(item)}
+          onClick={handleSelectAll}
           className="flex items-center cursor-pointer mb-2 bg-clip-text text-transparent"
           whileTap={{ scale: 0.9 }}
-          custom={i / 10}
+          custom={0}
           animate={
-            isSelected(item)
+            selectedItems.length === itemsData.length
               ? "selected"
-              : selectedItems.length === 0
-              ? "wiggle"
               : "unselected"
           }
           variants={itemVariants}
@@ -117,9 +143,33 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
             variants={circleVariants}
             className="rounded-full aspect-square h-5"
           ></motion.div>
-          <span className="ml-2">{item}</span>
+          <span className="ml-2">select all</span>
         </motion.div>
-      ))}
+        <div className="w-full h-[1px] bg-linear-gradient mb-2" />
+        {itemsData.map((item, i) => (
+          <motion.div
+            key={item}
+            onClick={() => handleToggle(item)}
+            className="flex items-center cursor-pointer mb-2 bg-clip-text text-transparent"
+            whileTap={{ scale: 0.9 }}
+            custom={i / 10}
+            animate={
+              isSelected(item)
+                ? "selected"
+                : selectedItems.length === 0
+                ? "wiggle"
+                : "unselected"
+            }
+            variants={itemVariants}
+          >
+            <motion.div
+              variants={circleVariants}
+              className="rounded-full aspect-square h-5"
+            ></motion.div>
+            <span className="ml-2">{item}</span>
+          </motion.div>
+        ))}
+      </motion.div>
     </motion.div>
   );
 };

@@ -5,9 +5,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useUser } from "../../../providers/user.provider";
 import MultiSelector from "../components/multiSelector.component";
 import { cloneDeep } from "lodash";
-import Button, {
-  btnSizes,
-} from "../../../components/inputs/button.input.component";
 import { useIsMobile } from "../../../providers/isMobile.provider";
 import { ReactFitty } from "react-fitty";
 import {
@@ -48,7 +45,6 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   const [isFirstTime, setIsFirstTime] = useState<boolean>(false);
   const { username } = useUser();
   const isMobile = useIsMobile();
-  const [showFilter, setShowFilter] = useState<boolean>(false);
   const [showArtists, setShowArtists] = useState<boolean>(false);
   const [showPopularity, setShowPopularity] = useState<boolean>(false);
   const scrollContainerRef = useRef<HTMLInputElement>(null);
@@ -202,45 +198,30 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
         {isMobile ? (
           <div className="flex flex-nowrap w-full justify-between gap-4">
             <Selector
-              className="mt-4 pt-2.5 pb-1 pointer-events-auto text-nowrap w-full basis-1/2 h-fit"
+              className="mt-4 pointer-events-auto text-nowrap w-full basis-1/2 h-fit"
               onChange={(value) => setSelectedItem(value as AllowedItems)}
               options={[
                 { label: "artists", value: "artists" },
                 { label: "tracks", value: "tracks" },
               ]}
             />
-
-            <Button
-              title="Show User Filters"
-              btnSize={btnSizes.md}
-              white={true}
-              onClick={() => {}}
-              className="mt-4 pointer-events-auto px-4 min-w-0 w-full !text-left basis-1/2 h-fit"
-            >
-              <span onClick={() => setShowFilter(!showFilter)}>users</span>
-              <motion.div
-                animate={{
-                  height: showFilter ? "fit-content" : "0px",
-                  opacity: showFilter ? 1 : 0,
-                  pointerEvents: showFilter ? "auto" : "none",
-                }}
-              >
-                <MultiSelector
-                  itemsData={circleUsernames}
-                  onSelectionChange={onSelectionChange}
-                  onClick={() => {
-                    setShowFilter(true);
-                  }}
-                />
-              </motion.div>
-            </Button>
-          </div>
-        ) : (
-          <>
             <MultiSelector
               itemsData={circleUsernames}
               onSelectionChange={onSelectionChange}
-              className="pointer-events-auto ml-4 my-4"
+              isCollapsible={true}
+              collapsibleTitle="users"
+              className="mt-4 pointer-events-auto text-nowrap w-full basis-1/2 h-fit"
+            />
+          </div>
+        ) : (
+          <>
+            <h2 className="font-bold block w-min mt-4 mb-2 opacity-80 text-nowrap text-lg-1xl bg-linear-gradient bg-clip-text text-transparent leading-none">
+              users:
+            </h2>
+            <MultiSelector
+              itemsData={circleUsernames}
+              onSelectionChange={onSelectionChange}
+              className="pointer-events-auto mb-8 ml-4"
             />
             <CirclePopularity
               itemPopularityData={circlePopularityData[selectedItem]}
@@ -256,7 +237,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
               : {}
           }
           ref={scrollContainerRef}
-          className="overflow-x-auto mt-2 overflow-y-visible flex flex-row gap-4 w-full snap-x snap-mandatory"
+          className="overflow-x-auto mt-2 pr-12 overflow-y-visible flex flex-row gap-4 w-full snap-x snap-mandatory"
         >
           <motion.h2
             viewport={{ margin: "400px -150px 400px -150px" }}
@@ -277,7 +258,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
               handleShowPopularity();
             }}
             onClick={handleScroll}
-            className="bg-linear-gradient font-bold lg:hidden snap-start text-nowrap bg-clip-text pl-6 text-transparent lg:ml-[3%] xl:ml-[13%] text-1xl lg:text-lg-xl w-fit"
+            className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text pl-6 text-transparent text-1xl w-fit"
           >
             circle popularity:
           </motion.h2>
@@ -311,7 +292,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
       )}
       {showPopularity && isMobile ? (
         <CirclePopularity
-          className="w-fit mt-4 mx-6 mb-24"
+          className="w-fit mt-4 mx-6 mb-[50vh]"
           itemPopularityData={circlePopularityData[selectedItem]}
         />
       ) : (
