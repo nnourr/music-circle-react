@@ -38,16 +38,16 @@ export const Input: React.FC<InputProps> = ({
       ? {
           disabled: "text-white/20",
           active: "text-white/90",
-          placeholder: "text-white/20",
+          placeholder: "placeholder:text-white/20",
         }
       : {
           disabled: "text-black/20",
           active: "text-black/80",
-          placeholder: "text-black/20",
+          placeholder: "placeholder:text-black/20",
         },
     inputAlign: isMobile || !!!children ? "text-center" : "text-left",
   };
-  const motionColour = white ? "255, 255, 255" : "0,0,0";
+  const motionColour = white ? "255, 255, 255" : "0, 0, 0";
 
   return (
     <motion.div
@@ -64,8 +64,8 @@ export const Input: React.FC<InputProps> = ({
               translateY: 0,
               opacity: 1,
               borderColor: onFocus
-                ? `rgba(${motionColour} 0.5)`
-                : `rgba(${motionColour} 0.1)`,
+                ? `rgba(${motionColour}, ${white ? "0.8" : "0.5"})`
+                : `rgba(${motionColour}, ${white ? "0.5" : "0.1"})`,
             }
       }
       transition={{ duration: 0.4 }}
@@ -75,7 +75,7 @@ export const Input: React.FC<InputProps> = ({
           ? {
               borderColor: "rgba(227 0 73 0.9)",
             }
-          : { borderColor: `rgba(${motionColour} 0.5)` }
+          : { borderColor: `rgba(${motionColour}, ${white ? "0.8" : "0.5"})` }
       }
     >
       {isLoading ? (
@@ -93,7 +93,7 @@ export const Input: React.FC<InputProps> = ({
             maxLength={maxLength}
             onFocus={() => setOnFocus(true)}
             onBlur={() => setOnFocus(false)}
-            className={`bg-transparent placeholder:${tailwindDynamicStyles.text.placeholder} ${tailwindDynamicStyles.inputAlign} w-full text-nowrap focus:outline-none lg:w-[8em]`}
+            className={`bg-transparent ${tailwindDynamicStyles.text.placeholder} ${tailwindDynamicStyles.inputAlign} w-full text-nowrap focus:outline-none lg:w-[8em]`}
           ></input>
         </>
       )}

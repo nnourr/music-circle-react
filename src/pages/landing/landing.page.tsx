@@ -288,17 +288,15 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
           />
         </Routes>
       )}
-      {noRedirect === "true" ? (
+      {noRedirect === "true" && (
         <Button
           title="Go Back Home"
-          onClick={() => navigateToHome()}
-          className="!absolute top-[5%] left-6 lg:top-8 lg:left-16 z-20"
+          onClick={() => window.history.back()}
+          className="hidden lg:block !absolute top-[5%] left-6 lg:top-8 lg:left-16 z-20"
           btnSize={btnSizes.md}
         >
           go home
         </Button>
-      ) : (
-        ""
       )}
       <BackgroundGradient error={!!pageError} />
     </motion.div>
