@@ -135,7 +135,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
 
   return (
     <motion.div className="mt-1 h-full box-border w-full px-6 py-2 relative overflow-y-auto overflow-x-hidden">
-      <div className="mt-3 lg:right-0 lg:mr-[5%] lg:max-w-[40%] xl:max-w-[30%] xl:mr-[10%] flex flex-col lg:text-left lg:fixed items-start pointer-events-none box-border lg:h-svh lg:pt-20 lg:pb-10 lg:mt-0 top-0">
+      <div className="mt-3 lg:right-0 lg:mr-[5%] lg:max-w-[40%] xl:max-w-[30%] xl:mr-[15%] flex flex-col lg:text-left lg:fixed items-start pointer-events-none box-border lg:h-svh lg:pt-20 lg:pb-10 lg:mt-0 top-0">
         <ReactFitty
           maxSize={isMobile ? 80 : 140}
           minSize={isMobile ? 50 : 100}
@@ -176,7 +176,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             circleInfo.circleName
           )}
         </ReactFitty>
-        <div>
+        <div className="-translate-y-4">
           <motion.span
             className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer w-fit text-nowrap pointer-events-auto lg:ml-4"
             onClick={onCopyCodeClick}
@@ -214,19 +214,22 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             />
           </div>
         ) : (
-          <>
-            <h2 className="font-bold block w-min mt-4 mb-2 opacity-80 text-nowrap text-lg-1xl bg-linear-gradient bg-clip-text text-transparent leading-none">
-              members:
-            </h2>
-            <MultiSelector
-              itemsData={circleUsernames}
-              onSelectionChange={onSelectionChange}
-              className="pointer-events-auto mb-8 ml-4"
-            />
+          <div className="flex w-full gap-8 mt-4">
+            <div>
+              <h2 className="font-bold block w-min mb-3 opacity-80 text-nowrap text-lg-lg bg-linear-gradient bg-clip-text text-transparent leading-none">
+                members
+              </h2>
+              <MultiSelector
+                itemsData={circleUsernames}
+                onSelectionChange={onSelectionChange}
+                className="pointer-events-auto mb-8"
+              />
+            </div>
             <CirclePopularity
               itemPopularityData={circlePopularityData[selectedItem]}
+              className="w-fit flex-grow-0 pointer-events-none"
             />
-          </>
+          </div>
         )}
       </div>
       {isMobile ? (

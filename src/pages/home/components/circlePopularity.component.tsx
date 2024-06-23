@@ -33,7 +33,7 @@ export const CirclePopularity: React.FC<CirclePopularityProps> = ({
       }}
     >
       <h2 className="text-lg hidden lg:block w-min text-nowrap lg:text-lg-lg bg-linear-gradient bg-clip-text text-transparent leading-none">
-        average popularity:
+        average popularity
       </h2>
       {isFirstTime && (
         <span className="text-white text-sm lg:text-base font-normal">
@@ -46,15 +46,15 @@ export const CirclePopularity: React.FC<CirclePopularityProps> = ({
         </span>
         /100
       </h2>
-      <p className="text-lg lg:text-lg font-bold bg-linear-gradient bg-clip-text text-transparent">
-        users by popularity:
+      <p className="text-lg lg:text-lg font-bold bg-linear-gradient bg-clip-text text-transparent w-fit">
+        users by popularity
       </p>
       {isFirstTime && (
         <span className="text-white text-sm lg:text-base font-normal">
           (this is the average popularity of each person's top 50 artists)
         </span>
       )}
-      <ul className="lg:ml-4 overflow-auto pointer-events-auto mb-4 lg-mb-0">
+      <ul className="lg:ml-4 overflow-auto pointer-events-[scroll] mb-4 lg-mb-0 w-fit">
         {userPopularityRanking}
       </ul>
     </motion.div>
