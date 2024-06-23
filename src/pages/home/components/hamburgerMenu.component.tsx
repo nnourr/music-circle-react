@@ -75,15 +75,18 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
           transition={{ delay: 0.3 }}
           className="h-full flex flex-col items-start"
         >
-          <button onClick={close} className="absolute left-5 top-2 w-7 h-7" />
+          <button
+            onClick={close}
+            title="Close"
+            className="absolute left-5 top-2 w-7 h-7"
+          />
           <div className="flex w-full justify-between">
-            <button onClick={close}>
+            <button onClick={close} title="Close">
               <FontAwesomeIcon
                 icon={faClose}
                 className="text-white/90 text-lg lg:text-lg-lg"
               />
             </button>
-            '
             <button
               title="Sign Out"
               className="text-base lg:text-lg-base text-error/90"
@@ -97,7 +100,6 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
                 icon={faArrowRightFromBracket}
               />
             </button>
-            '
           </div>
           <h2 className="bg-linear-gradient my-4 bg-clip-text leading-[1] font-fancy text-transparent text-xl lg:text-lg-xl">
             Your Circles

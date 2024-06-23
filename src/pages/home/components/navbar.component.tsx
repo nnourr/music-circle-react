@@ -22,7 +22,7 @@ export const NavbarComponent: React.FC<NavbarComponentInterface> = ({
       onHoverStart={() => setShowUsername(true)}
       onHoverEnd={() => setShowUsername(false)}
     >
-      <button onClick={menuClicked}>
+      <button title="Expand Hamburger Menu" onClick={menuClicked}>
         <FontAwesomeIcon icon={faBars} className="mr-4 text-black/80" />
       </button>
       <AnimatePresence mode="wait">
