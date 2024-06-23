@@ -13,6 +13,7 @@ import { useUser } from "../../providers/user.provider";
 import { UserCircle } from "../../models/userCircle.model";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { HamburgerMenu } from "./components/hamburgerMenu.component";
+import { Footer } from "../../components/footer.component";
 
 const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const [currentCircleInfo, setCurrentCircleInfo] = useState<
@@ -118,7 +119,10 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
             />
           </div>
         ) : (
-          <MotionHomeState />
+          <div className="overflow-y-auto h-full">
+            <MotionHomeState />
+            <Footer />
+          </div>
         )
       ) : (
         <div className="w-4/5 flex items-center justify-center text-lg lg:text-lg-xl text-error m-auto flex-col">

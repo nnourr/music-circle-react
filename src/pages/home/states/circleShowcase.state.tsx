@@ -20,6 +20,7 @@ import {
   consolidateCircle,
 } from "../helpers/consolidateCircleInfo";
 import { Selector } from "../../../components/inputs/selector.input.component";
+import { Footer } from "../../../components/footer.component";
 
 interface CircleShowcaseStateProps {
   circleInfo: CircleInfo;
@@ -285,22 +286,19 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
           />
         </motion.div>
       )}
-      {showArtists || !isMobile ? (
+      {(showArtists || !isMobile) && (
         <StackedBar
           itemsData={consolidatedCircleData[selectedItem]}
-          className="h-full w-full mt-4 lg:mt-32 lg:max-w-[50%] xl:max-w-[40%] lg:ml-[5%] xl:ml-[15%]"
+          className="h-auto w-full mt-4 lg:mt-32 lg:max-w-[50%] xl:max-w-[40%] lg:ml-[5%] xl:ml-[15%]"
         ></StackedBar>
-      ) : (
-        ""
       )}
-      {showPopularity && isMobile ? (
+      {showPopularity && isMobile && (
         <CirclePopularity
           className="w-fit mt-4 mx-6 mb-[50vh]"
           itemPopularityData={circlePopularityData[selectedItem]}
         />
-      ) : (
-        ""
       )}
+      <Footer className="mt-14" />
     </motion.div>
   );
 };

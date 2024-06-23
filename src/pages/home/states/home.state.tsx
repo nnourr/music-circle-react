@@ -89,7 +89,7 @@ const HomeState = React.forwardRef<HTMLDivElement>((_, ref) => {
 
   return (
     <motion.div
-      className="h-full w-full flex justify-center items-center"
+      className="h-full w-full flex justify-center items-center flex-shrink-0"
       ref={ref}
     >
       <motion.div className="lg:min-h-[42rem] w-full h-fit max-h-full p-8 lg:w-[90rem] lg:h-2/3 flex flex-col">
