@@ -98,9 +98,11 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
           title="Select Item"
           onClick={() => setIsOpen(!isOpen)}
           animate={{ opacity: isOpen ? 1 : 0.9 }}
-          className="w-full text-left inline-flex items-center lg:font-bold justify-between lg:pt-2 px-4 py-2 gap-2 lg:gap-6 text-base lg:text-lg-xl text-white lg:bg-linear-gradient lg:bg-clip-text lg:text-transparent leading-none"
+          className="w-full text-left inline-flex items-center lg:font-bold justify-between lg:pt-2 px-4 py-2 gap-2 lg:gap-6 text-base lg:text-lg-xl text-white leading-none"
         >
-          <span>{collapsibleTitle}</span>
+          <span className="lg:bg-linear-gradient lg:bg-clip-text lg:text-transparent">
+            {collapsibleTitle}
+          </span>
           <FontAwesomeIcon
             className={`lg:text-spotify ${
               isOpen ? "" : "fa-rotate-90"
