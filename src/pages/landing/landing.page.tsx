@@ -27,6 +27,8 @@ import {
 } from "react-router-dom";
 import { useUserCircles } from "../../providers/userCircles.provider";
 import { UserCircle } from "../../models/userCircle.model";
+import { Footer } from "../../components/footer.component";
+import { NotFoundPage } from "../notfound/notfound.page";
 
 const landingPageVariants = {
   hidden: { opacity: 0, translateY: "10%" },
@@ -53,7 +55,8 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
   const initialCircleCodeStorage = localStorage.getItem("initialCircleCode");
   const navigate = useNavigate();
 
-  const scope = "user-top-read user-read-email";
+  const scope =
+    "user-top-read user-read-email playlist-modify-public playlist-modify-private";
   const startLoginFlow = () => {
     window.location.href =
       "https://accounts.spotify.com/authorize?" +
@@ -214,11 +217,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
   }, []);
 
   return (
-    <motion.div
-      ref={ref}
-      className="h-full w-full overflow-hidden"
-      variants={errorVariants}
-    >
+    <motion.div ref={ref} className="h-full w-full" variants={errorVariants}>
       {!!pageError ? (
         <div className=" w-4/5 h-full flex items-center justify-center text-lg lg:text-lg-xl text-error m-auto flex-col">
           <div>
@@ -286,6 +285,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
               />
             }
           />
+          <Route path="/*" element={<NotFoundPage />} />
         </Routes>
       )}
       {noRedirect === "true" && (
@@ -299,6 +299,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
         </Button>
       )}
       <BackgroundGradient error={!!pageError} />
+      <Footer />
     </motion.div>
   );
 });

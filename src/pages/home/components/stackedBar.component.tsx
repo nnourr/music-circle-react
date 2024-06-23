@@ -32,7 +32,7 @@ const spotifyVariants: Variants = {
 
 const barVariants: Variants = {
   hover: {
-    height: "60%",
+    height: "60vh",
   },
   inView: {
     opacity: [0.1, 1],
@@ -140,7 +140,7 @@ export const StackedBar: React.FC<StackedBarProps> = ({
       <motion.div
         layout
         style={{
-          height: `${item.weightedPoints}%`,
+          height: `${item.weightedPoints}vh`,
         }}
         variants={barVariants}
         whileHover="hover"

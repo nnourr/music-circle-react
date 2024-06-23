@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
 import React from "react";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 interface SpotifyLoginStateProps {
   nextState: () => void;
@@ -31,19 +32,27 @@ const SpotifyLoginState = React.forwardRef<
         )}
       </div>
 
-      <Button
-        title="Sign in with Spotify"
-        onClick={() => (isLoading ? () => {} : nextState())}
-      >
-        {!isLoading ? (
-          <>
-            Sign-In With{" "}
-            <FontAwesomeIcon className="!align-text-bottom" icon={faSpotify} />
-          </>
-        ) : (
-          <FontAwesomeIcon className="animate-spin" icon={faSpinner} />
-        )}
-      </Button>
+      <div className="flex flex-col">
+        <Button
+          title="Sign in with Spotify"
+          onClick={() => (isLoading ? () => {} : nextState())}
+        >
+          {!isLoading ? (
+            <>
+              Sign-In With{" "}
+              <FontAwesomeIcon
+                className="!align-text-bottom"
+                icon={faSpotify}
+              />
+            </>
+          ) : (
+            <FontAwesomeIcon className="animate-spin" icon={faSpinner} />
+          )}
+        </Button>
+        <Link to="/privacy" className="underline self-center mt-2 text-sm">
+          privacy policy
+        </Link>
+      </div>
     </div>
   );
 });

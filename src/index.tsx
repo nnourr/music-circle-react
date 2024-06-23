@@ -3,7 +3,7 @@ import "./index.css";
 import { HashRouter } from "react-router-dom";
 import { IsMobileProvider } from "./providers/isMobile.provider";
 import { UserProvider } from "./providers/user.provider";
-import { AnimatedRoutes } from "./animatedRoutes";
+import { App } from "./App";
 import { UserCirclesProvider } from "./providers/userCircles.provider";
 
 const root = ReactDOM.createRoot(
@@ -15,7 +15,7 @@ root.render(
     <UserCirclesProvider>
       <IsMobileProvider>
         <HashRouter>
-          <AnimatedRoutes />
+          <App />
         </HashRouter>
       </IsMobileProvider>
     </UserCirclesProvider>
