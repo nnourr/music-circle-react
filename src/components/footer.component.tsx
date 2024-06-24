@@ -8,13 +8,13 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ className }) => {
   return (
     <motion.footer
-      className={`${className} bg-black relative w-full h-fit p-16 flex flex-col gap-12 lg:flex-row justify-between`}
+      className={`${className} bg-black relative w-full h-fit p-8 lg:p-16 flex flex-col gap-12 lg:flex-row justify-between`}
     >
       <div className="bg-linear-gradient h-2 w-full absolute top-0 left-0"></div>
       <div>
         <div className="flex items-baseline gap-2 lg:gap-4 leading-none">
           <div className="rounded-full bg-radial-gradient-alt h-6 lg:h-10 aspect-square" />
-          <span className="bg-linear-gradient bg-clip-text text-transparent font-fancy text-1xl lg:text-lg-1xl">
+          <span className="bg-linear-gradient bg-clip-text text-transparent font-fancy text-1xl lg:text-lg-1xl text-nowrap">
             Music Circle.
           </span>
         </div>

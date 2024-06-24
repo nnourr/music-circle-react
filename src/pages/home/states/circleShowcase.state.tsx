@@ -177,7 +177,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             circleInfo.circleName
           )}
         </ReactFitty>
-        <div className="-translate-y-4">
+        <div>
           <motion.span
             className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer w-fit text-nowrap pointer-events-auto lg:ml-4"
             onClick={onCopyCodeClick}
