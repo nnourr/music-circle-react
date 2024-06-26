@@ -241,30 +241,30 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
               : {}
           }
           ref={scrollContainerRef}
-          className="overflow-x-auto mt-2 pr-12 overflow-y-visible flex flex-row gap-4 w-full snap-x snap-mandatory"
+          className="overflow-x-auto mt-2 pr-12 overflow-y-visible gap-1 flex flex-row w-full snap-x snap-mandatory"
         >
           <motion.h2
-            viewport={{ margin: "400px -150px 400px -150px" }}
+            viewport={{ margin: "400px -35% 400px -35%" }}
             onViewportEnter={() => {
               handleShowArtists();
             }}
             initial={{ opacity: 0.3 }}
             whileInView={{ opacity: 0.8 }}
-            className="gap-2 snap-start flex items-start bg-linear-gradient leading-none pt-1.5 font-bold text-nowrap bg-clip-text text-transparent text-1xl w-fit"
+            className="snap-start bg-linear-gradient font-bold text-nowrap bg-clip-text text-transparent text-1xl w-fit"
           >
             top ten {selectedItem}
           </motion.h2>
           <motion.h2
-            initial={{ opacity: isMobile ? 0.3 : 0 }}
-            whileInView={{ opacity: isMobile ? 0.8 : 0 }}
-            viewport={{ margin: "400px -170px 400px -170px" }}
+            viewport={{ margin: "400px -35% 400px -35%" }}
             onViewportEnter={() => {
               handleShowPopularity();
             }}
+            initial={{ opacity: 0.3 }}
+            whileInView={{ opacity: 0.8 }}
             onClick={handleScroll}
-            className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text pl-6 text-transparent text-1xl w-fit"
+            className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text text-transparent text-1xl w-fit"
           >
-            circle popularity:
+            circle popularity
           </motion.h2>
         </motion.div>
       ) : (
