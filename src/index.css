@@ -7,11 +7,10 @@
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(
     275deg,
-    #29eb267e 0%,
-    #29c39f7e 51.5%,
-    #3fb1ab7e 100%
+    #29eb2629 0%,
+    #29c39f39 51.5%,
+    #3fb1ab37 100%
   );
-  opacity: 0.1 !important;
   border-radius: 10px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -21,9 +20,9 @@
 
 ::-webkit-scrollbar {
   background-color: #3fb1ab28;
-  width: 10px;
+  width: 5px;
   height: 5px;
-  border-radius: 10px;
+  border-radius: 5px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
