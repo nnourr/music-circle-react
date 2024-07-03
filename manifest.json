@@ -1,0 +1,8 @@
+{
+  "short_name": "Music Circle",
+  "name": "Music Circle",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "rgb(41 235 38)",
+  "background_color": "rgb(41 235 38)"
+}
