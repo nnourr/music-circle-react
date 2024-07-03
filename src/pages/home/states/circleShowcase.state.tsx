@@ -21,6 +21,9 @@ import {
 } from "../helpers/consolidateCircleInfo";
 import { Selector } from "../../../components/inputs/selector.input.component";
 import { Footer } from "../../../components/footer.component";
+import Button, {
+  btnSizes,
+} from "../../../components/inputs/button.input.component";
 
 interface CircleShowcaseStateProps {
   circleInfo: CircleInfo;
@@ -177,23 +180,31 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             circleInfo.circleName
           )}
         </ReactFitty>
-        <div>
+        <div className="pointer-events-auto">
           <motion.span
-            className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer w-fit text-nowrap pointer-events-auto lg:ml-4"
+            className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer w-fit text-nowrap"
             onClick={onCopyCodeClick}
             title="Copy Circle Code"
             whileTap={{ scale: 0.9 }}
           >
             {copyCircleCodeText}
           </motion.span>
-          <motion.span
-            className="text-sm font-sans text-white/80 hover:text-white  transition-all cursor-pointer pointer-events-auto ml-2 lg:ml-4"
-            onClick={onShareCircle}
-            title="Share Circle"
+
+          <motion.div
             whileTap={{ scale: 0.9 }}
+            className="inline-block lg:static fixed bottom-8 right-4 z-50"
           >
-            <FontAwesomeIcon icon={faShare} />
-          </motion.span>
+            <Button
+              onClick={onShareCircle}
+              title="Share Circle"
+              white={true}
+              btnSize={btnSizes.sm}
+              className="px-4 ml-8 flex bg-black"
+            >
+              share
+              <FontAwesomeIcon className="ml-2 mt-0.5" icon={faShare} />
+            </Button>
+          </motion.div>
         </div>
 
         {isMobile ? (

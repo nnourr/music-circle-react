@@ -12,8 +12,9 @@ interface ButtonProps {
 }
 
 export const btnSizes = {
-  xl: "min-w-[20rem] lg:min-w-[24rem] text-lg lg:text-lg-lg rounded-3xl",
+  sm: "text-base rounded-2xl",
   md: "min-w-[10rem] lg:min-w-[16rem] text-base lg:text-lg-base rounded-2xl",
+  xl: "min-w-[20rem] lg:min-w-[24rem] text-lg lg:text-lg-lg rounded-3xl",
 };
 
 export const Button: React.FC<ButtonProps> = ({
