@@ -14,15 +14,4 @@ export default defineConfig({
     host: "127.0.0.1",
     port: 3001,
   },
-  build: {
-    rollupOptions: {
-      external: [ 'react', 'react-dom'],
-      output: {
-        globals: {
-          'react': 'React',
-          'react-dom': 'ReactDOM'
-        }
-      }
-    }
-  }
 });
