@@ -26,7 +26,6 @@ jobs:
           VITE_SPOTIFY_REDIRECT_URI: ${{ secrets.VITE_SPOTIFY_REDIRECT_URI }}
           VITE_SPOTIFY_CLIENT_ID: ${{ secrets.VITE_SPOTIFY_CLIENT_ID }}
           VITE_SERVER_ENDPOINT: ${{ secrets.VITE_SERVER_ENDPOINT }}
-          VITE_ROOT_URL: ${{ secrets.VITE_ROOT_URL }}
         run: npm run build
 
       - name: Deploy to GitHub Pages
