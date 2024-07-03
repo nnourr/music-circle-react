@@ -1,8 +1,8 @@
+@import url(./assets/fonts/fonts.css);
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url(./assets/fonts/fonts.css);
 
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(

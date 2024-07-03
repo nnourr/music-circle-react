@@ -23,10 +23,10 @@ jobs:
 
       - name: Build the React app
         env:
-          REACT_APP_SPOTIFY_REDIRECT_URI: ${{ secrets.REACT_APP_SPOTIFY_REDIRECT_URI }}
-          REACT_APP_SPOTIFY_CLIENT_ID: ${{ secrets.REACT_APP_SPOTIFY_CLIENT_ID }}
-          REACT_APP_SERVER_ENDPOINT: ${{ secrets.REACT_APP_SERVER_ENDPOINT }}
-          REACT_APP_ROOT_URL: ${{ secrets.REACT_APP_ROOT_URL }}
+          VITE_SPOTIFY_REDIRECT_URI: ${{ secrets.VITE_SPOTIFY_REDIRECT_URI }}
+          VITE_SPOTIFY_CLIENT_ID: ${{ secrets.VITE_SPOTIFY_CLIENT_ID }}
+          VITE_SERVER_ENDPOINT: ${{ secrets.VITE_SERVER_ENDPOINT }}
+          VITE_ROOT_URL: ${{ secrets.VITE_ROOT_URL }}
         run: npm run build
 
       - name: Deploy to GitHub Pages
