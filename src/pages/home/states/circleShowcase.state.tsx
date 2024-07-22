@@ -160,12 +160,12 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
 
   const Title = useCallback(() => {
     return (
-      <BoxContainer key="title" className="w-full lg:w-auto">
+      <BoxContainer key="title" className="w-full lg:max-w-[45vw]">
         <ReactFitty
           maxSize={isMobile ? 80 : 140}
           minSize={isMobile ? 50 : 100}
           wrapText={true}
-          className="font-fancy text-transparent bg-linear-gradient bg-clip-text leading-none overflow-hidden text-ellipsis"
+          className="font-fancy w-fit max-w-full text-transparent bg-linear-gradient bg-clip-text leading-none overflow-hidden text-ellipsis"
         >
           {isLoading ? (
             <>
@@ -262,7 +262,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
         <div className="w-full mt-4 lg:flex lg:justify-center lg:max-w-[90vw]">
           <BoxContainer
             key="stackedBar"
-            className="min-h-full w-full lg:w-[48rem] lg:pt-2 lg:mr-4"
+            className="min-h-full w-full lg:max-w-[45vw] lg:min-w-[48rem] lg:pt-2 lg:mr-4"
           >
             {!isMobile ? (
               <div className="flex flex-nowrap items-baseline gap-4">

@@ -146,7 +146,7 @@ export const StackedBar: React.FC<StackedBarProps> = ({
         whileHover="hover"
         whileInView="inView"
         animate={isClicked ? "hover" : ""}
-        className={`flex items-start min-h-12 lg:max-w-[50vw]`}
+        className={`flex items-start min-h-12`}
         key={item.name}
         onClick={() => handleBarClick(i)}
         onMouseEnter={() => handleBarClick(i)}
