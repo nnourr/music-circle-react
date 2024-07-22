@@ -145,7 +145,7 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
             variants={circleVariants}
             className="rounded-full aspect-square h-5"
           ></motion.div>
-          <span className="ml-2">select all</span>
+          <span className="ml-2 text-nowrap">select all</span>
         </motion.div>
         <div className="w-full h-[1px] bg-linear-gradient mb-2" />
         {itemsData.map((item, i) => (
@@ -168,7 +168,7 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
               variants={circleVariants}
               className="rounded-full aspect-square h-5"
             ></motion.div>
-            <span className="ml-2">{item}</span>
+            <span className="ml-2 text-nowrap">{item}</span>
           </motion.div>
         ))}
       </motion.div>
