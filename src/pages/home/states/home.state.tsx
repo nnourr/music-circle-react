@@ -96,8 +96,8 @@ const HomeState = React.forwardRef<HTMLDivElement>((_, ref) => {
     >
       <BackgroundGradient className="!fixed opacity-20" />
       <BoxContainer
-        forceVisible={isMobile}
-        className="h-full lg:h-5/6 lg:w-[90rem] w-full !p-[10%] lg:!py-16 lg:!px-20 !rounded-none lg:!rounded-[32px]"
+        forceVisible={isMobile ? true : undefined}
+        className="h-full lg:h-auto lg:w-[90rem] w-full !p-[10%] lg:!py-16 lg:!px-20 !rounded-none lg:!rounded-[32px]"
       >
         <motion.div className=" w-full h-fit max-h-full flex flex-col">
           <motion.div
