@@ -27,6 +27,10 @@ export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
   );
   const isFirstTime = localStorage.getItem("firstTime") === "true";
 
+  if (isNaN(circleCompatibilityData.groupCompatibility)) {
+    return <></>;
+  }
+
   return (
     <motion.div
       key="circleCompatibilityData"

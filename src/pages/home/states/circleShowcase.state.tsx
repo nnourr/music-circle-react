@@ -160,7 +160,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
 
   const Title = useCallback(() => {
     return (
-      <BoxContainer key="title" className="w-full lg:max-w-[45vw]">
+      <BoxContainer motionKey="title" className="w-full lg:max-w-[45vw]">
         <ReactFitty
           maxSize={isMobile ? 80 : 140}
           minSize={isMobile ? 50 : 100}
@@ -261,7 +261,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
         )}
         <div className="w-full mt-4 lg:flex lg:justify-center lg:max-w-[90vw]">
           <BoxContainer
-            key="stackedBar"
+            motionKey="stackedBar"
             className="min-h-full w-full lg:max-w-[45vw] lg:min-w-[48rem] lg:pt-2 lg:mr-4"
           >
             {!isMobile ? (
@@ -353,7 +353,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
               <div className="flex gap-2">
                 <div className="flex flex-col gap-2 flex-grow">
                   <BoxContainer
-                    key="circlePopularity"
+                    motionKey="circlePopularity"
                     className="h-fit  row-start-1 -row-end-1"
                   >
                     <CirclePopularity
@@ -362,7 +362,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                     />{" "}
                   </BoxContainer>
                   <BoxContainer
-                    key="circleCompatibility"
+                    motionKey="circleCompatibility"
                     className="h-fit row-start-1 -row-end-1"
                   >
                     <CircleCompatibility
@@ -375,7 +375,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                 </div>
                 <div className="flex flex-col gap-2 flex-grow">
                   <BoxContainer
-                    key="members"
+                    motionKey="members"
                     className="h-fit row-start-1 -row-end-1"
                   >
                     <h2 className="font-bold block w-min mb-3 opacity-80 text-nowrap text-lg-lg bg-linear-gradient bg-clip-text text-transparent leading-none">

@@ -5,14 +5,14 @@ import { useIsMobile } from "../providers/isMobile.provider";
 interface BoxContainerInterface {
   children: React.ReactNode;
   className?: string;
-  key?: string;
+  motionKey?: string;
   forceVisible?: boolean;
 }
 
 export const BoxContainer: React.FC<BoxContainerInterface> = ({
   children,
   className,
-  key,
+  motionKey,
   forceVisible = undefined,
 }) => {
   const isMobile = useIsMobile();
@@ -22,9 +22,10 @@ export const BoxContainer: React.FC<BoxContainerInterface> = ({
       : forceVisible === true
       ? `${className} border-white/10 bg-black/50 border p-4`
       : `${className}`;
+
   return (
     <motion.div
-      key={key}
+      key={motionKey}
       className={style}
       whileHover={
         !isMobile && forceVisible === undefined
