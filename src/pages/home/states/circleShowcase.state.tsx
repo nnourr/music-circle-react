@@ -26,6 +26,11 @@ import Button, {
 } from "../../../components/inputs/button.input.component";
 import { BoxContainer } from "../../../components/boxContainer.component";
 import { BackgroundGradient } from "../../landing/components/background-gradient.component";
+import {
+  CircleCompatibilityData,
+  getCircleCompatibility,
+} from "../helpers/getCircleCompatibility";
+import { CircleCompatibility } from "../components/circleCompatibility.component";
 
 interface CircleShowcaseStateProps {
   circleInfo: CircleInfo;
@@ -44,6 +49,8 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
     useState<ConsolidatedCircle>(consolidateCircle(circleInfo));
   const [circlePopularityData, setCirclePopularityData] =
     useState<CirclePopularityData>(getCirclePopularityData(circleInfo));
+  const [circleCompatibilityData, setCircleCompatibilityData] =
+    useState<CircleCompatibilityData>(getCircleCompatibility(circleInfo.users));
   const [selectedItem, setSelectedItem] = useState<AllowedItems>("artists");
   const [selectedUsers, setSelectedUsers] = useState<string[]>(
     circleInfo.users.map((user) => user.username)
@@ -53,6 +60,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   const isMobile = useIsMobile();
   const [showArtists, setShowArtists] = useState<boolean>(false);
   const [showPopularity, setShowPopularity] = useState<boolean>(false);
+  const [showCompatibility, setShowCompatibility] = useState<boolean>(false);
   const scrollContainerRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -62,6 +70,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
     );
     setConsolidatedCircleData(consolidateCircle(circleInfoClone));
     setCirclePopularityData(getCirclePopularityData(circleInfoClone));
+    setCircleCompatibilityData(getCircleCompatibility(circleInfoClone.users));
   }, [circleInfo, selectedUsers]);
 
   useEffect(() => {
@@ -122,6 +131,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   const handleShowArtists = () => {
     setShowArtists(true);
     setShowPopularity(false);
+    setShowCompatibility(false);
   };
 
   const handleShowPopularity = () => {
@@ -129,6 +139,15 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
     localStorage.setItem("firstTime", "false");
     setShowPopularity(true);
     setShowArtists(false);
+    setShowCompatibility(false);
+  };
+
+  const handleShowCompatibility = () => {
+    setIsFirstTime(false);
+    localStorage.setItem("firstTime", "false");
+    setShowPopularity(false);
+    setShowArtists(false);
+    setShowCompatibility(true);
   };
 
   const handleScroll = () => {
@@ -214,7 +233,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
       <BackgroundGradient className="!fixed opacity-15" />
       <BoxContainer
         forceVisible={isMobile}
-        className="w-full px-8 py-4 lg:p-0 lg:w-fit !pb-14"
+        className="w-full px-[7%] py-4 lg:p-0 lg:w-fit !pb-14"
       >
         {isMobile && (
           <>
@@ -267,10 +286,10 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                         gap: ["0px", "8px", "0px"],
                         transition: { repeat: Infinity },
                       }
-                    : {}
+                    : { marginBottom: showArtists ? "2rem" : "0" }
                 }
                 ref={scrollContainerRef}
-                className="overflow-x-auto mb-8 pr-56 overflow-y-visible gap-1 flex flex-row w-full snap-x snap-mandatory"
+                className="overflow-x-auto pr-56 overflow-y-visible gap-1 flex flex-row w-[95vw] snap-x snap-mandatory -mx-6"
               >
                 <motion.h2
                   viewport={{ margin: "400px -50% 400px -50%" }}
@@ -279,7 +298,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                   }}
                   initial={{ opacity: 0.3 }}
                   whileInView={{ opacity: 0.8 }}
-                  className="snap-start bg-linear-gradient font-bold text-nowrap bg-clip-text text-transparent text-1xl w-fit"
+                  className="snap-start bg-linear-gradient font-bold text-nowrap bg-clip-text text-transparent text-1xl w-fit pl-6"
                 >
                   top ten {selectedItem}
                 </motion.h2>
@@ -291,9 +310,21 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                   initial={{ opacity: 0.3 }}
                   whileInView={{ opacity: 0.8 }}
                   onClick={handleScroll}
-                  className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[5vw]"
+                  className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[10vw]"
                 >
                   circle popularity
+                </motion.h2>
+                <motion.h2
+                  viewport={{ margin: "400px -50% 400px -50%" }}
+                  onViewportEnter={() => {
+                    handleShowCompatibility();
+                  }}
+                  initial={{ opacity: 0.3 }}
+                  whileInView={{ opacity: 0.8 }}
+                  onClick={handleScroll}
+                  className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[10vw]"
+                >
+                  circle compatibility
                 </motion.h2>
               </motion.div>
             )}
@@ -309,11 +340,39 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                 itemPopularityData={circlePopularityData[selectedItem]}
               />
             )}
+            {showCompatibility && (
+              <CircleCompatibility
+                className="w-fit mb-[50vh] ml-[5vw]"
+                circleCompatibilityData={circleCompatibilityData[selectedItem]}
+              />
+            )}
           </BoxContainer>
           {!isMobile && (
             <div className="flex flex-col gap-4">
               {Title()}
               <div className="flex gap-2">
+                <div className="flex flex-col gap-2 flex-grow">
+                  <BoxContainer
+                    key="circlePopularity"
+                    className="h-fit  row-start-1 -row-end-1"
+                  >
+                    <CirclePopularity
+                      itemPopularityData={circlePopularityData[selectedItem]}
+                      className="w-fit flex-grow-0 pointer-events-none"
+                    />{" "}
+                  </BoxContainer>
+                  <BoxContainer
+                    key="circleCompatibility"
+                    className="h-fit row-start-1 -row-end-1"
+                  >
+                    <CircleCompatibility
+                      circleCompatibilityData={
+                        circleCompatibilityData[selectedItem]
+                      }
+                      className="w-fit flex-grow-0 pointer-events-none"
+                    />{" "}
+                  </BoxContainer>
+                </div>
                 <div className="flex flex-col gap-2 flex-grow">
                   <BoxContainer
                     key="members"
@@ -326,17 +385,6 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                       itemsData={circleUsernames}
                       onSelectionChange={onSelectionChange}
                     />
-                  </BoxContainer>
-                </div>
-                <div className="flex flex-col gap-2 flex-grow">
-                  <BoxContainer
-                    key="circlePopularity"
-                    className="h-fit  row-start-1 -row-end-1"
-                  >
-                    <CirclePopularity
-                      itemPopularityData={circlePopularityData[selectedItem]}
-                      className="w-fit flex-grow-0 pointer-events-none"
-                    />{" "}
                   </BoxContainer>
                 </div>
               </div>

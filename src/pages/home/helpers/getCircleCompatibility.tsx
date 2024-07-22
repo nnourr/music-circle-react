@@ -3,33 +3,43 @@ import { TrackInterface } from "../models/track.model";
 import { UserInterface } from "../models/user.model";
 
 type Item = TrackInterface | ArtistInterface;
+type ItemType = "tracks" | "artists";
 
 interface CompatibilityDetail {
+  user1Name: string;
+  user2Name: string;
   compatibilityPercentage: number;
   sharedItems: Item[];
 }
 
-type CompatibilityResult = {
-  compatibilityMatrix: { [key: string]: CompatibilityDetail };
+export type CompatibilityResult = {
+  compatibilityMatrix: CompatibilityDetail[];
   groupCompatibility: number;
 };
 
-export function getCircleCompatibility(users: UserInterface[]): {
-  trackCompatibility: CompatibilityResult;
-  artistCompatibility: CompatibilityResult;
-} {
+export type CircleCompatibilityData = {
+  tracks: CompatibilityResult;
+  artists: CompatibilityResult;
+};
+
+export function getCircleCompatibility(
+  users: UserInterface[]
+): CircleCompatibilityData {
   const userCount = users.length;
 
   function calculatePairwiseCompatibility(
-    user1Items: Item[],
-    user2Items: Item[]
+    user1: UserInterface,
+    user2: UserInterface,
+    itemType: ItemType
   ): CompatibilityDetail {
+    const user1Items = user1[itemType];
+    const user2Items = user2[itemType];
     // Nonlinear transformation function to skew the distribution
     function skewedTransformation(x: number): number {
       // Apply a quadratic transformation to skew the values
       // Adjust the constants to fit your desired skewing effect
       const skewFactor = 0.5; // Adjust this factor as needed
-      return 100 * Math.pow(x / 100, skewFactor);
+      return Math.round(10000 * Math.pow(x / 100, skewFactor)) / 100;
     }
 
     const sharedItems = user2Items.filter((item) =>
@@ -41,13 +51,16 @@ export function getCircleCompatibility(users: UserInterface[]): {
     const compatibilityPercentage = skewedTransformation(
       (sharedItemsCount / totalUniqueItems) * 100
     );
-    return { compatibilityPercentage, sharedItems }; // Apply exponential weighting
+    return {
+      user1Name: user1.username,
+      user2Name: user2.username,
+      compatibilityPercentage,
+      sharedItems,
+    }; // Apply exponential weighting
   }
 
-  function getCompatibilityResult(
-    itemType: "tracks" | "artists"
-  ): CompatibilityResult {
-    const compatibilityMatrix: { [key: string]: CompatibilityDetail } = {};
+  function getCompatibilityResult(itemType: ItemType): CompatibilityResult {
+    const compatibilityMatrix: CompatibilityDetail[] = [];
     let totalCompatibility = 0;
     let comparisons = 0;
 
@@ -56,20 +69,23 @@ export function getCircleCompatibility(users: UserInterface[]): {
         if (!!!users[i][itemType] || !!!users[j][itemType]) {
           continue;
         }
-        const user1Items = users[i][itemType];
-        const user2Items = users[j][itemType];
         const pairwiseCompatibility = calculatePairwiseCompatibility(
-          user1Items,
-          user2Items
+          users[i],
+          users[j],
+          itemType
         );
-        compatibilityMatrix[`${users[i].userId}-${users[j].userId}`] =
-          pairwiseCompatibility;
+        compatibilityMatrix.push(pairwiseCompatibility);
         totalCompatibility += pairwiseCompatibility.compatibilityPercentage;
         comparisons++;
       }
     }
 
-    const groupCompatibility = totalCompatibility / comparisons;
+    const groupCompatibility =
+      Math.round((100 * totalCompatibility) / comparisons) / 100;
+
+    compatibilityMatrix.sort(
+      (a, b) => b.compatibilityPercentage - a.compatibilityPercentage
+    );
 
     return {
       compatibilityMatrix,
@@ -81,7 +97,7 @@ export function getCircleCompatibility(users: UserInterface[]): {
   const artistCompatibility = getCompatibilityResult("artists");
 
   return {
-    trackCompatibility,
-    artistCompatibility,
+    tracks: trackCompatibility,
+    artists: artistCompatibility,
   };
 }
