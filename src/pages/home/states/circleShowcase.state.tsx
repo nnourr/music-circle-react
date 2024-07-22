@@ -240,14 +240,14 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             </div>
           </>
         )}
-        <div className="w-full mt-4 lg:flex lg:justify-center lg:max-w-[100rem]">
+        <div className="w-full mt-4 lg:flex lg:justify-center lg:max-w-[90vw]">
           <BoxContainer
             key="stackedBar"
             className="min-h-full w-full lg:w-[48rem] lg:pt-2 lg:mr-4"
           >
             {!isMobile ? (
               <div className="flex flex-nowrap items-baseline gap-4">
-                <motion.h2 className="bg-linear-gradient inline-block font-bold text-nowrap mb-2 bg-clip-text text-transparent text-1xl lg:text-lg-xl w-fit">
+                <motion.h2 className="bg-linear-gradient inline-block font-bold text-nowrap mb-2 bg-clip-text text-transparent text-1xl lg:text-lg-xl w-fit opacity-80">
                   top ten
                 </motion.h2>
                 <Selector
@@ -291,7 +291,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                   initial={{ opacity: 0.3 }}
                   whileInView={{ opacity: 0.8 }}
                   onClick={handleScroll}
-                  className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text text-transparent text-1xl w-fit"
+                  className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[5vw]"
                 >
                   circle popularity
                 </motion.h2>
@@ -305,7 +305,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             )}
             {showPopularity && (
               <CirclePopularity
-                className="w-fit mb-[50vh]"
+                className="w-fit mb-[50vh] ml-[5vw]"
                 itemPopularityData={circlePopularityData[selectedItem]}
               />
             )}

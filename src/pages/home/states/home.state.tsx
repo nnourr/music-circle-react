@@ -96,15 +96,15 @@ const HomeState = React.forwardRef<HTMLDivElement>((_, ref) => {
     >
       <BackgroundGradient className="!fixed opacity-20" />
       <BoxContainer
-        forceVisible={true}
-        className="h-full lg:h-auto w-full !p-[10%] lg:!pt-16 lg:!px-20 !rounded-none lg:!rounded-[32px]"
+        forceVisible={isMobile ? true : undefined}
+        className="h-full lg:h-5/6 lg:min-w-[90rem] lg:max-w-[100rem] lg:w-[90%] w-full !p-[10%] lg:!py-16 lg:!px-20 !rounded-none lg:!rounded-[32px]"
       >
-        <motion.div className="lg:min-h-[42rem] w-full h-fit max-h-full lg:w-[90rem] lg:h-2/3 flex flex-col">
+        <motion.div className=" w-full h-fit max-h-full flex flex-col">
           <motion.div
             initial="initial"
             animate={animationStep >= 4 ? "moveUp" : ""}
             variants={headingContainerVariants}
-            className="lg:h-1/2 lg:w-3/4 relative"
+            className="lg:h-1/2 relative"
           >
             <motion.h1
               initial="initial"
