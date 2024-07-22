@@ -24,6 +24,8 @@ import { Footer } from "../../../components/footer.component";
 import Button, {
   btnSizes,
 } from "../../../components/inputs/button.input.component";
+import { BoxContainer } from "../../../components/boxContainer.component";
+import { BackgroundGradient } from "../../landing/components/background-gradient.component";
 
 interface CircleShowcaseStateProps {
   circleInfo: CircleInfo;
@@ -137,9 +139,9 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
     }
   };
 
-  return (
-    <motion.div className="mt-1 h-full box-border w-full px-6 py-2 relative overflow-y-auto overflow-x-hidden">
-      <div className="mt-3 lg:right-0 lg:mr-[5%] lg:max-w-[40%] xl:max-w-[30%] xl:mr-[15%] flex flex-col lg:text-left lg:fixed items-start pointer-events-none box-border lg:h-svh lg:pt-20 lg:pb-10 lg:mt-0 top-0">
+  const Title = useCallback(() => {
+    return (
+      <BoxContainer key="title" className="w-full lg:w-auto">
         <ReactFitty
           maxSize={isMobile ? 80 : 140}
           minSize={isMobile ? 50 : 100}
@@ -179,137 +181,188 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
           ) : (
             circleInfo.circleName
           )}
-        </ReactFitty>
-        <div className="pointer-events-auto">
-          <motion.span
-            className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer w-fit text-nowrap"
-            onClick={onCopyCodeClick}
-            title="Copy Circle Code"
-            whileTap={{ scale: 0.9 }}
+        </ReactFitty>{" "}
+        <motion.span
+          className="text-sm font-sans text-white/80 hover:text-white transition-all cursor-pointer w-fit text-nowrap"
+          onClick={onCopyCodeClick}
+          title="Copy Circle Code"
+          whileTap={{ scale: 0.9 }}
+        >
+          {copyCircleCodeText}
+        </motion.span>
+        <motion.div
+          whileTap={{ scale: 0.9 }}
+          className="inline-block lg:static fixed bottom-8 right-4 z-50"
+        >
+          <Button
+            onClick={onShareCircle}
+            title="Share Circle"
+            white={true}
+            btnSize={btnSizes.sm}
+            className="px-4 ml-8 flex bg-black"
           >
-            {copyCircleCodeText}
-          </motion.span>
+            share
+            <FontAwesomeIcon className="ml-2 mt-0.5" icon={faShare} />
+          </Button>
+        </motion.div>
+      </BoxContainer>
+    );
+  }, [copyCircleCodeText, circleInfo.circleName, isLoading, isMobile]);
 
-          <motion.div
-            whileTap={{ scale: 0.9 }}
-            className="inline-block lg:static fixed bottom-8 right-4 z-50"
-          >
-            <Button
-              onClick={onShareCircle}
-              title="Share Circle"
-              white={true}
-              btnSize={btnSizes.sm}
-              className="px-4 ml-8 flex bg-black"
-            >
-              share
-              <FontAwesomeIcon className="ml-2 mt-0.5" icon={faShare} />
-            </Button>
-          </motion.div>
-        </div>
-
-        {isMobile ? (
-          <div className="flex flex-nowrap w-full justify-between gap-4">
-            <Selector
-              className="mt-4 pointer-events-auto text-nowrap w-full basis-1/2 h-fit"
-              onChange={(value) => setSelectedItem(value as AllowedItems)}
-              options={[
-                { label: "artists", value: "artists" },
-                { label: "tracks", value: "tracks" },
-              ]}
-            />
-            <MultiSelector
-              itemsData={circleUsernames}
-              onSelectionChange={onSelectionChange}
-              isCollapsible={true}
-              collapsibleTitle="members"
-              className="mt-4 pointer-events-auto text-nowrap w-full basis-1/2 h-fit"
-            />
-          </div>
-        ) : (
-          <div className="flex w-full gap-8 mt-4">
-            <div>
-              <h2 className="font-bold block w-min mb-3 opacity-80 text-nowrap text-lg-lg bg-linear-gradient bg-clip-text text-transparent leading-none">
-                members
-              </h2>
+  return (
+    <motion.div className="h-full box-border w-full relative overflow-y-auto overflow-x-hidden flex items-center flex-col">
+      <BackgroundGradient className="!fixed opacity-15" />
+      <BoxContainer
+        forceVisible={isMobile}
+        className="w-full px-8 py-4 lg:p-0 lg:w-fit !pb-14"
+      >
+        {isMobile && (
+          <>
+            <div className="mt-2 w-full">
+              <Title />
+            </div>
+            <div className="flex flex-nowrap w-full justify-between gap-4">
               <MultiSelector
                 itemsData={circleUsernames}
                 onSelectionChange={onSelectionChange}
-                className="pointer-events-auto mb-8"
+                isCollapsible={true}
+                collapsibleTitle="members"
+                className="mt-4 pointer-events-auto text-nowrap w-full basis-1/2 h-fit"
+              />
+              <Selector
+                className="mt-4 pointer-events-auto text-nowrap w-full basis-1/2 h-fit"
+                onChange={(value) => setSelectedItem(value as AllowedItems)}
+                options={[
+                  { label: "artists", value: "artists" },
+                  { label: "tracks", value: "tracks" },
+                ]}
               />
             </div>
-            <CirclePopularity
-              itemPopularityData={circlePopularityData[selectedItem]}
-              className="w-fit flex-grow-0 pointer-events-none"
-            />
-          </div>
+          </>
         )}
-      </div>
-      {isMobile ? (
-        <motion.div
-          animate={
-            isFirstTime
-              ? { gap: ["0px", "8px", "0px"], transition: { repeat: Infinity } }
-              : {}
-          }
-          ref={scrollContainerRef}
-          className="overflow-x-auto mt-2 pr-12 overflow-y-visible gap-1 flex flex-row w-full snap-x snap-mandatory"
-        >
-          <motion.h2
-            viewport={{ margin: "400px -35% 400px -35%" }}
-            onViewportEnter={() => {
-              handleShowArtists();
-            }}
-            initial={{ opacity: 0.3 }}
-            whileInView={{ opacity: 0.8 }}
-            className="snap-start bg-linear-gradient font-bold text-nowrap bg-clip-text text-transparent text-1xl w-fit"
+        <div className="w-full mt-4 lg:flex lg:justify-center lg:max-w-[100rem]">
+          <BoxContainer
+            key="stackedBar"
+            className="min-h-full w-full lg:w-[48rem] lg:pt-2 lg:mr-4"
           >
-            top ten {selectedItem}
-          </motion.h2>
-          <motion.h2
-            viewport={{ margin: "400px -35% 400px -35%" }}
-            onViewportEnter={() => {
-              handleShowPopularity();
-            }}
-            initial={{ opacity: 0.3 }}
-            whileInView={{ opacity: 0.8 }}
-            onClick={handleScroll}
-            className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text text-transparent text-1xl w-fit"
-          >
-            circle popularity
-          </motion.h2>
-        </motion.div>
-      ) : (
-        <motion.div className="overflow-x-auto z-50 absolute mt-2 mb-14 ml-[3%] xl:ml-[13%] overflow-y-visible flex gap-4 w-fit snap-x snap-mandatory pr-0">
-          <motion.h2
-            initial={{ opacity: 0.3 }}
-            whileInView={{ opacity: 0.8 }}
-            className="bg-linear-gradient inline-block leading-none mr-36 lg:mr-0 pt-1.5 lg:pt-2 font-bold text-nowrap bg-clip-text text-transparent text-1xl lg:text-lg-xl w-fit"
-          >
-            top ten{" "}
-          </motion.h2>
-          <Selector
-            onChange={(value) => setSelectedItem(value as AllowedItems)}
-            options={[
-              { label: "artists", value: "artists" },
-              { label: "tracks", value: "tracks" },
-            ]}
-            className="mr-4"
-          />
-        </motion.div>
-      )}
-      {(showArtists || !isMobile) && (
-        <StackedBar
-          itemsData={consolidatedCircleData[selectedItem]}
-          className="h-auto min-h-full w-full mt-4 lg:mt-32 lg:max-w-[50%] xl:max-w-[40%] lg:ml-[5%] xl:ml-[15%]"
-        ></StackedBar>
-      )}
-      {showPopularity && isMobile && (
-        <CirclePopularity
-          className="w-fit mt-4 mx-6 mb-[50vh]"
-          itemPopularityData={circlePopularityData[selectedItem]}
-        />
-      )}
-      <Footer className="mt-14" />
+            {!isMobile ? (
+              <div className="flex flex-nowrap items-baseline gap-4">
+                <motion.h2 className="bg-linear-gradient inline-block font-bold text-nowrap mb-2 bg-clip-text text-transparent text-1xl lg:text-lg-xl w-fit">
+                  top ten
+                </motion.h2>
+                <Selector
+                  onChange={(value) => setSelectedItem(value as AllowedItems)}
+                  options={[
+                    { label: "artists", value: "artists" },
+                    { label: "tracks", value: "tracks" },
+                  ]}
+                  className="flex-shrink-0 h-fit"
+                />
+              </div>
+            ) : (
+              <motion.div
+                animate={
+                  isFirstTime
+                    ? {
+                        gap: ["0px", "8px", "0px"],
+                        transition: { repeat: Infinity },
+                      }
+                    : {}
+                }
+                ref={scrollContainerRef}
+                className="overflow-x-auto mb-8 pr-56 overflow-y-visible gap-1 flex flex-row w-full snap-x snap-mandatory"
+              >
+                <motion.h2
+                  viewport={{ margin: "400px -50% 400px -50%" }}
+                  onViewportEnter={() => {
+                    handleShowArtists();
+                  }}
+                  initial={{ opacity: 0.3 }}
+                  whileInView={{ opacity: 0.8 }}
+                  className="snap-start bg-linear-gradient font-bold text-nowrap bg-clip-text text-transparent text-1xl w-fit"
+                >
+                  top ten {selectedItem}
+                </motion.h2>
+                <motion.h2
+                  viewport={{ margin: "400px -50% 400px -50%" }}
+                  onViewportEnter={() => {
+                    handleShowPopularity();
+                  }}
+                  initial={{ opacity: 0.3 }}
+                  whileInView={{ opacity: 0.8 }}
+                  onClick={handleScroll}
+                  className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text text-transparent text-1xl w-fit"
+                >
+                  circle popularity
+                </motion.h2>
+              </motion.div>
+            )}
+            {(showArtists || !isMobile) && (
+              <StackedBar
+                itemsData={consolidatedCircleData[selectedItem]}
+                className="h-auto min-h-full w-full"
+              ></StackedBar>
+            )}
+            {showPopularity && (
+              <CirclePopularity
+                className="w-fit mb-[50vh]"
+                itemPopularityData={circlePopularityData[selectedItem]}
+              />
+            )}
+          </BoxContainer>
+          {!isMobile && (
+            <div className="flex flex-col gap-4">
+              {Title()}
+              <div className="flex gap-2">
+                <div className="flex flex-col gap-2">
+                  <BoxContainer
+                    key="members"
+                    className="h-fit row-start-1 -row-end-1"
+                  >
+                    <h2 className="font-bold block w-min mb-3 opacity-80 text-nowrap text-lg-lg bg-linear-gradient bg-clip-text text-transparent leading-none">
+                      members
+                    </h2>
+                    <MultiSelector
+                      itemsData={circleUsernames}
+                      onSelectionChange={onSelectionChange}
+                    />
+                  </BoxContainer>
+                  <BoxContainer
+                    key="circlePopularity"
+                    className="h-fit row-start-1 -row-end-1"
+                  >
+                    <CirclePopularity
+                      itemPopularityData={circlePopularityData[selectedItem]}
+                      className="w-fit flex-grow-0 pointer-events-none"
+                    />{" "}
+                  </BoxContainer>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <BoxContainer
+                    key="circlePopularity"
+                    className="h-fit  row-start-1 -row-end-1"
+                  >
+                    <CirclePopularity
+                      itemPopularityData={circlePopularityData[selectedItem]}
+                      className="w-fit flex-grow-0 pointer-events-none"
+                    />{" "}
+                  </BoxContainer>
+                  <BoxContainer
+                    key="circlePopularity"
+                    className="h-fit  row-start-1 -row-end-1"
+                  >
+                    <CirclePopularity
+                      itemPopularityData={circlePopularityData[selectedItem]}
+                      className="w-fit flex-grow-0 pointer-events-none"
+                    />{" "}
+                  </BoxContainer>{" "}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </BoxContainer>
+      <Footer className="w-full" />
     </motion.div>
   );
 };

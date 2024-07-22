@@ -4,10 +4,12 @@ import { RADIAL_GRADIENT, RADIAL_GRADIENT_ALT } from "../../../config/globals";
 
 interface BackgroundGradientProps extends React.HTMLAttributes<HTMLDivElement> {
   error?: boolean;
+  className?: string;
 }
 
 export const BackgroundGradient: React.FC<BackgroundGradientProps> = ({
   error = false,
+  className,
 }) => {
   return (
     <motion.div
@@ -18,7 +20,7 @@ export const BackgroundGradient: React.FC<BackgroundGradientProps> = ({
         transition: { repeat: Infinity, repeatType: "mirror", duration: 5 },
       }}
       transition={{ duration: 1.5, ease: "easeOut" }}
-      className="h-full w-full absolute top-0 left-0 -z-10 flex justify-center items-center overflow-hidden"
+      className={`${className} h-full w-full absolute top-0 left-0 -z-10 flex justify-center items-center overflow-hidden`}
     >
       <motion.div
         className="border-green-800/30 border-[20px] h-0 w-0 rounded-[50%] blur-3xl absolute"

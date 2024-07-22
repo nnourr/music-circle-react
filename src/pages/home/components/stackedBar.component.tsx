@@ -152,7 +152,7 @@ export const StackedBar: React.FC<StackedBarProps> = ({
         onMouseEnter={() => handleBarClick(i)}
       >
         <motion.div
-          className={`bg-linear-gradient w-28 lg:w-48 h-full flex-shrink-0 ${firstTimePulse}`}
+          className={`bg-linear-gradient w-24 lg:w-48 h-full flex-shrink-0 ${firstTimePulse}`}
           style={{
             opacity: `${100 - (i / length) * 100}%`,
             borderTopLeftRadius: `${i === 0 ? "20px" : ""}`,
