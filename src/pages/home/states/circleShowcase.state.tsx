@@ -314,7 +314,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             <div className="flex flex-col gap-4">
               {Title()}
               <div className="flex gap-2">
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 flex-grow">
                   <BoxContainer
                     key="members"
                     className="h-fit row-start-1 -row-end-1"
@@ -327,17 +327,8 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                       onSelectionChange={onSelectionChange}
                     />
                   </BoxContainer>
-                  <BoxContainer
-                    key="circlePopularity"
-                    className="h-fit row-start-1 -row-end-1"
-                  >
-                    <CirclePopularity
-                      itemPopularityData={circlePopularityData[selectedItem]}
-                      className="w-fit flex-grow-0 pointer-events-none"
-                    />{" "}
-                  </BoxContainer>
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 flex-grow">
                   <BoxContainer
                     key="circlePopularity"
                     className="h-fit  row-start-1 -row-end-1"
@@ -347,15 +338,6 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                       className="w-fit flex-grow-0 pointer-events-none"
                     />{" "}
                   </BoxContainer>
-                  <BoxContainer
-                    key="circlePopularity"
-                    className="h-fit  row-start-1 -row-end-1"
-                  >
-                    <CirclePopularity
-                      itemPopularityData={circlePopularityData[selectedItem]}
-                      className="w-fit flex-grow-0 pointer-events-none"
-                    />{" "}
-                  </BoxContainer>{" "}
                 </div>
               </div>
             </div>
