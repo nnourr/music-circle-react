@@ -34,6 +34,7 @@ module.exports = {
       colors: {
         error: 'rgba(227,0,73,0.9)',
         spotify: 'rgb(30,215,96)',
+        "dark-teal": '#192B28',
       },
       backgroundImage: {
         "radial-gradient": "radial-gradient(50% 50% at 50% 50%, #29EB26 0%, #3FB1AB 70%, #29C39F 100%)",
