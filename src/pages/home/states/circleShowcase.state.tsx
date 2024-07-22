@@ -322,7 +322,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                   initial={{ opacity: 0.3 }}
                   whileInView={{ opacity: 0.8 }}
                   onClick={handleScroll}
-                  className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[10vw]"
+                  className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[7vw]"
                 >
                   circle compatibility
                 </motion.h2>
@@ -342,7 +342,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             )}
             {showCompatibility && (
               <CircleCompatibility
-                className="w-fit mb-[50vh] ml-[5vw]"
+                className="w-fit mb-[50vh] ml-[2vw]"
                 circleCompatibilityData={circleCompatibilityData[selectedItem]}
               />
             )}

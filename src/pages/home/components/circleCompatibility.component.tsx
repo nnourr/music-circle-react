@@ -42,7 +42,7 @@ export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
       </h2>
       {isFirstTime && (
         <span className="text-white text-sm lg:text-base font-normal">
-          (this is the average popularity of everyone's top 50 artists)
+          (this is the circle's compatibility)
         </span>
       )}
       <h2 className="text-xl lg:ml-4 w-fit lg:text-lg-lg text-white">
@@ -56,7 +56,7 @@ export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
       </p>
       {isFirstTime && (
         <span className="text-white text-sm lg:text-base font-normal">
-          (this is the average popularity of each person's top 50 artists)
+          (this is the compatibility of each person with each other person)
         </span>
       )}
       <ul className="lg:ml-4 overflow-auto pointer-events-[scroll] mb-4 lg-mb-0 w-fit">
