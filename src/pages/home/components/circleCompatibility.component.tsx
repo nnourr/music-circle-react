@@ -63,7 +63,7 @@ export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
           (this is the compatibility of each person with each other person)
         </span>
       )}
-      <ul className="lg:ml-4 overflow-auto pointer-events-[scroll] mb-4 lg-mb-0 w-fit">
+      <ul className="lg:ml-4 overflow-auto lg:max-h-36 mb-4 lg-mb-0 w-fit">
         {userPopularityRanking}
       </ul>
     </motion.div>
