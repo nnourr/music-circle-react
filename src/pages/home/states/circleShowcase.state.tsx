@@ -298,7 +298,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                   }}
                   initial={{ opacity: 0.3 }}
                   whileInView={{ opacity: 0.8 }}
-                  className="snap-start bg-linear-gradient font-bold text-nowrap bg-clip-text text-transparent text-1xl w-fit pl-6"
+                  className="snap-start bg-linear-gradient font-bold text-nowrap whitespace-nowrap bg-clip-text text-transparent text-1xl w-fit pl-6"
                 >
                   top ten {selectedItem}
                 </motion.h2>
@@ -310,7 +310,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                   initial={{ opacity: 0.3 }}
                   whileInView={{ opacity: 0.8 }}
                   onClick={handleScroll}
-                  className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[10vw]"
+                  className="bg-linear-gradient font-bold snap-start text-nowrap whitespace-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[10vw]"
                 >
                   circle popularity
                 </motion.h2>
@@ -322,7 +322,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                   initial={{ opacity: 0.3 }}
                   whileInView={{ opacity: 0.8 }}
                   onClick={handleScroll}
-                  className="bg-linear-gradient font-bold snap-start text-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[7vw]"
+                  className="bg-linear-gradient font-bold snap-start text-nowrap whitespace-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[7vw]"
                 >
                   circle compatibility
                 </motion.h2>
