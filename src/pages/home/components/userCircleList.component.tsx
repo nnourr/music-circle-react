@@ -208,18 +208,18 @@ export const UserCircleListComponent: React.FC<
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="absolute right-0 top-0 z-10 outline-2 outline-white outline rounded-2xl px-4 bg-black flex gap-4 h-full lg:pt-[6px]"
+            className="absolute right-0 top-0 z-10 outline-2 outline-white outline rounded-2xl px-4 bg-black flex gap-4 h-full items-center"
           >
             <FontAwesomeIcon
               icon={faPenToSquare}
               onClick={() => setCircleToEdit(circle)}
-              className="z-10 relative pt-[4px]"
+              className="z-10"
               title="Rename Circle"
             />
             <FontAwesomeIcon
               icon={faCircleXmark}
               onClick={() => setCircleToLeave(circle)}
-              className="z-10 relative pt-[4px]"
+              className="z-10"
               title="Leave Circle"
             />
           </motion.div>
