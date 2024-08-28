@@ -45,12 +45,15 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
     setCopyCircleCodeText(`#${circleInfo.circleCode}`);
   }, [circleInfo.circleCode]);
 
-  const [consolidatedCircleData, setConsolidatedCircleData] =
-    useState<ConsolidatedCircle>(consolidateCircle(circleInfo));
-  const [circlePopularityData, setCirclePopularityData] =
-    useState<CirclePopularityData>(getCirclePopularityData(circleInfo));
-  const [circleCompatibilityData, setCircleCompatibilityData] =
-    useState<CircleCompatibilityData>(getCircleCompatibility(circleInfo.users));
+  const [consolidatedCircleData, setConsolidatedCircleData] = useState<
+    ConsolidatedCircle | undefined
+  >(undefined);
+  const [circlePopularityData, setCirclePopularityData] = useState<
+    CirclePopularityData | undefined
+  >(undefined);
+  const [circleCompatibilityData, setCircleCompatibilityData] = useState<
+    CircleCompatibilityData | undefined
+  >(undefined);
   const [selectedItem, setSelectedItem] = useState<AllowedItems>("artists");
   const [selectedUsers, setSelectedUsers] = useState<string[]>(
     circleInfo.users.map((user) => user.username)
@@ -64,14 +67,21 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   const scrollContainerRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (selectedUsers.length === 0) {
+      setConsolidatedCircleData(undefined);
+      setCirclePopularityData(undefined);
+      setCircleCompatibilityData(undefined);
+      return;
+    }
     const circleInfoClone = cloneDeep(circleInfo);
     circleInfoClone.users = circleInfoClone.users.filter((user) =>
       selectedUsers.includes(user.username)
     );
+
     setConsolidatedCircleData(consolidateCircle(circleInfoClone));
     setCirclePopularityData(getCirclePopularityData(circleInfoClone));
     setCircleCompatibilityData(getCircleCompatibility(circleInfoClone.users));
-  }, [circleInfo, selectedUsers]);
+  }, [selectedUsers]);
 
   useEffect(() => {
     setIsFirstTime(localStorage.getItem("firstTime") === "true");
@@ -87,18 +97,20 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   );
 
   if (
-    Object.values(consolidatedCircleData.artists).some((value) => {
-      return (
-        value.contributors.includes(username || "") &&
-        Object.values(value).some((value) => value === undefined)
-      );
-    }) ||
-    Object.values(consolidatedCircleData.tracks).some((value) => {
-      return (
-        value.contributors.includes(username || "") &&
-        Object.values(value).some((value) => value === undefined)
-      );
-    })
+    (consolidatedCircleData &&
+      Object.values(consolidatedCircleData.artists).some((value) => {
+        return (
+          value.contributors.includes(username || "") &&
+          Object.values(value).some((value) => value === undefined)
+        );
+      })) ||
+    (consolidatedCircleData &&
+      Object.values(consolidatedCircleData.tracks).some((value) => {
+        return (
+          value.contributors.includes(username || "") &&
+          Object.values(value).some((value) => value === undefined)
+        );
+      }))
   ) {
     localStorage.removeItem("user");
     window.location.reload();
@@ -286,7 +298,12 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                         gap: ["0px", "8px", "0px"],
                         transition: { repeat: Infinity },
                       }
-                    : { marginBottom: showArtists ? "2rem" : "0" }
+                    : {
+                        marginBottom:
+                          showArtists || selectedUsers.length === 0
+                            ? "2rem"
+                            : "0",
+                      }
                 }
                 ref={scrollContainerRef}
                 className="overflow-x-auto pr-56 overflow-y-visible gap-1 flex flex-row w-[95vw] snap-x snap-mandatory -mx-6"
@@ -328,22 +345,29 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                 </motion.h2>
               </motion.div>
             )}
-            {(showArtists || !isMobile) && (
+            {(showArtists || !isMobile || selectedUsers.length === 0) && (
               <StackedBar
-                itemsData={consolidatedCircleData[selectedItem]}
+                itemsData={
+                  consolidatedCircleData && consolidatedCircleData[selectedItem]
+                }
                 className="h-auto min-h-full w-full"
               ></StackedBar>
             )}
-            {showCompatibility && (
+            {showCompatibility && selectedUsers.length !== 0 && (
               <CircleCompatibility
                 className="w-fit mb-[50vh] ml-[2vw]"
-                circleCompatibilityData={circleCompatibilityData[selectedItem]}
+                circleCompatibilityData={
+                  circleCompatibilityData &&
+                  circleCompatibilityData[selectedItem]
+                }
               />
             )}
-            {showPopularity && (
+            {showPopularity && selectedUsers.length !== 0 && (
               <CirclePopularity
                 className="w-fit mb-[50vh] ml-[5vw]"
-                itemPopularityData={circlePopularityData[selectedItem]}
+                itemPopularityData={
+                  circlePopularityData && circlePopularityData[selectedItem]
+                }
               />
             )}
           </BoxContainer>
@@ -358,6 +382,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                   >
                     <CircleCompatibility
                       circleCompatibilityData={
+                        circleCompatibilityData &&
                         circleCompatibilityData[selectedItem]
                       }
                       className="w-fit flex-grow-0"
@@ -368,7 +393,10 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                     className="h-fit  row-start-1 -row-end-1"
                   >
                     <CirclePopularity
-                      itemPopularityData={circlePopularityData[selectedItem]}
+                      itemPopularityData={
+                        circlePopularityData &&
+                        circlePopularityData[selectedItem]
+                      }
                       className="w-fit flex-grow-0"
                     />{" "}
                   </BoxContainer>

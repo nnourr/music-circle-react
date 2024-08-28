@@ -12,7 +12,7 @@ import {
 type Item = ConsolidatedArtist | ConsolidatedTrack;
 
 interface StackedBarProps {
-  itemsData: Item[];
+  itemsData: Item[] | undefined;
   className: string;
 }
 
@@ -92,10 +92,10 @@ export const StackedBar: React.FC<StackedBarProps> = ({
     );
   };
 
-  if (itemsData.length === 0) {
+  if (!!!itemsData || itemsData.length === 0) {
     return (
       <h2 className={`${className} text-lg lg:text-lg-lg text-white`}>
-        Please select a user
+        Please select a member
       </h2>
     );
   }

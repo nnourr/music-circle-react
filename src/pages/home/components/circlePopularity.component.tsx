@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { PopularityData } from "../helpers/getCirclePopularity";
 
 interface CirclePopularityProps {
-  itemPopularityData: PopularityData;
+  itemPopularityData: PopularityData | undefined;
   className?: string;
 }
 
@@ -10,6 +10,15 @@ export const CirclePopularity: React.FC<CirclePopularityProps> = ({
   itemPopularityData,
   className,
 }) => {
+  if (!!!itemPopularityData) {
+    return (
+      <>
+        <h2 className="text-lg w-min font-bold text-nowrap lg:text-lg-lg text-transparent leading-none relative after:w-full after:h-full after:animate-pulse after:absolute after:top-0 after:right-0 after:bg-spotify/15 after:rounded-3xl after:block">
+          average popularity
+        </h2>
+      </>
+    );
+  }
   const userPopularityRanking = itemPopularityData.userPopularityRanking.map(
     (user, i) => (
       <li className="text-base lg:text-base text-white" key={user.username}>
@@ -26,7 +35,7 @@ export const CirclePopularity: React.FC<CirclePopularityProps> = ({
   return (
     <motion.div
       key="itemPopularityData"
-      className={`${className} font-bold text-left flex-grow flex-shrink overflow-hidden flex flex-col`}
+      className={`${className} font-bold text-left overflow-hidden flex flex-col`}
       initial={{ opacity: 0 }}
       animate={{
         opacity: itemPopularityData.averagePopularity === 0 ? 0 : 0.8,
