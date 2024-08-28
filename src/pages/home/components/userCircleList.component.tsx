@@ -17,6 +17,7 @@ import { UserCircle } from "../../../models/userCircle.model";
 import { SERVER_ENDPOINT } from "../../../config/globals";
 import { useUser } from "../../../providers/user.provider";
 import Input from "../../../components/inputs/text.input.component";
+import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
 interface UserCircleListComponentProps {
   currentCircleCode?: string;
@@ -33,6 +34,7 @@ export const UserCircleListComponent: React.FC<
   const [circleToLeave, setCircleToLeave] = useState<UserCircle | undefined>();
   const [circleToEdit, setCircleToEdit] = useState<UserCircle | undefined>();
   const [circleNameError, setCircleNameError] = useState<string | undefined>();
+  const [circleMenuOpen, setCircleMenuOpen] = useState<number | undefined>();
   const [newCircleName, setNewCircleName] = useState<string>("");
   const navigate = useNavigate();
   const { userId } = useUser();
@@ -164,7 +166,7 @@ export const UserCircleListComponent: React.FC<
     </span>
   );
 
-  const circleList = userCircles.map((circle) => {
+  const circleList = userCircles.map((circle, i) => {
     const isCurrentCircle = circle.circleCode === currentCircleCode;
     return (
       <Button
@@ -172,11 +174,11 @@ export const UserCircleListComponent: React.FC<
         btnSize={btnSize}
         white={true}
         onClick={() => {}}
-        className="w-full mb-3 overflow-hidden"
+        className="w-full mb-3"
         key={circle.circleCode}
       >
         {isCurrentCircle ? (
-          <div className="absolute top-0 left-0 w-full h-full opacity-40 bg-linear-gradient" />
+          <div className="absolute top-0 left-0 w-full h-full opacity-40 bg-linear-gradient rounded-xl" />
         ) : (
           ""
         )}
@@ -197,18 +199,31 @@ export const UserCircleListComponent: React.FC<
             {circle.circleName}
           </p>
           <FontAwesomeIcon
-            icon={faPenToSquare}
-            onClick={() => setCircleToEdit(circle)}
-            className="z-10 relative pt-[4px] lg:pt-[6px]"
-            title="Rename Circle"
-          />
-          <FontAwesomeIcon
-            icon={faCircleXmark}
-            onClick={() => setCircleToLeave(circle)}
+            icon={faEllipsisVertical}
             className="z-10 relative px-5 pt-[4px] lg:pt-[6px] lg:px-7"
-            title="Leave Circle"
+            onClick={() => setCircleMenuOpen(i)}
           />
         </div>
+        {circleMenuOpen === i && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="absolute right-0 top-0 z-10 outline-2 outline-white outline rounded-2xl px-4 bg-black flex gap-4 h-full lg:pt-[6px]"
+          >
+            <FontAwesomeIcon
+              icon={faPenToSquare}
+              onClick={() => setCircleToEdit(circle)}
+              className="z-10 relative pt-[4px]"
+              title="Rename Circle"
+            />
+            <FontAwesomeIcon
+              icon={faCircleXmark}
+              onClick={() => setCircleToLeave(circle)}
+              className="z-10 relative pt-[4px]"
+              title="Leave Circle"
+            />
+          </motion.div>
+        )}
       </Button>
     );
   });
