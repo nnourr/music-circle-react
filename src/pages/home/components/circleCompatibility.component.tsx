@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { CompatibilityResult } from "../helpers/getCircleCompatibility";
+import { useIsMobile } from "../../../providers/isMobile.provider";
 
 interface CircleCompatibilityProps {
-  circleCompatibilityData: CompatibilityResult;
+  circleCompatibilityData: CompatibilityResult | undefined;
   className?: string;
 }
 
@@ -10,6 +11,26 @@ export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
   circleCompatibilityData,
   className,
 }) => {
+  const isMobile = useIsMobile();
+  if (
+    !!!circleCompatibilityData ||
+    isNaN(circleCompatibilityData.groupCompatibility)
+  ) {
+    return (
+      <>
+        {isMobile ? (
+          <h2 className={`${className} text-lg lg:text-lg-lg text-white`}>
+            Please select a member
+          </h2>
+        ) : (
+          <h2 className="text-lg lg:block w-min font-bold text-nowrap lg:text-lg-lg text-transparent leading-none relative after:w-full after:h-full after:animate-pulse after:absolute after:top-0 after:right-0 after:bg-spotify/15 after:rounded-3xl after:block">
+            circle compatibility
+          </h2>
+        )}
+      </>
+    );
+  }
+
   const userPopularityRanking = circleCompatibilityData.compatibilityMatrix.map(
     (pairwiseCompatibility, i) => (
       <li
@@ -26,10 +47,6 @@ export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
     )
   );
   const isFirstTime = localStorage.getItem("firstTime") === "true";
-
-  if (isNaN(circleCompatibilityData.groupCompatibility)) {
-    return <></>;
-  }
 
   return (
     <motion.div
