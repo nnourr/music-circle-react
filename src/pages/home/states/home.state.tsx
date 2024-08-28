@@ -97,9 +97,9 @@ const HomeState = React.forwardRef<HTMLDivElement>((_, ref) => {
       <BackgroundGradient className="!fixed opacity-20" />
       <BoxContainer
         forceVisible={isMobile ? true : undefined}
-        className="h-full lg:h-auto lg:w-[90rem] w-full !p-[10%] lg:!py-16 lg:!px-20 !rounded-none lg:!rounded-[32px]"
+        className="h-full lg:h-auto lg:max-h-[90%] flex lg:w-[90rem] w-full !p-[10%] lg:!py-16 lg:!px-20 !rounded-none lg:!rounded-[32px]"
       >
-        <motion.div className=" w-full h-fit max-h-full flex flex-col">
+        <motion.div className="w-full h-auto flex flex-col">
           <motion.div
             initial="initial"
             animate={animationStep >= 4 ? "moveUp" : ""}
@@ -197,7 +197,7 @@ const HomeState = React.forwardRef<HTMLDivElement>((_, ref) => {
             <UserCircleListComponent
               key="HomeUserCircleList"
               btnSize={isMobile ? btnSizes.md : btnSizes.xl}
-              className="flex flex-col lg:grid-cols-3 lg:grid lg:gap-4"
+              className="flex flex-col lg:grid-cols-3 lg:grid lg:gap-4 h-auto"
             />
           </motion.div>
           {isMobile && (
