@@ -45,12 +45,15 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
     setCopyCircleCodeText(`#${circleInfo.circleCode}`);
   }, [circleInfo.circleCode]);
 
-  const [consolidatedCircleData, setConsolidatedCircleData] =
-    useState<ConsolidatedCircle>(consolidateCircle(circleInfo));
-  const [circlePopularityData, setCirclePopularityData] =
-    useState<CirclePopularityData>(getCirclePopularityData(circleInfo));
-  const [circleCompatibilityData, setCircleCompatibilityData] =
-    useState<CircleCompatibilityData>(getCircleCompatibility(circleInfo.users));
+  const [consolidatedCircleData, setConsolidatedCircleData] = useState<
+    ConsolidatedCircle | undefined
+  >(undefined);
+  const [circlePopularityData, setCirclePopularityData] = useState<
+    CirclePopularityData | undefined
+  >(undefined);
+  const [circleCompatibilityData, setCircleCompatibilityData] = useState<
+    CircleCompatibilityData | undefined
+  >(undefined);
   const [selectedItem, setSelectedItem] = useState<AllowedItems>("artists");
   const [selectedUsers, setSelectedUsers] = useState<string[]>(
     circleInfo.users.map((user) => user.username)
@@ -64,14 +67,18 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   const scrollContainerRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (selectedUsers.length === 0) {
+      return;
+    }
     const circleInfoClone = cloneDeep(circleInfo);
     circleInfoClone.users = circleInfoClone.users.filter((user) =>
       selectedUsers.includes(user.username)
     );
+
     setConsolidatedCircleData(consolidateCircle(circleInfoClone));
     setCirclePopularityData(getCirclePopularityData(circleInfoClone));
     setCircleCompatibilityData(getCircleCompatibility(circleInfoClone.users));
-  }, [circleInfo, selectedUsers]);
+  }, [selectedUsers]);
 
   useEffect(() => {
     setIsFirstTime(localStorage.getItem("firstTime") === "true");
@@ -87,18 +94,20 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   );
 
   if (
-    Object.values(consolidatedCircleData.artists).some((value) => {
-      return (
-        value.contributors.includes(username || "") &&
-        Object.values(value).some((value) => value === undefined)
-      );
-    }) ||
-    Object.values(consolidatedCircleData.tracks).some((value) => {
-      return (
-        value.contributors.includes(username || "") &&
-        Object.values(value).some((value) => value === undefined)
-      );
-    })
+    (consolidatedCircleData &&
+      Object.values(consolidatedCircleData.artists).some((value) => {
+        return (
+          value.contributors.includes(username || "") &&
+          Object.values(value).some((value) => value === undefined)
+        );
+      })) ||
+    (consolidatedCircleData &&
+      Object.values(consolidatedCircleData.tracks).some((value) => {
+        return (
+          value.contributors.includes(username || "") &&
+          Object.values(value).some((value) => value === undefined)
+        );
+      }))
   ) {
     localStorage.removeItem("user");
     window.location.reload();
