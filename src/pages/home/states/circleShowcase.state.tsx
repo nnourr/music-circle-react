@@ -337,19 +337,19 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                 </motion.h2>
               </motion.div>
             )}
-            {(showArtists || !isMobile) && (
+            {(showArtists || !isMobile) && consolidatedCircleData && (
               <StackedBar
                 itemsData={consolidatedCircleData[selectedItem]}
                 className="h-auto min-h-full w-full"
               ></StackedBar>
             )}
-            {showCompatibility && (
+            {showCompatibility && circleCompatibilityData && (
               <CircleCompatibility
                 className="w-fit mb-[50vh] ml-[2vw]"
                 circleCompatibilityData={circleCompatibilityData[selectedItem]}
               />
             )}
-            {showPopularity && (
+            {showPopularity && circlePopularityData && (
               <CirclePopularity
                 className="w-fit mb-[50vh] ml-[5vw]"
                 itemPopularityData={circlePopularityData[selectedItem]}
@@ -361,26 +361,30 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
               {Title()}
               <div className="flex gap-2">
                 <div className="flex flex-col gap-2 flex-grow">
-                  <BoxContainer
-                    motionKey="circleCompatibility"
-                    className="h-fit row-start-1 -row-end-1"
-                  >
-                    <CircleCompatibility
-                      circleCompatibilityData={
-                        circleCompatibilityData[selectedItem]
-                      }
-                      className="w-fit flex-grow-0"
-                    />{" "}
-                  </BoxContainer>
-                  <BoxContainer
-                    motionKey="circlePopularity"
-                    className="h-fit  row-start-1 -row-end-1"
-                  >
-                    <CirclePopularity
-                      itemPopularityData={circlePopularityData[selectedItem]}
-                      className="w-fit flex-grow-0"
-                    />{" "}
-                  </BoxContainer>
+                  {circleCompatibilityData && (
+                    <BoxContainer
+                      motionKey="circleCompatibility"
+                      className="h-fit row-start-1 -row-end-1"
+                    >
+                      <CircleCompatibility
+                        circleCompatibilityData={
+                          circleCompatibilityData[selectedItem]
+                        }
+                        className="w-fit flex-grow-0"
+                      />{" "}
+                    </BoxContainer>
+                  )}
+                  {circlePopularityData && (
+                    <BoxContainer
+                      motionKey="circlePopularity"
+                      className="h-fit  row-start-1 -row-end-1"
+                    >
+                      <CirclePopularity
+                        itemPopularityData={circlePopularityData[selectedItem]}
+                        className="w-fit flex-grow-0"
+                      />{" "}
+                    </BoxContainer>
+                  )}
                 </div>
                 <div className="flex flex-col gap-2 flex-grow">
                   <BoxContainer
