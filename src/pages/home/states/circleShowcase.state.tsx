@@ -69,7 +69,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   >(undefined);
   const [selectedItem, setSelectedItem] = useState<AllowedItems>("artists");
   const [selectedUsers, setSelectedUsers] = useState<string[]>(
-    circleInfo.users.map((user) => user.username)
+    circleInfo.users.map((user) => user.username).sort()
   );
   const [isFirstTime, setIsFirstTime] = useState<boolean>(false);
   const { username } = useUser();
@@ -131,7 +131,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   }, []);
 
   const circleUsernames = useMemo(
-    () => circleInfo.users.map((user) => user.username),
+    () => circleInfo.users.map((user) => user.username).sort(),
     [circleInfo]
   );
 
