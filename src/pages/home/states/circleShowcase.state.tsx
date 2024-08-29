@@ -117,9 +117,9 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
       })
     );
 
-    setConsolidatedCircleData(consolidateCircle(circleInfoClone));
-    setCirclePopularityData(getCirclePopularityData(circleInfoClone));
-    setCircleCompatibilityData(getCircleCompatibility(circleInfoClone.users));
+    setConsolidatedCircleData(_consolidatedCircle);
+    setCirclePopularityData(_circlePopularityData);
+    setCircleCompatibilityData(_circleCompatibility);
   }, [selectedUsers]);
 
   useEffect(() => {
