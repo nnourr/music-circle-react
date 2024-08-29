@@ -36,6 +36,16 @@ interface CircleShowcaseStateProps {
   circleInfo: CircleInfo;
   isLoading: boolean;
 }
+
+type CompiledCircleInfoHash = Map<
+  string,
+  {
+    consolidatedCircleData: ConsolidatedCircle;
+    circlePopularityData: CirclePopularityData;
+    circleCompatibilityData: CircleCompatibilityData;
+  }
+>;
+
 export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   circleInfo,
   isLoading,
@@ -53,6 +63,9 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   >(undefined);
   const [circleCompatibilityData, setCircleCompatibilityData] = useState<
     CircleCompatibilityData | undefined
+  >(undefined);
+  const [compliedCircleInfoHash, setCompliedCircleInfoHash] = useState<
+    CompiledCircleInfoHash | undefined
   >(undefined);
   const [selectedItem, setSelectedItem] = useState<AllowedItems>("artists");
   const [selectedUsers, setSelectedUsers] = useState<string[]>(
@@ -73,9 +86,35 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
       setCircleCompatibilityData(undefined);
       return;
     }
+    selectedUsers.sort();
+    const usersInfo = compliedCircleInfoHash?.get(selectedUsers.toString());
+    if (!!usersInfo) {
+      setConsolidatedCircleData(usersInfo.consolidatedCircleData);
+      setCirclePopularityData(usersInfo.circlePopularityData);
+      setCircleCompatibilityData(usersInfo.circleCompatibilityData);
+      return;
+    }
     const circleInfoClone = cloneDeep(circleInfo);
     circleInfoClone.users = circleInfoClone.users.filter((user) =>
       selectedUsers.includes(user.username)
+    );
+    const _consolidatedCircle: ConsolidatedCircle =
+      consolidateCircle(circleInfoClone);
+    const _circlePopularityData: CirclePopularityData =
+      getCirclePopularityData(circleInfoClone);
+    const _circleCompatibility: CircleCompatibilityData =
+      getCircleCompatibility(circleInfoClone.users);
+
+    let map = new Map();
+    if (!!compliedCircleInfoHash) {
+      map = compliedCircleInfoHash;
+    }
+    setCompliedCircleInfoHash(
+      map.set(selectedUsers.toString(), {
+        consolidatedCircleData: _consolidatedCircle,
+        circlePopularityData: _circlePopularityData,
+        circleCompatibilityData: _circleCompatibility,
+      })
     );
 
     setConsolidatedCircleData(consolidateCircle(circleInfoClone));
