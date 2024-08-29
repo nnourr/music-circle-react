@@ -34,9 +34,6 @@ const barVariants: Variants = {
   hover: {
     height: "60vh",
   },
-  inView: {
-    opacity: [0.1, 1],
-  },
 };
 
 export const StackedBar: React.FC<StackedBarProps> = ({
@@ -56,7 +53,9 @@ export const StackedBar: React.FC<StackedBarProps> = ({
         style={{ opacity: 0 }}
       >
         <motion.div className="w-1/2 lg:w-1/3">
-          <img src={itemImage} alt={`${item.name}`} />
+          <a href={item.url} target="_blank">
+            <img src={itemImage} alt={`${item.name}`} />
+          </a>
         </motion.div>
         <motion.p
           variants={detailVariants}
@@ -144,7 +143,6 @@ export const StackedBar: React.FC<StackedBarProps> = ({
         }}
         variants={barVariants}
         whileHover="hover"
-        whileInView="inView"
         animate={isClicked ? "hover" : ""}
         className={`flex items-start min-h-12`}
         key={item.name}

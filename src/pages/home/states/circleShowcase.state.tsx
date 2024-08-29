@@ -258,7 +258,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                 onSelectionChange={onSelectionChange}
                 isCollapsible={true}
                 collapsibleTitle="members"
-                className="mt-4 pointer-events-auto text-nowrap w-full basis-1/2 h-fit"
+                className="mt-4 pointer-events-auto text-nowrap basis-1/2 h-fit flex flex-col"
               />
               <Selector
                 className="mt-4 pointer-events-auto text-nowrap w-full basis-1/2 h-fit"

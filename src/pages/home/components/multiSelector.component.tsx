@@ -84,21 +84,31 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
 
   return (
     <motion.div
-      className={`${className} inline-block bg-black border-2 w-fit rounded-2xl lg:rounded-3xl lg:overflow-hidden`}
+      className={`${className} inline-block bg-black border-2 w-4 rounded-2xl lg:rounded-3xl lg:overflow-hidden`}
       whileTap={isCollapsible && !isOpen ? { scale: 0.95 } : {}}
       initial={{
+        width: isCollapsible ? 0 : "fit-content",
         borderColor: `rgba(255, 255, 255, 0.5)`,
       }}
       whileHover={{
         borderColor: `rgba(255, 255, 255, 0.8)`,
       }}
+      animate={
+        isCollapsible
+          ? isOpen
+            ? {
+                width: "100%",
+              }
+            : { width: 0 }
+          : {}
+      }
     >
       {isCollapsible && (
         <motion.button
           title="Select Item"
           onClick={() => setIsOpen(!isOpen)}
           animate={{ opacity: isOpen ? 1 : 0.9 }}
-          className="w-full text-left inline-flex items-center lg:font-bold justify-between lg:pt-2 px-4 py-2 gap-2 lg:gap-6 text-base lg:text-lg-xl text-white leading-none"
+          className="text-left inline-flex items-center lg:font-bold justify-between lg:pt-2 px-4 py-2 gap-2 lg:gap-6 text-base lg:text-lg-xl text-white leading-none"
         >
           <span className="lg:bg-linear-gradient lg:bg-clip-text lg:text-transparent">
             {collapsibleTitle}
@@ -114,18 +124,21 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
       <motion.div
         key="multiMultiSelector"
         layout
-        className={`flex flex-col px-4 items-start text-sm font-bold lg:text-lg-sm w-full`}
+        className={`flex flex-col px-4 items-start text-sm font-bold lg:text-lg-sm`}
         initial={
           isCollapsible
-            ? { height: 0, opacity: 0, marginTop: 0 }
+            ? { height: 0, opacity: 0, marginTop: 0, width: 0 }
             : { height: "fit-content", opacity: 0.8, marginTop: "0.75rem" }
         }
         animate={
-          isOpen
-            ? {
-                height: "fit-content",
-                opacity: 0.9,
-              }
+          isCollapsible
+            ? isOpen
+              ? {
+                  height: "fit-content",
+                  opacity: 0.9,
+                  width: "100%",
+                }
+              : { width: 0 }
             : {}
         }
       >
