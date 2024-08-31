@@ -281,7 +281,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
 
   return (
     <motion.div className="h-full box-border w-full relative overflow-y-auto overflow-x-hidden flex items-center flex-col">
-      <BackgroundGradient className="!fixed opacity-15" />
+      <div className="!fixed opacity-15 bg-radial-gradient top-0 left-0 h-full w-full -z-10" />
       <BoxContainer
         forceVisible={isMobile}
         className="w-full px-[7%] py-4 lg:p-0 lg:w-fit !pb-14"
@@ -394,7 +394,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             )}
             {showCompatibility && selectedUsers.length !== 0 && (
               <CircleCompatibility
-                className="w-fit mb-[50vh] ml-[2vw]"
+                className="w-fit min-h-[100vh] ml-[2vw]"
                 circleCompatibilityData={
                   circleCompatibilityData &&
                   circleCompatibilityData[selectedItem]
@@ -403,7 +403,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             )}
             {showPopularity && selectedUsers.length !== 0 && (
               <CirclePopularity
-                className="w-fit mb-[50vh] ml-[5vw]"
+                className="w-fit min-h-[100vh] ml-[5vw]"
                 itemPopularityData={
                   circlePopularityData && circlePopularityData[selectedItem]
                 }
