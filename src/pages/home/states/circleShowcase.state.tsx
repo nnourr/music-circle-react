@@ -399,6 +399,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                   circleCompatibilityData &&
                   circleCompatibilityData[selectedItem]
                 }
+                users={circleInfo.users}
               />
             )}
             {showPopularity && selectedUsers.length !== 0 && (
@@ -425,6 +426,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                         circleCompatibilityData[selectedItem]
                       }
                       className="w-fit flex-grow-0"
+                      users={circleInfo.users}
                     />{" "}
                   </BoxContainer>
                   <BoxContainer

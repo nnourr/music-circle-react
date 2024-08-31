@@ -1,15 +1,18 @@
 import { motion } from "framer-motion";
 import { CompatibilityResult } from "../helpers/getCircleCompatibility";
 import { useIsMobile } from "../../../providers/isMobile.provider";
+import { UserInterface } from "../models/user.model";
 
 interface CircleCompatibilityProps {
   circleCompatibilityData: CompatibilityResult | undefined;
+  users: UserInterface[];
   className?: string;
 }
 
 export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
   circleCompatibilityData,
   className,
+  users,
 }) => {
   const isMobile = useIsMobile();
   if (
