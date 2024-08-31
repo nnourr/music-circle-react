@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Variants, motion } from "framer-motion";
 import {
-  LINEAR_GRADIENT,
-  LINEAR_GRADIENT_WHITE,
   RADIAL_GRADIENT,
   RADIAL_GRADIENT_WHITE,
+  SPOTIFY_GREEN,
 } from "../../../config/globals";
 import { cloneDeep } from "lodash";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -61,17 +60,13 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
   const itemVariants: Variants = {
     selected: (custom) => ({
       transition: { delay: custom },
-      backgroundImage: LINEAR_GRADIENT,
     }),
     unselected: (custom) => ({
       transition: { delay: custom },
-      backgroundImage: LINEAR_GRADIENT_WHITE,
-      opacity: 0.8,
+      opacity: 0.7,
     }),
     wiggle: (custom) => ({
-      backgroundImage: [LINEAR_GRADIENT_WHITE, LINEAR_GRADIENT_WHITE],
       translateX: [null, "-10px", "20px", "0"],
-
       transition: { repeat: Infinity, repeatDelay: 1, delay: custom / 2 + 0.5 },
     }),
   };
@@ -124,27 +119,27 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
       <motion.div
         key="multiMultiSelector"
         layout
-        className={`flex flex-col px-4 items-start text-sm font-bold lg:text-lg-sm`}
+        className={`flex flex-col px-4 items-start text-sm font-bold overflow-clip h-full lg:text-lg-sm`}
         initial={
           isCollapsible
-            ? { height: 0, opacity: 0, marginTop: 0, width: 0 }
-            : { height: "fit-content", opacity: 0.8, marginTop: "0.75rem" }
+            ? { maxHeight: 0, opacity: 0, marginTop: 0, width: 0 }
+            : { opacity: 0.8, marginTop: "0.75rem" }
         }
         animate={
           isCollapsible
             ? isOpen
               ? {
-                  height: "fit-content",
+                  maxHeight: 2000,
                   opacity: 0.9,
                   width: "100%",
                 }
-              : { width: 0 }
+              : { width: 0, maxHeight: 0 }
             : {}
         }
       >
         <motion.div
           onClick={handleSelectAll}
-          className="flex items-center cursor-pointer mb-2 bg-clip-text text-transparent"
+          className="flex items-center cursor-pointer mb-2"
           whileTap={{ scale: 0.9 }}
           custom={0}
           animate={
@@ -158,14 +153,14 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
             variants={circleVariants}
             className="rounded-full aspect-square h-5"
           ></motion.div>
-          <span className="ml-2 text-nowrap">select all</span>
+          <span className="ml-2 text-nowrap text-white">select all</span>
         </motion.div>
-        <div className="w-full h-[1px] bg-linear-gradient mb-2" />
+        <div className="w-full h-[1px] mb-2 bg-linear-gradient" />
         {itemsData.map((item, i) => (
           <motion.div
             key={item}
             onClick={() => handleToggle(item)}
-            className="flex items-center cursor-pointer mb-2 bg-clip-text text-transparent"
+            className="flex items-center cursor-pointer mb-2 text-white"
             whileTap={{ scale: 0.9 }}
             custom={i / 10}
             animate={
