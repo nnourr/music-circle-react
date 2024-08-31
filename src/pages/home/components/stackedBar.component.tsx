@@ -2,7 +2,6 @@ import { Variants, motion } from "framer-motion";
 import { useIsMobile } from "../../../providers/isMobile.provider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
-import { LINEAR_GRADIENT } from "../../../config/globals";
 import { useState } from "react";
 import {
   ConsolidatedArtist,
@@ -107,7 +106,6 @@ export const StackedBar: React.FC<StackedBarProps> = ({
   const itemVariants: Variants = {
     hover: {
       fontSize: isMobile ? "35px" : "48px",
-      backgroundImage: LINEAR_GRADIENT,
       lineHeight: "50px",
       textWrap: "balance",
     },
@@ -177,26 +175,27 @@ export const StackedBar: React.FC<StackedBarProps> = ({
             <motion.a
               href={item.url}
               target="_blank"
-              variants={itemVariants}
               rel="noreferrer"
               title="Listen on Spotify"
-              className="inline-block font-bold w-full overflow-ellipsis overflow-hidden bg-clip-text"
-              style={{
-                backgroundImage:
-                  "linear-gradient(215deg, #ffffff 0%, #ffffff 55%, #ffffff 100%)",
-                color: "rgba(0,0,0,0)",
-                textWrap: "nowrap",
-                fontSize: !isMobile
-                  ? `${Math.max(item.weightedPoints * 2.5, 24)}px`
-                  : "1.5rem",
-              }}
+              className="inline-block w-full"
             >
-              {i + 1}. {item.name}{" "}
               <motion.span
-                variants={spotifyVariants}
-                style={{ color: "rgb(255 255 255)" }}
+                className="font-bold inline-block max-w-full overflow-ellipsis overflow-hidden text-white"
+                variants={itemVariants}
+                style={{
+                  textWrap: "nowrap",
+                  fontSize: !isMobile
+                    ? `${Math.max(item.weightedPoints * 2.5, 24)}px`
+                    : "24px",
+                }}
               >
-                <FontAwesomeIcon icon={faSpotify} />
+                {i + 1}. {item.name}{" "}
+                <motion.span
+                  variants={spotifyVariants}
+                  style={{ color: "rgb(255 255 255)" }}
+                >
+                  <FontAwesomeIcon icon={faSpotify} />
+                </motion.span>
               </motion.span>
             </motion.a>
           </motion.div>

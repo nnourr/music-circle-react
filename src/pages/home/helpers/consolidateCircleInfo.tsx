@@ -114,8 +114,6 @@ export function consolidateCircle(
     topX
   ) as ConsolidatedTrack[];
 
-  console.log("innefecient");
-
   return {
     artists: consolidatedArtists,
     tracks: consolidatedTracks,
