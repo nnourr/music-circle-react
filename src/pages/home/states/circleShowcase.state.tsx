@@ -397,7 +397,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             )}
             {showCompatibility && selectedUsers.length > 1 && (
               <CircleCompatibility
-                className="w-full min-h-[100vh] ml-[2vw]"
+                className="min-h-[100vh] ml-[2vw]"
                 circleCompatibilityData={
                   circleCompatibilityData &&
                   circleCompatibilityData[selectedItem]
@@ -431,7 +431,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                         circleCompatibilityData &&
                         circleCompatibilityData[selectedItem]
                       }
-                      className="w-fit flex-grow-0"
+                      className="w-80 flex-grow-0"
                       item={selectedItem}
                       users={circleInfo.users.filter((user) =>
                         selectedUsers.includes(user.username)
