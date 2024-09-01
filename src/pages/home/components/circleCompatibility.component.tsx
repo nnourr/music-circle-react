@@ -1,26 +1,91 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { CompatibilityResult } from "../helpers/getCircleCompatibility";
+import {
+  CompatibilityDetail,
+  CompatibilityResult,
+} from "../helpers/getCircleCompatibility";
 import { useIsMobile } from "../../../providers/isMobile.provider";
 import { UserInterface } from "../models/user.model";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowsSpin, faRotateRight } from "@fortawesome/free-solid-svg-icons";
+import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
+import CountUp from "react-countup";
+import { faSpotify } from "@fortawesome/free-brands-svg-icons";
+import { random } from "lodash";
 
 interface CircleCompatibilityProps {
   circleCompatibilityData: CompatibilityResult | undefined;
   users: UserInterface[];
   className?: string;
+  item: string;
 }
 
 export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
   circleCompatibilityData,
   className,
   users,
+  item,
 }) => {
   const isMobile = useIsMobile();
   const [unSelectedUsers, setUnSelectedUsers] =
     useState<UserInterface[]>(users);
   const [selectedUsers, setSelectedUsers] = useState<UserInterface[]>([]);
+  const [selectedCompatibility, setSelectedCompatibility] = useState<
+    CompatibilityDetail | undefined
+  >(undefined);
+  const compatibilityResults = useRef<HTMLDivElement>(null);
+
+  const selectUser = (selectedUser: UserInterface) => {
+    setSelectedUsers([...selectedUsers, selectedUser]);
+    setUnSelectedUsers(
+      unSelectedUsers.filter((user) => user.username !== selectedUser.username)
+    );
+  };
+  const deselectUser = (unSelectedUser: UserInterface) => {
+    setUnSelectedUsers([...unSelectedUsers, unSelectedUser]);
+    setSelectedUsers(
+      selectedUsers.filter((user) => user.username !== unSelectedUser.username)
+    );
+  };
+  const resetSelectedUsers = () => {
+    setUnSelectedUsers(users);
+    setSelectedUsers([]);
+  };
+
+  useEffect(() => {
+    if (selectedUsers.length < 2 || !!!circleCompatibilityData) {
+      return;
+    }
+
+    const _selectedCompatibilityArray =
+      circleCompatibilityData.compatibilityMatrix.filter(
+        (detail) =>
+          (detail.user1Name === selectedUsers[0].username ||
+            detail.user1Name === selectedUsers[1].username) &&
+          (detail.user2Name === selectedUsers[0].username ||
+            detail.user2Name === selectedUsers[1].username)
+      );
+
+    if (_selectedCompatibilityArray.length !== 1) {
+      console.error("problem getting compatibility data");
+      resetSelectedUsers();
+    }
+
+    setSelectedCompatibility(_selectedCompatibilityArray[0]);
+    if (compatibilityResults.current !== null) {
+      compatibilityResults.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [selectedUsers, item]);
+
+  useEffect(() => {
+    resetSelectedUsers();
+  }, [circleCompatibilityData?.compatibilityMatrix.toString()]);
+
+  useEffect(() => {
+    if (users.length == 2) {
+      setSelectedUsers(users);
+      setUnSelectedUsers([]);
+    }
+  }, [users]);
 
   if (
     !!!circleCompatibilityData ||
@@ -59,24 +124,14 @@ export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
 
   const isFirstTime = localStorage.getItem("firstTime") === "true";
 
-  const selectUser = (selectedUser: UserInterface) => {
-    setSelectedUsers([...selectedUsers, selectedUser]);
-    setUnSelectedUsers(
-      unSelectedUsers.filter((user) => user.username !== selectedUser.username)
-    );
-  };
-
-  const deselectUser = (unSelectedUser: UserInterface) => {
-    setUnSelectedUsers([...unSelectedUsers, unSelectedUser]);
-    setSelectedUsers(
-      selectedUsers.filter((user) => user.username !== unSelectedUser.username)
-    );
-  };
-
-  const resetSelectedUsers = () => {
-    setUnSelectedUsers(users);
-    setSelectedUsers([]);
-  };
+  const noCompatibilityTexts: string[] = [
+    "are you even friends?",
+    "seriously? nothing?",
+    "not one in common?",
+    "it's not negative!",
+    "do better.",
+    "I feel bad for you.",
+  ];
 
   const makeUserBubble = (user: UserInterface) => (
     <div className="w-full rounded-full">
@@ -88,7 +143,7 @@ export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
       ) : (
         <div className="bg-radial-gradient w-full rounded-full aspect-square"></div>
       )}
-      <p className="text-base text-center text-white overflow-hidden overflow-ellipsis">
+      <p className="text-sm text-center text-white overflow-hidden overflow-ellipsis">
         {user.username}
       </p>
     </div>
@@ -96,7 +151,6 @@ export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
 
   return (
     <motion.div
-      key="circleCompatibilityData"
       className={`${className} font-bold text-left flex-grow flex-shrink overflow-hidden flex flex-col`}
       initial={{ opacity: 0 }}
       animate={{
@@ -118,8 +172,15 @@ export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
         </span>
         %
       </h2>
-      <p className="text-lg lg:text-lg font-bold bg-linear-gradient bg-clip-text text-transparent w-fit">
-        select members
+      <p
+        className="text-lg lg:text-lg font-bold bg-linear-gradient bg-clip-text text-transparent w-fit"
+        ref={compatibilityResults}
+      >
+        {selectedUsers.length === 2
+          ? "view compatibility"
+          : `select ${2 - selectedUsers.length} member${
+              selectedUsers.length === 1 ? "" : "s"
+            }`}
       </p>
       <AnimatePresence mode="popLayout">
         {selectedUsers.length > 0 && (
@@ -165,7 +226,7 @@ export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
             />
           </>
         )}
-        {selectedUsers.length < 2 && (
+        {selectedUsers.length < 2 ? (
           <motion.div
             key={"unselectedUsers"}
             className="grid-flow-row grid gap-6 grid-cols-3 w-full flex-wrap"
@@ -184,6 +245,144 @@ export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
                 {makeUserBubble(user)}
               </motion.div>
             ))}
+          </motion.div>
+        ) : (
+          <motion.div
+            exit={{ display: "none" }}
+            className="mt-2"
+            key={"compatibilityResults"}
+          >
+            <div className="flex justify-evenly">
+              <motion.div
+                className="relative w-full aspect-square"
+                animate={{ opacity: 1 }}
+                initial={{ opacity: 0 }}
+                transition={{ duration: 1, ease: "easeInOut" }}
+              >
+                <div className="rounded-full relative opacity-30 bg-radial-gradient w-full aspect-square" />
+                <motion.div
+                  className="rounded-full absolute top-0 left-0 bg-radial-gradient z-10 aspect-square w-full"
+                  style={{ scale: 0 }}
+                  animate={{
+                    scale:
+                      (selectedCompatibility?.sharedItems.length || -1) > 0
+                        ? [
+                            null,
+                            `${
+                              Math.sqrt(
+                                (selectedCompatibility?.compatibilityPercentage ||
+                                  0) / 100
+                              ) * 100
+                            }%`,
+                            `${
+                              Math.sqrt(
+                                (selectedCompatibility?.compatibilityPercentage ||
+                                  0) / 100
+                              ) * 95
+                            }%`,
+                            `${
+                              Math.sqrt(
+                                (selectedCompatibility?.compatibilityPercentage ||
+                                  0) / 100
+                              ) * 100
+                            }%`,
+                            `${
+                              Math.sqrt(
+                                (selectedCompatibility?.compatibilityPercentage ||
+                                  0) / 100
+                              ) * 95
+                            }%`,
+                          ]
+                        : ["0%", "20%", "0%"],
+                    transition: {
+                      duration: 4,
+                      ease: "easeInOut",
+                      repeat:
+                        (selectedCompatibility?.sharedItems.length || -1) > 0
+                          ? Infinity
+                          : 0,
+                      repeatType: "reverse",
+                    },
+                  }}
+                ></motion.div>
+              </motion.div>
+              <motion.p
+                animate={{ opacity: 1, translateY: 0 }}
+                initial={{ opacity: 0, translateY: 20 }}
+                transition={{ duration: 1, ease: "easeInOut" }}
+                className="w-full text-xl self-center text-center"
+              >
+                <span className="bg-linear-gradient bg-clip-text text-transparent">
+                  {(selectedCompatibility?.sharedItems.length || -1) > 0 ? (
+                    <>
+                      <CountUp
+                        end={Math.round(
+                          selectedCompatibility?.compatibilityPercentage || 0
+                        )}
+                        duration={2.75}
+                      />
+                      <span className="text-white">%</span>
+                    </>
+                  ) : (
+                    <>
+                      <CountUp
+                        end={21}
+                        duration={2}
+                        onEnd={({ update }) => update(0)}
+                      />
+                      <span className="text-white">%</span>
+                    </>
+                  )}
+                </span>
+              </motion.p>
+            </div>
+            <motion.div
+              animate={{ opacity: 1 }}
+              transition={{
+                delay:
+                  (selectedCompatibility?.sharedItems.length || -1) > 0
+                    ? 1.3
+                    : 2,
+                duration: 0.5,
+                ease: "easeInOut",
+              }}
+              initial={{ opacity: 0 }}
+            >
+              {(selectedCompatibility?.sharedItems.length || -1) > 0 ? (
+                <>
+                  <p className="text-lg mt-2 lg:text-lg font-bold bg-linear-gradient bg-clip-text text-transparent w-fit">
+                    shared {item}
+                  </p>
+                  <div className="grid grid-cols-2 grid-flow-row gap-6">
+                    {selectedCompatibility?.sharedItems.map((item) => (
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        className="w-full"
+                        key={item.name}
+                      >
+                        <img
+                          src={item.images[0].url}
+                          className="w-full aspect-square mb-2"
+                        />
+                        <p className="text-sm text-center w-full text-white">
+                          {item.name}
+                          <FontAwesomeIcon icon={faSpotify} className="ml-2" />
+                        </p>
+                      </a>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <p className="text-lg mt-2 lg:text-lg font-bold bg-linear-gradient bg-clip-text text-transparent w-fit">
+                  {
+                    noCompatibilityTexts[
+                      random(0, noCompatibilityTexts.length - 1)
+                    ]
+                  }
+                </p>
+              )}
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

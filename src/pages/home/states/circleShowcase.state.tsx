@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { CircleInfo } from "../models/circleInfo.model";
 import { StackedBar } from "../components/stackedBar.component";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -370,18 +370,21 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                 >
                   circle popularity
                 </motion.h2>
-                <motion.h2
-                  viewport={{ margin: "400px -50% 400px -50%" }}
-                  onViewportEnter={() => {
-                    handleShowCompatibility();
-                  }}
-                  initial={{ opacity: 0.3 }}
-                  whileInView={{ opacity: 0.8 }}
-                  onClick={handleScroll}
-                  className="bg-linear-gradient font-bold snap-start text-nowrap whitespace-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[7vw]"
-                >
-                  circle compatibility
-                </motion.h2>
+                ]
+                {selectedUsers.length > 1 && (
+                  <motion.h2
+                    viewport={{ margin: "400px -50% 400px -50%" }}
+                    onViewportEnter={() => {
+                      handleShowCompatibility();
+                    }}
+                    initial={{ opacity: 0.3 }}
+                    whileInView={{ opacity: 0.8 }}
+                    onClick={handleScroll}
+                    className="bg-linear-gradient font-bold snap-start text-nowrap whitespace-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[7vw]"
+                  >
+                    circle compatibility
+                  </motion.h2>
+                )}
               </motion.div>
             )}
             {(showArtists || !isMobile || selectedUsers.length === 0) && (
@@ -392,14 +395,17 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                 className="h-auto min-h-full w-full"
               ></StackedBar>
             )}
-            {showCompatibility && selectedUsers.length !== 0 && (
+            {showCompatibility && selectedUsers.length > 1 && (
               <CircleCompatibility
                 className="w-full min-h-[100vh] ml-[2vw]"
                 circleCompatibilityData={
                   circleCompatibilityData &&
                   circleCompatibilityData[selectedItem]
                 }
-                users={circleInfo.users}
+                item={selectedItem}
+                users={circleInfo.users.filter((user) =>
+                  selectedUsers.includes(user.username)
+                )}
               />
             )}
             {showPopularity && selectedUsers.length !== 0 && (
@@ -426,7 +432,10 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                         circleCompatibilityData[selectedItem]
                       }
                       className="w-fit flex-grow-0"
-                      users={circleInfo.users}
+                      item={selectedItem}
+                      users={circleInfo.users.filter((user) =>
+                        selectedUsers.includes(user.username)
+                      )}
                     />{" "}
                   </BoxContainer>
                   <BoxContainer
