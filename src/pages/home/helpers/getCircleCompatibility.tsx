@@ -5,7 +5,7 @@ import { UserInterface } from "../models/user.model";
 type Item = TrackInterface | ArtistInterface;
 type ItemType = "tracks" | "artists";
 
-interface CompatibilityDetail {
+export interface CompatibilityDetail {
   user1Name: string;
   user2Name: string;
   compatibilityPercentage: number;

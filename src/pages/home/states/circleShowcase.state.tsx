@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { CircleInfo } from "../models/circleInfo.model";
 import { StackedBar } from "../components/stackedBar.component";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -211,7 +211,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
 
   const Title = useCallback(() => {
     return (
-      <BoxContainer motionKey="title" className="w-full lg:max-w-[45vw]">
+      <BoxContainer motionKey="title" className="w-full">
         <ReactFitty
           maxSize={isMobile ? 80 : 140}
           minSize={isMobile ? 50 : 100}
@@ -310,10 +310,10 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             </div>
           </>
         )}
-        <div className="w-full mt-4 lg:flex lg:justify-center lg:max-w-[90vw]">
+        <div className="w-full mt-4 lg:flex lg:justify-center">
           <BoxContainer
             motionKey="stackedBar"
-            className="min-h-full w-full lg:max-w-[45vw] lg:min-w-[48rem] lg:pt-2 lg:mr-4"
+            className="min-h-full w-full lg:w-[44rem] lg:pt-2 lg:mr-4"
           >
             {!isMobile ? (
               <div className="flex flex-nowrap items-baseline gap-4">
@@ -370,18 +370,21 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                 >
                   circle popularity
                 </motion.h2>
-                <motion.h2
-                  viewport={{ margin: "400px -50% 400px -50%" }}
-                  onViewportEnter={() => {
-                    handleShowCompatibility();
-                  }}
-                  initial={{ opacity: 0.3 }}
-                  whileInView={{ opacity: 0.8 }}
-                  onClick={handleScroll}
-                  className="bg-linear-gradient font-bold snap-start text-nowrap whitespace-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[7vw]"
-                >
-                  circle compatibility
-                </motion.h2>
+                ]
+                {selectedUsers.length > 1 && (
+                  <motion.h2
+                    viewport={{ margin: "400px -50% 400px -50%" }}
+                    onViewportEnter={() => {
+                      handleShowCompatibility();
+                    }}
+                    initial={{ opacity: 0.3 }}
+                    whileInView={{ opacity: 0.8 }}
+                    onClick={handleScroll}
+                    className="bg-linear-gradient font-bold snap-start text-nowrap whitespace-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[7vw]"
+                  >
+                    circle compatibility
+                  </motion.h2>
+                )}
               </motion.div>
             )}
             {(showArtists || !isMobile || selectedUsers.length === 0) && (
@@ -392,13 +395,17 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                 className="h-auto min-h-full w-full"
               ></StackedBar>
             )}
-            {showCompatibility && selectedUsers.length !== 0 && (
+            {showCompatibility && selectedUsers.length > 1 && (
               <CircleCompatibility
-                className="w-fit min-h-[100vh] ml-[2vw]"
+                className="min-h-[100vh] ml-[2vw]"
                 circleCompatibilityData={
                   circleCompatibilityData &&
                   circleCompatibilityData[selectedItem]
                 }
+                item={selectedItem}
+                users={circleInfo.users.filter((user) =>
+                  selectedUsers.includes(user.username)
+                )}
               />
             )}
             {showPopularity && selectedUsers.length !== 0 && (
@@ -424,7 +431,11 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                         circleCompatibilityData &&
                         circleCompatibilityData[selectedItem]
                       }
-                      className="w-fit flex-grow-0"
+                      className="w-80 flex-grow-0"
+                      item={selectedItem}
+                      users={circleInfo.users.filter((user) =>
+                        selectedUsers.includes(user.username)
+                      )}
                     />{" "}
                   </BoxContainer>
                   <BoxContainer
