@@ -6,4 +6,5 @@ export interface UserInterface {
   userId: string;
   artists: ArtistInterface[];
   tracks: TrackInterface[];
+  images: string[];
 }
