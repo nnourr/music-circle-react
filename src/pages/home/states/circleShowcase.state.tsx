@@ -317,7 +317,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
           >
             {!isMobile ? (
               <div className="flex flex-nowrap items-baseline gap-4">
-                <motion.h2 className="bg-linear-gradient inline-block font-bold text-nowrap mb-2 bg-clip-text text-transparent text-1xl lg:text-lg-xl w-fit opacity-80">
+                <motion.h2 className="bg-linear-gradient inline-block font-bold text-nowrap mb-2 bg-clip-text text-transparent text-1xl lg:text-lg-xl w-fit">
                   top ten
                 </motion.h2>
                 <Selector
@@ -353,7 +353,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                     handleShowArtists();
                   }}
                   initial={{ opacity: 0.3 }}
-                  whileInView={{ opacity: 0.8 }}
+                  whileInView={{ opacity: 1 }}
                   className="snap-start bg-linear-gradient font-bold text-nowrap whitespace-nowrap bg-clip-text text-transparent text-1xl w-fit pl-6"
                 >
                   top ten {selectedItem}
@@ -364,7 +364,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                     handleShowPopularity();
                   }}
                   initial={{ opacity: 0.3 }}
-                  whileInView={{ opacity: 0.8 }}
+                  whileInView={{ opacity: 1 }}
                   onClick={handleScroll}
                   className="bg-linear-gradient font-bold snap-start text-nowrap whitespace-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[10vw]"
                 >
@@ -378,7 +378,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                       handleShowCompatibility();
                     }}
                     initial={{ opacity: 0.3 }}
-                    whileInView={{ opacity: 0.8 }}
+                    whileInView={{ opacity: 1 }}
                     onClick={handleScroll}
                     className="bg-linear-gradient font-bold snap-start text-nowrap whitespace-nowrap bg-clip-text text-transparent text-1xl w-fit scroll-m-[7vw]"
                   >
@@ -456,7 +456,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                     motionKey="members"
                     className="h-fit row-start-1 -row-end-1"
                   >
-                    <h2 className="font-bold block w-min mb-3 opacity-80 text-nowrap text-lg-lg bg-linear-gradient bg-clip-text text-transparent leading-none">
+                    <h2 className="font-bold block w-min mb-3 text-nowrap text-lg-lg bg-linear-gradient bg-clip-text text-transparent leading-none">
                       members
                     </h2>
                     <MultiSelector

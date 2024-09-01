@@ -38,7 +38,7 @@ export const CirclePopularity: React.FC<CirclePopularityProps> = ({
       className={`${className} font-bold text-left overflow-hidden flex flex-col`}
       initial={{ opacity: 0 }}
       animate={{
-        opacity: itemPopularityData.averagePopularity === 0 ? 0 : 0.8,
+        opacity: itemPopularityData.averagePopularity === 0 ? 0 : 1,
       }}
     >
       <h2 className="text-lg hidden lg:block w-min text-nowrap lg:text-lg-lg bg-linear-gradient bg-clip-text text-transparent leading-none">

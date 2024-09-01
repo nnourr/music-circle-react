@@ -67,7 +67,7 @@ export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
       initial={{ opacity: 0 }}
       animate={{
         opacity:
-          circleCompatibilityData.compatibilityMatrix.length === 0 ? 0 : 0.8,
+          circleCompatibilityData.compatibilityMatrix.length === 0 ? 0 : 1,
       }}
     >
       <h2 className="text-lg hidden lg:block w-min text-nowrap lg:text-lg-lg bg-linear-gradient bg-clip-text text-transparent leading-none">

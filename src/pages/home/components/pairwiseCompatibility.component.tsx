@@ -98,15 +98,17 @@ export const PairwiseCompatibility: React.FC<PairwiseCompatibilityProps> = ({
 
   const makeUserBubble = (user: UserInterface) => (
     <div className="w-full rounded-full">
-      {user.images.length > 0 ? (
-        <img
-          src={user.images[0]}
-          className="w-full rounded-full aspect-square"
-        />
-      ) : (
-        <div className="bg-radial-gradient w-full rounded-full aspect-square"></div>
-      )}
-      <p className="text-sm text-center text-white overflow-hidden overflow-ellipsis">
+      <div className="px-2 pb-1">
+        {user.images.length > 0 ? (
+          <img
+            src={user.images[0]}
+            className="w-full rounded-full aspect-square"
+          />
+        ) : (
+          <div className="bg-radial-gradient w-full rounded-full aspect-square"></div>
+        )}
+      </div>
+      <p className="text-sm text-center font-normal text-white overflow-hidden overflow-ellipsis leading-none">
         {user.username}
       </p>
     </div>
@@ -128,7 +130,7 @@ export const PairwiseCompatibility: React.FC<PairwiseCompatibilityProps> = ({
           <>
             <motion.div
               key={"selectedUsers"}
-              className="grid-flow-row grid gap-6 grid-cols-3 w-full flex-wrap"
+              className="grid-flow-row grid gap-y-3 gap-x-4 grid-cols-3 w-full flex-wrap"
             >
               {selectedUsers.map((user) => (
                 <motion.div
@@ -170,7 +172,7 @@ export const PairwiseCompatibility: React.FC<PairwiseCompatibilityProps> = ({
         {selectedUsers.length < 2 ? (
           <motion.div
             key={"unselectedUsers"}
-            className="grid-flow-row grid gap-6 grid-cols-3 w-full flex-wrap"
+            className="grid-flow-row grid gap-y-3 gap-x-4 grid-cols-3 w-full flex-wrap"
             exit={{ display: "none" }}
           >
             {unSelectedUsers.map((user) => (

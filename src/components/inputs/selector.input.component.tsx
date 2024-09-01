@@ -50,7 +50,6 @@ export const Selector: React.FC<SelectorProps> = ({
       <motion.button
         title="Select Item"
         onClick={() => setIsOpen(!isOpen)}
-        animate={{ opacity: isOpen ? 1 : 0.8 }}
         className="w-full text-left inline-flex items-start lg:font-bold justify-between px-4 py-2 gap-2 lg:gap-6 text-base lg:text-lg-xl text-white leading-none"
       >
         <span className="lg:bg-linear-gradient lg:bg-clip-text lg:text-transparent">

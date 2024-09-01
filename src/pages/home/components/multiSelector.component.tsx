@@ -102,7 +102,7 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
         <motion.button
           title="Select Item"
           onClick={() => setIsOpen(!isOpen)}
-          animate={{ opacity: isOpen ? 1 : 0.9 }}
+          animate={{ opacity: isOpen && isCollapsible ? 1 : 0.9 }}
           className="text-left inline-flex items-center lg:font-bold justify-between lg:pt-2 px-4 py-2 gap-2 lg:gap-6 text-base lg:text-lg-xl text-white leading-none"
         >
           <span className="lg:bg-linear-gradient lg:bg-clip-text lg:text-transparent">
@@ -123,14 +123,14 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
         initial={
           isCollapsible
             ? { maxHeight: 0, opacity: 0, marginTop: 0, width: 0 }
-            : { opacity: 0.8, marginTop: "0.75rem" }
+            : { opacity: 1, marginTop: "0.75rem" }
         }
         animate={
           isCollapsible
             ? isOpen
               ? {
                   maxHeight: 2000,
-                  opacity: 0.9,
+                  opacity: 1,
                   width: "100%",
                 }
               : { width: 0, maxHeight: 0 }
