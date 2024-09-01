@@ -10,6 +10,7 @@ import {
 } from "../helpers/getCircleCompatibility";
 import { UserInterface } from "../models/user.model";
 import { useState, useRef, useEffect } from "react";
+import { useIsMobile } from "../../../providers/isMobile.provider";
 
 interface PairwiseCompatibilityProps {
   circleCompatibilityData: CompatibilityResult | undefined;
@@ -30,6 +31,7 @@ export const PairwiseCompatibility: React.FC<PairwiseCompatibilityProps> = ({
   const [selectedCompatibility, setSelectedCompatibility] = useState<
     CompatibilityDetail | undefined
   >(undefined);
+  const isMobile = useIsMobile();
   const compatibilityResults = useRef<HTMLDivElement>(null);
 
   const selectUser = (selectedUser: UserInterface) => {
@@ -69,7 +71,7 @@ export const PairwiseCompatibility: React.FC<PairwiseCompatibilityProps> = ({
     }
 
     setSelectedCompatibility(_selectedCompatibilityArray[0]);
-    if (compatibilityResults.current !== null) {
+    if (compatibilityResults.current !== null && isMobile) {
       compatibilityResults.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [selectedUsers, item]);

@@ -418,40 +418,40 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
             )}
           </BoxContainer>
           {!isMobile && (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 max-w-[50rem]">
               {Title()}
               <div className="flex gap-2">
-                <div className="flex flex-col gap-2 flex-grow">
+                <div className="flex flex-col gap-2 w-min">
                   <BoxContainer
                     motionKey="circleCompatibility"
-                    className="h-fit row-start-1 -row-end-1"
+                    className="h-fit w-96"
                   >
                     <CircleCompatibility
                       circleCompatibilityData={
                         circleCompatibilityData &&
                         circleCompatibilityData[selectedItem]
                       }
-                      className="w-80 flex-grow-0"
                       item={selectedItem}
                       users={circleInfo.users.filter((user) =>
                         selectedUsers.includes(user.username)
                       )}
-                    />{" "}
+                      className="w-full"
+                    />
                   </BoxContainer>
                   <BoxContainer
                     motionKey="circlePopularity"
-                    className="h-fit  row-start-1 -row-end-1"
+                    className="w-fit h-fit"
                   >
                     <CirclePopularity
                       itemPopularityData={
                         circlePopularityData &&
                         circlePopularityData[selectedItem]
                       }
-                      className="w-fit flex-grow-0"
-                    />{" "}
+                      className="w-fit"
+                    />
                   </BoxContainer>
                 </div>
-                <div className="flex flex-col gap-2 flex-grow">
+                <div className="flex flex-col gap-2">
                   <BoxContainer
                     motionKey="members"
                     className="h-fit row-start-1 -row-end-1"

@@ -46,12 +46,12 @@ export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
   const userPopularityRanking = circleCompatibilityData.compatibilityMatrix.map(
     (pairwiseCompatibility, i) => (
       <li
-        className="text-base lg:text-base text-white"
+        className="text-base lg:text-base font-normal text-white"
         key={`${pairwiseCompatibility.user1Name}+${pairwiseCompatibility.user2Name}`}
       >
         {i + 1}. {pairwiseCompatibility.user1Name} x{" "}
         {pairwiseCompatibility.user2Name}:{" "}
-        <span className="bg-linear-gradient bg-clip-text text-transparent">
+        <span className="bg-linear-gradient font-bold bg-clip-text text-transparent">
           {pairwiseCompatibility.compatibilityPercentage}
         </span>
         %

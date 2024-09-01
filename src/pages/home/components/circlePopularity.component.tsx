@@ -21,7 +21,7 @@ export const CirclePopularity: React.FC<CirclePopularityProps> = ({
   }
   const userPopularityRanking = itemPopularityData.userPopularityRanking.map(
     (user, i) => (
-      <li className="text-base lg:text-base text-white" key={user.username}>
+      <li className="text-base font-normal text-white" key={user.username}>
         {i + 1}. {user.username}:{" "}
         <span className="bg-linear-gradient bg-clip-text text-transparent">
           {user.averagePopularity}

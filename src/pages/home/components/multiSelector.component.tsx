@@ -119,7 +119,7 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
       <motion.div
         key="multiMultiSelector"
         layout
-        className={`flex flex-col px-4 items-start text-sm font-bold overflow-clip h-full lg:text-base`}
+        className={`flex flex-col px-4 items-start text-sm font-normal overflow-clip h-full lg:text-base`}
         initial={
           isCollapsible
             ? { maxHeight: 0, opacity: 0, marginTop: 0, width: 0 }
