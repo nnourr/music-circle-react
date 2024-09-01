@@ -63,7 +63,7 @@ export const CirclePopularity: React.FC<CirclePopularityProps> = ({
           (this is the average popularity of each person's top 50 artists)
         </span>
       )}
-      <ul className="lg:ml-4 overflow-auto pointer-events-[scroll] mb-4 lg-mb-0 w-fit">
+      <ul className="lg:ml-4 overflow-auto mb-4 lg-mb-0 w-fit  lg:max-h-52">
         {userPopularityRanking}
       </ul>
     </motion.div>
