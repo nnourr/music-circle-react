@@ -140,7 +140,7 @@ const HomeState = React.forwardRef<HTMLDivElement>((_, ref) => {
                 }}
                 className="text-transparent bg-linear-gradient text-3xl lg:text-lg-3xl font-fancy bg-clip-text"
               >
-                Music Circle.
+                Music Circle{isMobile ? "" : "."}
               </motion.h1>
             </motion.div>
           </motion.div>
