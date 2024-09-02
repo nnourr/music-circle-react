@@ -31,6 +31,7 @@ import {
   getCircleCompatibility,
 } from "../helpers/getCircleCompatibility";
 import { CircleCompatibility } from "../components/circleCompatibility.component";
+import { ModalComponent } from "../../../components/modal.component";
 
 interface CircleShowcaseStateProps {
   circleInfo: CircleInfo;
@@ -77,7 +78,12 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   const [showArtists, setShowArtists] = useState<boolean>(false);
   const [showPopularity, setShowPopularity] = useState<boolean>(false);
   const [showCompatibility, setShowCompatibility] = useState<boolean>(false);
+  const [showShareModal, setShowShareModal] = useState<boolean>(false);
   const scrollContainerRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setShowShareModal(circleInfo.users.length === 1);
+  }, [circleInfo]);
 
   useEffect(() => {
     if (selectedUsers.length === 0) {
@@ -282,6 +288,30 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   return (
     <motion.div className="h-full box-border w-full relative overflow-y-auto overflow-x-hidden flex items-center flex-col">
       <div className="!fixed opacity-15 bg-radial-gradient top-0 left-0 h-full w-full -z-10" />
+      {showShareModal && (
+        <ModalComponent
+          promptText="Music Circle is better with others!"
+          cancelAction={{
+            actionText: "share later",
+            actionTitle: "I don't want others to join now",
+            onAction: () => {
+              setShowShareModal(false);
+            },
+          }}
+          confirmAction={{
+            actionText: "share now",
+            actionTitle: "I want others to join now",
+            onAction: () => {
+              onShareCircle();
+              setShowShareModal(false);
+            },
+          }}
+          onClose={() => {
+            setShowShareModal(false);
+          }}
+          key={"InitCircleModal"}
+        ></ModalComponent>
+      )}
       <BoxContainer
         forceVisible={isMobile}
         className="w-full px-[7%] py-4 lg:p-0 lg:w-fit !pb-14"
