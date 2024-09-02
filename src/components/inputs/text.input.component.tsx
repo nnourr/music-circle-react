@@ -80,8 +80,9 @@ export const Input: React.FC<InputProps> = ({
     >
       {isLoading ? (
         <FontAwesomeIcon
-          className={`animate-spin my-2 w-[12.3em]`}
+          className={`my-2 w-[12.3em]`}
           icon={faSpinner}
+          spinPulse
         />
       ) : (
         <>

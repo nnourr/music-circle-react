@@ -46,7 +46,7 @@ const SpotifyLoginState = React.forwardRef<
               />
             </>
           ) : (
-            <FontAwesomeIcon className="animate-spin" icon={faSpinner} />
+            <FontAwesomeIcon icon={faSpinner} spinPulse />
           )}
         </Button>
         <Link to="/privacy" className="underline self-center mt-2 text-sm">

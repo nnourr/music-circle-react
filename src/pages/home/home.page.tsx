@@ -115,7 +115,8 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
             {" "}
             <FontAwesomeIcon
               icon={faSpinner}
-              className="spin text-2xl lg:text-lg-2xl text-white animate-spin"
+              spinPulse
+              className="text-2xl lg:text-lg-2xl text-white"
             />
           </div>
         ) : (
