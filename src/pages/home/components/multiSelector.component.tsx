@@ -58,15 +58,11 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
   };
 
   const itemVariants: Variants = {
-    selected: (custom) => ({
-      transition: { delay: custom },
-    }),
-    unselected: (custom) => ({
-      transition: { delay: custom },
+    unselected: {
       opacity: 0.7,
-    }),
+    },
     wiggle: (custom) => ({
-      translateX: [null, "-10px", "20px", "0"],
+      translateX: [null, "-10px", "15px", "0"],
       transition: { repeat: Infinity, repeatDelay: 1, delay: custom / 2 + 0.5 },
     }),
   };
@@ -79,10 +75,9 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
 
   return (
     <motion.div
-      className={`${className} inline-block bg-black border-2 min-w-40 lg:min-w-48 rounded-2xl lg:rounded-3xl lg:overflow-hidden`}
+      className={`${className} inline-block bg-black border-2 rounded-2xl lg:rounded-3xl lg:overflow-hidden`}
       whileTap={isCollapsible && !isOpen ? { scale: 0.95 } : {}}
       initial={{
-        width: isCollapsible ? 0 : "fit-content",
         borderColor: `rgba(255, 255, 255, 0.5)`,
       }}
       whileHover={{
@@ -155,6 +150,9 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
           ></motion.div>
           <span className="ml-2 text-nowrap text-white">
             {selectedItems.length === itemsData.length && "de"}select all
+            {selectedItems.length !== itemsData.length && (
+              <span className="text-transparent">de</span>
+            )}
           </span>
         </motion.div>
         <div className="w-full h-[1px] mb-2 bg-linear-gradient" />
