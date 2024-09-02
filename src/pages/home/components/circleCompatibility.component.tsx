@@ -75,7 +75,8 @@ export const CircleCompatibility: React.FC<CircleCompatibilityProps> = ({
       </h2>
       {isFirstTime && (
         <span className="text-white text-sm lg:text-base font-normal">
-          (this is the circle's compatibility)
+          (this is your circle's compatibility, based on the {item} you listen
+          to)
         </span>
       )}
       <h2 className="text-xl lg:px-4 w-full lg:text-lg-lg text-white flex items-center justify-between">

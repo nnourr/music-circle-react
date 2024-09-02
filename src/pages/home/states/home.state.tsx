@@ -132,19 +132,13 @@ const HomeState = React.forwardRef<HTMLDivElement>((_, ref) => {
               variants={musicCircleVariants}
             >
               <motion.h1
-                animate={{
-                  backgroundImage: [
-                    LINEAR_GRADIENT_BREATHE_1,
-                    LINEAR_GRADIENT_BREATHE_2,
-                  ],
-                }}
                 transition={{
                   duration: 2,
                   ease: "circInOut",
                   repeat: Infinity,
                   repeatType: "reverse",
                 }}
-                className="text-transparent text-3xl lg:text-lg-3xl font-fancy bg-clip-text"
+                className="text-transparent bg-linear-gradient text-3xl lg:text-lg-3xl font-fancy bg-clip-text"
               >
                 Music Circle.
               </motion.h1>

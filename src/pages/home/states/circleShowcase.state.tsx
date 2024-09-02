@@ -457,7 +457,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
                     className="h-fit row-start-1 -row-end-1"
                   >
                     <h2 className="font-bold block w-min mb-3 text-nowrap text-lg-lg bg-linear-gradient bg-clip-text text-transparent leading-none">
-                      members
+                      filter members
                     </h2>
                     <MultiSelector
                       itemsData={circleUsernames}

@@ -79,7 +79,7 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
 
   return (
     <motion.div
-      className={`${className} inline-block bg-black border-2 w-4 rounded-2xl lg:rounded-3xl lg:overflow-hidden`}
+      className={`${className} inline-block bg-black border-2 min-w-40 lg:min-w-48 rounded-2xl lg:rounded-3xl lg:overflow-hidden`}
       whileTap={isCollapsible && !isOpen ? { scale: 0.95 } : {}}
       initial={{
         width: isCollapsible ? 0 : "fit-content",
@@ -153,7 +153,9 @@ const MultiSelector: React.FC<MultiSelectorProps> = ({
             variants={circleVariants}
             className="rounded-full aspect-square h-5"
           ></motion.div>
-          <span className="ml-2 text-nowrap text-white">select all</span>
+          <span className="ml-2 text-nowrap text-white">
+            {selectedItems.length === itemsData.length && "de"}select all
+          </span>
         </motion.div>
         <div className="w-full h-[1px] mb-2 bg-linear-gradient" />
         {itemsData.map((item, i) => (

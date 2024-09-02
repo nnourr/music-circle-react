@@ -1,5 +1,5 @@
 import { faSpotify } from "@fortawesome/free-brands-svg-icons";
-import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
+import { faRotateRight, faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "framer-motion";
 import { random } from "lodash";
@@ -97,15 +97,20 @@ export const PairwiseCompatibility: React.FC<PairwiseCompatibilityProps> = ({
   ];
 
   const makeUserBubble = (user: UserInterface) => (
-    <div className="w-full rounded-full">
-      <div className="px-2 pb-1">
+    <div className="w-full rounded-full cursor-pointer">
+      <div className="px-2 pb-1 relative">
         {user.images.length > 0 ? (
           <img
-            src={user.images[0]}
-            className="w-full rounded-full aspect-square"
+            src={user.images[user.images.length - 1]}
+            className="w-full rounded-full aspect-square object-cover"
           />
         ) : (
-          <div className="bg-radial-gradient w-full rounded-full aspect-square"></div>
+          <div className="bg-radial-gradient w-full rounded-full flex justify-center items-center aspect-square">
+            <FontAwesomeIcon
+              icon={faCircleUser}
+              className="text-1xl opacity-75"
+            />
+          </div>
         )}
       </div>
       <p className="text-sm text-center font-normal text-white overflow-hidden overflow-ellipsis leading-none">
@@ -149,7 +154,7 @@ export const PairwiseCompatibility: React.FC<PairwiseCompatibilityProps> = ({
               ))}
               <motion.div
                 key={"resetUsers"}
-                className="w-full flex flex-col justify-center overflow-hidden col-start-3"
+                className="w-full flex flex-col justify-center overflow-hidden col-start-3 cursor-pointer opacity-80 hover:opacity-100 transition-opacity font-normal"
                 onClick={() => resetSelectedUsers()}
                 exit={{ height: 0 }}
               >
@@ -175,17 +180,35 @@ export const PairwiseCompatibility: React.FC<PairwiseCompatibilityProps> = ({
             className="grid-flow-row grid gap-y-3 gap-x-4 grid-cols-3 w-full flex-wrap"
             exit={{ display: "none" }}
           >
-            {unSelectedUsers.map((user) => (
+            {unSelectedUsers.map((user, i) => (
               <motion.div
                 className="flex flex-col"
                 key={user.username}
                 onClick={() => selectUser(user)}
                 layout
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                animate={{
+                  opacity: isMobile ? 1 : 0.8,
+                }}
+                whileHover={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                {makeUserBubble(user)}
+                <motion.div
+                  animate={
+                    isMobile && {
+                      translateY: [0, -5, 0],
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "mirror",
+                        repeatDelay: 1.5,
+                        delay: 0.1 * i,
+                        ease: "easeInOut",
+                      },
+                    }
+                  }
+                >
+                  {makeUserBubble(user)}
+                </motion.div>
               </motion.div>
             ))}
           </motion.div>
