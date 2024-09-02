@@ -43,15 +43,11 @@ function consolidateTopItemsWithPoints(
     if (!!user[itemType]) {
       user[itemType].forEach((item, rank) => {
         const point = user[itemType].length - rank; // Higher rank gets more points
-        if (points[item.name]) {
-          points[item.name].points += point;
-          points[item.name].contributors.push(user.username);
+        if (points[item.url]) {
+          points[item.url].points += point;
+          points[item.url].contributors.push(user.username);
         } else {
-          points[item.name] = createConsolidatedItem(
-            item,
-            point,
-            user.username
-          );
+          points[item.url] = createConsolidatedItem(item, point, user.username);
         }
       });
     }
