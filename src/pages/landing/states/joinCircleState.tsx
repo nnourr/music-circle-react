@@ -50,26 +50,26 @@ const JoinCircleState = React.forwardRef<
     [userId, goToHome]
   );
 
-  const getCircleName = useCallback(
-    async (circleCode: string) => {
-      setIsLoading(true);
-      const getCircleNameResponse = await fetch(
-        `${SERVER_ENDPOINT}/circle/${circleCode}/name`
-      );
-      if (getCircleNameResponse.status === 404) {
-        setCircleCodeError("circle not found");
-        setIsLoading(false);
-        return;
-      } else if (getCircleNameResponse.status !== 200) {
-        setCircleCodeError("problem joining circle. try again later");
-        setIsLoading(false);
-        return;
-      }
-      const json = await getCircleNameResponse.json();
-      setCircleName(json.circleName);
-    },
-    [userId]
-  );
+  const getCircleName = async (
+    circleCode: string
+  ): Promise<string | undefined> => {
+    setIsLoading(true);
+    const getCircleNameResponse = await fetch(
+      `${SERVER_ENDPOINT}/circle/${circleCode}/name`
+    );
+    if (getCircleNameResponse.status === 404) {
+      setCircleCodeError("circle not found");
+      setIsLoading(false);
+      return;
+    } else if (getCircleNameResponse.status !== 200) {
+      setCircleCodeError("problem joining circle. try again later");
+      setIsLoading(false);
+      return;
+    }
+    const json = await getCircleNameResponse.json();
+    setCircleName(json.circleName);
+    return json;
+  };
 
   useEffect(() => {
     if (!!initialCircleCode) {
@@ -79,15 +79,15 @@ const JoinCircleState = React.forwardRef<
     }
   }, [addUserToCircle, initialCircleCode]);
 
-  const handleSubmit = () => {
-    getCircleName(circleCode);
+  const handleSubmit = async () => {
     const trimmedCircleCode = circleCode.trim();
 
     if (trimmedCircleCode.length !== 20) {
       setCircleCodeError("sorry, circle codes are 20 characters long");
       return;
     }
-    if (!!!circleCodeError) {
+    const circleName = await getCircleName(circleCode);
+    if (!!!circleCodeError && circleName) {
       setShowJoinCircleModal(true);
     }
   };
