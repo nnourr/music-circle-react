@@ -50,10 +50,15 @@ export const UserCircleListComponent: React.FC<
         return;
       }
       setCircleToLeave(undefined);
-      setUserCircles(
-        userCircles.filter((circle) => circle.circleCode !== circleCode)
+      const newUserCircles = userCircles.filter(
+        (circle) => circle.circleCode !== circleCode
       );
+      setUserCircles(newUserCircles);
       if (circleCode === currentCircleCode) {
+        if (newUserCircles.length === 0) {
+          navigate("/createCircle");
+          return;
+        }
         navigate({
           pathname: "/home",
           search: createSearchParams({

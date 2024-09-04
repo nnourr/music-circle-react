@@ -83,6 +83,9 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
         );
         if (getUserCirclesResponse.status === 200) {
           const circles = (await getUserCirclesResponse.json()) as UserCircle[];
+          if (circles.length === 0) {
+            navigate("/createCircle");
+          }
           setUserCircles(circles);
         } else {
           throw new Error("get user circles response not 200");
