@@ -24,27 +24,6 @@ const CreateCircleState = React.forwardRef<
   const { userCircles, setUserCircles } = useUserCircles();
 
   const createNewCircle = async () => {
-    const addUserToCircle = async (circleCode: string) => {
-      const addUserToCircleResponse = await fetch(
-        `${SERVER_ENDPOINT}/user/${userId}/circle/${circleCode}`,
-        { method: "post" }
-      );
-      if (addUserToCircleResponse.status === 404) {
-        setCircleNameError("circle not found");
-        setIsLoading(false);
-        return;
-      } else if (addUserToCircleResponse.status !== 200) {
-        setCircleNameError("problem joining circle. try again");
-        setIsLoading(false);
-        return;
-      }
-      setUserCircles([
-        ...userCircles,
-        { circleName: newCircleName, circleCode: newCircleCode },
-      ]);
-      goToHome(newCircleCode);
-    };
-
     if (newCircleName.length === 0) {
       setCircleNameError("circle name cannot be empty");
       setIsLoading(false);
@@ -58,7 +37,13 @@ const CreateCircleState = React.forwardRef<
     setIsLoading(true);
     const createNewCircleResponse = await fetch(
       `${SERVER_ENDPOINT}/circle/${newCircleName}`,
-      { method: "post" }
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userID: userId }),
+      }
     );
     if (createNewCircleResponse.status !== 200) {
       setIsLoading(false);
@@ -74,7 +59,11 @@ const CreateCircleState = React.forwardRef<
       setCircleNameError("problem creating circle. try again later.");
       return;
     }
-    addUserToCircle(newCircleCode);
+    setUserCircles([
+      ...userCircles,
+      { circleName: newCircleName, circleCode: newCircleCode },
+    ]);
+    goToHome(newCircleCode);
   };
 
   useEffect(() => {
