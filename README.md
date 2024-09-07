@@ -1,14 +1,18 @@
 <h1><img height="30" src="https://github.com/user-attachments/assets/6130cf93-e3dd-42f9-ac1e-a27e397161c9"/> Welcome to Music Circle!</h1>
 
+## Visit at https://music-circle.nnourr.tech/
+
 ## About
 At my last internship, I wanted to ask people about their music taste to get to know them better. However, there were a LOT of us, and I felt that it would be silly going around and asking each one what sort of music they listen to. So I created Music Circle! 
 
 Music Circle allows anyone to create a Circle, and invite others through a link to join. Once members join, they can see their cumulative top artists, top tracks, their compatibility and a popularity ranking.
 
+<a href="https://music-circle.nnourr.tech" target="_blank">
 <div align="center">
   <img width="500" align="center" src="https://github.com/user-attachments/assets/b3ec7d17-ec19-43f6-bcbf-0dc24349658d">
   <img width="500" align="center" src="https://github.com/user-attachments/assets/c6fde654-4ff4-4ade-b112-2518e1244a86"/></img>  
 </div>
+</a>
 
 ## Tech
 - React
