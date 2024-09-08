@@ -131,37 +131,7 @@ const JoinCircleState = React.forwardRef<
             },
           }}
           promptText={`Are you sure you want to join ${
-            circleName || (
-              <>
-                <motion.span
-                  animate={{
-                    translateY: ["0px", "-10px", "0"],
-                    transition: { repeat: Infinity },
-                  }}
-                  className="inline-block text-white"
-                >
-                  .
-                </motion.span>
-                <motion.span
-                  animate={{
-                    translateY: ["0px", "-10px", "0"],
-                    transition: { repeat: Infinity, delay: 0.1 },
-                  }}
-                  className="inline-block text-white"
-                >
-                  .
-                </motion.span>
-                <motion.span
-                  animate={{
-                    translateY: ["0px", "-10px", "0"],
-                    transition: { repeat: Infinity, delay: 0.2 },
-                  }}
-                  className="inline-block text-white"
-                >
-                  .
-                </motion.span>
-              </>
-            )
+            circleName || "(loading ...)"
           }?`}
           onClose={() => {
             setShowJoinCircleModal(false);
