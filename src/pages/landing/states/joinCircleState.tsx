@@ -163,7 +163,10 @@ const JoinCircleState = React.forwardRef<
               </>
             )
           }?`}
-          onClose={() => setShowJoinCircleModal(false)}
+          onClose={() => {
+            setShowJoinCircleModal(false);
+            setIsLoading(false);
+          }}
         />
       )}
       <div className="flex flex-col">
