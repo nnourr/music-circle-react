@@ -7,6 +7,7 @@ import Button, {
 import { motion } from "framer-motion";
 import { SERVER_ENDPOINT } from "../../../config/globals";
 import { ModalComponent } from "../../../components/modal.component";
+import { useSearchParams } from "react-router-dom";
 
 interface JoinCircleStateInterface {
   goToHome: (circleCode: string) => void;
@@ -24,6 +25,8 @@ const JoinCircleState = React.forwardRef<
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showJoinCircleModal, setShowJoinCircleModal] =
     useState<boolean>(false);
+  const [hashParams, setHashParams] = useSearchParams(); // for hash params
+  const urlParams = new URLSearchParams(window.location.search);
   const { userId, username } = useUser();
 
   const isFirstTime = localStorage.getItem("firstTime") === "true";
@@ -108,6 +111,13 @@ const JoinCircleState = React.forwardRef<
     }
   }, [circleCode]);
 
+  const joinModalCleanup = () => {
+    window.localStorage.removeItem("initialCircleCode");
+    setShowJoinCircleModal(false);
+    setIsLoading(false);
+    window.location.search = "";
+  };
+
   return (
     <div
       ref={ref}
@@ -119,8 +129,7 @@ const JoinCircleState = React.forwardRef<
             actionText: "don't join",
             actionTitle: "I don't want to join this circle",
             onAction: () => {
-              setShowJoinCircleModal(false);
-              setIsLoading(false);
+              joinModalCleanup();
             },
           }}
           confirmAction={{
@@ -128,14 +137,14 @@ const JoinCircleState = React.forwardRef<
             actionTitle: "I want to join this circle",
             onAction: () => {
               addUserToCircle(circleCode);
+              joinModalCleanup();
             },
           }}
           promptText={`Are you sure you want to join ${
             circleName || "(loading ...)"
           }?`}
           onClose={() => {
-            setShowJoinCircleModal(false);
-            setIsLoading(false);
+            joinModalCleanup();
           }}
         />
       )}
