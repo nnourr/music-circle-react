@@ -112,10 +112,9 @@ const JoinCircleState = React.forwardRef<
   }, [circleCode]);
 
   const joinModalCleanup = () => {
-    window.localStorage.removeItem("initialCircleCode");
+    // window.localStorage.removeItem("initialCircleCode");
     setShowJoinCircleModal(false);
     setIsLoading(false);
-    window.location.search = "";
   };
 
   return (

@@ -79,6 +79,10 @@ const CreateCircleState = React.forwardRef<
     }
   }, [newCircleName]);
 
+  useEffect(() => {
+    localStorage.removeItem("initialCircleCode");
+  }, []);
+
   const isFirstTime = localStorage.getItem("firstTime") === "true";
   return (
     <div

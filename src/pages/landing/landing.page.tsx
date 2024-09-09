@@ -81,7 +81,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
       };
       navigate(navigateObject);
     },
-    [navigate, noRedirect]
+    [noRedirect]
   );
 
   useEffect(() => {
@@ -254,7 +254,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
                 goToHome={navigateToHome}
                 goToJoinCircle={() => {
                   navigate({
-                    pathname: "/joinCircle",
+                    pathname: "/createCircle",
                     search: createSearchParams(hashParams).toString(),
                   });
                 }}

@@ -173,7 +173,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   const onShareCircle = async () => {
     try {
       await navigator.share({
-        url: `${window.location.origin}?circleCode=${circleInfo.circleCode}`,
+        url: `${window.location.origin}/#/?circleCode=${circleInfo.circleCode}`,
       });
 
       setCopyCircleCodeText("Circle Shared!");
