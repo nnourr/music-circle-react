@@ -6,6 +6,7 @@ import { useIsMobile } from "../../providers/isMobile.provider";
 
 interface InputProps {
   onChange: (change: any) => void;
+  onEnter: () => void;
   children?: React.ReactNode;
   placeholder: string;
   className?: string;
@@ -17,6 +18,7 @@ interface InputProps {
 
 export const Input: React.FC<InputProps> = ({
   onChange,
+  onEnter,
   children,
   error,
   placeholder = "this is a placeholder!",
@@ -48,6 +50,12 @@ export const Input: React.FC<InputProps> = ({
     inputAlign: isMobile || !!!children ? "text-center" : "text-left",
   };
   const motionColour = white ? "255, 255, 255" : "0, 0, 0";
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      onEnter();
+    }
+  };
 
   return (
     <motion.div
@@ -94,6 +102,7 @@ export const Input: React.FC<InputProps> = ({
             maxLength={maxLength}
             onFocus={() => setOnFocus(true)}
             onBlur={() => setOnFocus(false)}
+            onKeyDown={handleKeyDown}
             className={`bg-transparent ${tailwindDynamicStyles.text.placeholder} ${tailwindDynamicStyles.inputAlign} w-full text-nowrap focus:outline-none lg:w-[8em]`}
           ></input>
         </>

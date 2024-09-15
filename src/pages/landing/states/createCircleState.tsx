@@ -115,13 +115,14 @@ const CreateCircleState = React.forwardRef<
           placeholder="enter circle name"
           isLoading={isLoading}
           maxLength={16}
+          onEnter={createNewCircle}
         >
           Circle Name:&nbsp;
         </Input>
         <Button
           title={`Create new Circle with name ${newCircleName}`}
           isDisabled={isLoading || !!circleNameError}
-          onClick={() => createNewCircle()}
+          onClick={createNewCircle}
         >
           Submit
         </Button>
@@ -132,7 +133,7 @@ const CreateCircleState = React.forwardRef<
           <Button
             title="Create New Circle"
             isDisabled={isLoading}
-            onClick={() => goToJoinCircle()}
+            onClick={goToJoinCircle}
             btnSize={btnSizes.md}
           >
             Join Circle

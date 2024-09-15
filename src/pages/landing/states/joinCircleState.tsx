@@ -172,6 +172,7 @@ const JoinCircleState = React.forwardRef<
           error={!!circleCodeError}
           placeholder="enter circle code"
           isLoading={isLoading}
+          onEnter={handleSubmit}
         >
           Circle Code:&nbsp;
         </Input>

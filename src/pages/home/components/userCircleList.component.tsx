@@ -163,6 +163,7 @@ export const UserCircleListComponent: React.FC<
       <Input
         maxLength={16}
         onChange={(change) => setNewCircleName(change.target.value)}
+        onEnter={renameCircle}
         placeholder="enter circle name"
         white={true}
         error={!!circleNameError}
