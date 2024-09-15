@@ -72,7 +72,7 @@ const CreateCircleState = React.forwardRef<
     if (trimmedCircleCode === "") {
       return;
     }
-    const invalidCodePattern = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~0-9]/;
+    const invalidCodePattern = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
     if (invalidCodePattern.test(trimmedCircleCode)) {
       setCircleNameError("sorry, no special characters.");
       return;

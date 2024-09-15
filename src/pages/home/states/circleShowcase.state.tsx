@@ -216,13 +216,25 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
   };
 
   const Title = useCallback(() => {
+    // const containsNumbers = /\d/.test(circleInfo.circleName);
+    // let font = "font-fancy";
+    // if (containsNumbers) {
+    //   font = "";
+    // }
+    let title = circleInfo.circleName.split("");
+    title.forEach((char, i) => {
+      if (!isNaN(parseInt(char))) {
+        title.splice(i, 1, `<span class="font-sans">${char}</span>`);
+      }
+    });
     return (
       <BoxContainer motionKey="title" className="w-full">
         <ReactFitty
           maxSize={isMobile ? 80 : 140}
           minSize={isMobile ? 50 : 100}
           wrapText={true}
-          className="font-fancy w-fit max-w-full text-transparent bg-linear-gradient bg-clip-text leading-none overflow-hidden text-ellipsis"
+          // className={`${font} w-fit max-w-full text-transparent bg-linear-gradient bg-clip-text leading-none overflow-hidden text-ellipsis`}
+          className={`font-fancy w-fit max-w-full text-transparent bg-linear-gradient bg-clip-text leading-none overflow-hidden text-ellipsis`}
         >
           {isLoading ? (
             <>
@@ -255,7 +267,7 @@ export const CircleShowcaseState: React.FC<CircleShowcaseStateProps> = ({
               </motion.span>
             </>
           ) : (
-            circleInfo.circleName
+            <span dangerouslySetInnerHTML={{ __html: title.join("") }}></span>
           )}
         </ReactFitty>{" "}
         <motion.span

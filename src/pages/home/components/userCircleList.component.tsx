@@ -131,7 +131,7 @@ export const UserCircleListComponent: React.FC<
     const trimmedCircleCode = newCircleName.trim();
     setNewCircleName(trimmedCircleCode);
 
-    const invalidCodePattern = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~0-9]/;
+    const invalidCodePattern = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
     if (invalidCodePattern.test(trimmedCircleCode)) {
       setCircleNameError("sorry, no special characters.");
       return;
