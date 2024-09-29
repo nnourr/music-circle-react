@@ -14,7 +14,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faWarning } from "@fortawesome/free-solid-svg-icons";
 import { useUser } from "../../providers/user.provider";
 import { UserCircle } from "../../models/userCircle.model";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  createSearchParams,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { HamburgerMenu } from "./components/hamburgerMenu.component";
 import { Footer } from "../../components/footer.component";
 
@@ -60,6 +64,15 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
 
     if (!!!userCircles || userCircles.length === 0) {
       return;
+    }
+
+    if (userCircles.length === 1 && isUserCirclesSet(userCircles)) {
+      navigate({
+        pathname: "/home",
+        search: createSearchParams({
+          circleCode: userCircles[0].circleCode,
+        }).toString(),
+      });
     }
   }, [currentCircleInfo, userId, navigate, setCurrentCircle, userCircles]);
 
