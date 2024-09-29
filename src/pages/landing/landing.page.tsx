@@ -25,7 +25,10 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import { useUserCircles } from "../../providers/userCircles.provider";
+import {
+  isUserCirclesSet,
+  useUserCircles,
+} from "../../providers/userCircles.provider";
 import { UserCircle } from "../../models/userCircle.model";
 import { Footer } from "../../components/footer.component";
 import { NotFoundPage } from "../notfound/notfound.page";
@@ -111,7 +114,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
         console.error("Error getting circles " + error);
       }
     };
-    if (!!!userId || userCircles.length !== 0) {
+    if (!!!userId || isUserCirclesSet(userCircles)) {
       return;
     } else {
       getUserCircles(userId);
@@ -123,7 +126,7 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
     navigate,
     noRedirect,
     setUserCircles,
-    userCircles.length,
+    userCircles,
   ]);
 
   useEffect(() => {
@@ -151,7 +154,11 @@ const LandingPage = React.forwardRef<HTMLDivElement>((_, ref) => {
             navigate("/joinCircle");
             return;
           }
-          navigate("/createCircle");
+          if (userObj.userCircles.length === 0) {
+            navigate("/createCircle");
+            return;
+          }
+          navigate("/home");
         } else {
           throw new Error("setUser response not 200");
         }

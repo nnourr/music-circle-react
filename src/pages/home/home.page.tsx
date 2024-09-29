@@ -3,7 +3,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import MotionHomeState from "./states/home.state";
 import { NavbarComponent } from "./components/navbar.component";
 import { CircleShowcaseState } from "./states/circleShowcase.state";
-import { useUserCircles } from "../../providers/userCircles.provider";
+import {
+  isUserCirclesSet,
+  useUserCircles,
+} from "../../providers/userCircles.provider";
 import { CircleInfo } from "./models/circleInfo.model";
 import { SERVER_ENDPOINT } from "../../config/globals";
 import Button from "../../components/inputs/button.input.component";
@@ -83,10 +86,10 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
         );
         if (getUserCirclesResponse.status === 200) {
           const circles = (await getUserCirclesResponse.json()) as UserCircle[];
+          setUserCircles(circles);
           if (circles.length === 0) {
             navigate("/createCircle");
           }
-          setUserCircles(circles);
         } else {
           throw new Error("get user circles response not 200");
         }
@@ -99,7 +102,9 @@ const HomePage = React.forwardRef<HTMLDivElement>((_, ref) => {
       navigate("/");
       return;
     }
-    getUserCircles(userId);
+    if (!isUserCirclesSet(userCircles)) {
+      getUserCircles(userId);
+    }
   }, [userId, navigate, setUserCircles]);
 
   return (

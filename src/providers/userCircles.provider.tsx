@@ -25,11 +25,27 @@ interface UserCirclesProviderProps {
 export const UserCirclesProvider: React.FC<UserCirclesProviderProps> = ({
   children,
 }) => {
-  const [userCircles, setUserCircles] = useState<UserCircle[]>([]);
+  const [userCircles, setUserCircles] = useState<UserCircle[]>([DefaultCircle]);
 
   return (
     <UserCirclesContext.Provider value={{ userCircles, setUserCircles }}>
       {children}
     </UserCirclesContext.Provider>
   );
+};
+
+const DefaultCircle: UserCircle = {
+  circleCode: "",
+  circleName: "",
+};
+
+export const isUserCirclesSet = (userCircles: UserCircle[]) => {
+  if (
+    userCircles.length === 1 &&
+    userCircles[0].circleCode === "" &&
+    userCircles[0].circleName === ""
+  ) {
+    return false;
+  }
+  return true;
 };
